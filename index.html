@@ -10,8 +10,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- Google Fonts: Đã bao gồm Dancing Script (cho Tiếng Việt đẹp), Oswald (Tiêu đề) và Roboto Condensed -->
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Oswald:wght@500;600;700&family=Roboto+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Load độc lập -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
         /* CORE ENGINE & THEMES */
@@ -57,53 +61,68 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         /* =========================================================
-           CARD VISIT ĐÓNG GÓI CHUẨN MẪU (BẢN VÁ NÂNG CẤP FINAL)
-           - Sửa lỗi lệch Tiêu đề (Áp dụng layout 2 dòng + Oswald)
-           - Sửa lỗi Font Tiếng Việt chữ "Dịch vụ chính :" (Dancing Script)
+           CARD VISIT - BẢN VÁ TỶ LỆ FONT VÀ KHOẢNG THỞ (BREATHING ROOM)
            ========================================================= */
+        .card-wrapper {
+            width: 100%;
+            margin: 0 auto;
+        }
         .card-container {
-            font-family: "Roboto Condensed", Arial, sans-serif;
-            border: 4px solid #F58226;
-            background: #fff;
+            container-type: inline-size;
             position: relative;
             width: 100%;
             aspect-ratio: 1381 / 793;
+            background: #fff;
+            border: 0.4cqi solid #F58226;
+            border-radius: 0.6cqi;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            container-type: inline-size;
-            margin: 0 auto;
-            text-rendering: geometricPrecision;
-            -webkit-font-smoothing: antialiased;
+            isolation: isolate;
         }
-        .card-container * { box-sizing: border-box; }
         
+        .card-container * { box-sizing: border-box; margin: 0; padding: 0; letter-spacing: normal !important; }
+
         /* LOGO */
-        .logo-area { position: absolute; left: 5.25%; top: 3.0%; width: 11.25%; height: 19.5%; display: flex; align-items: center; justify-content: center; z-index: 5; }
-        .logo-area img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .cv-logo { position: absolute; left: 3.5%; top: 4%; width: 11%; height: 20%; display: flex; align-items: center; justify-content: center; }
+        .cv-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+        /* TIÊU ĐỀ: Thu nhỏ font, đẩy lên trên top: 2.5%, siết gap */
+        .cv-title-area {
+            position: absolute; left: 16%; top: 2.5%; width: 82%; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 0.3cqi;
+        }
+        .cv-title-1 { color: #162B75; font-family: "Oswald", sans-serif !important; font-size: 3.8cqi; font-weight: 700; line-height: 1.1 !important; white-space: nowrap; }
+        .cv-title-2 { color: #162B75; font-family: "Oswald", sans-serif !important; font-size: 5.6cqi; font-weight: 700; line-height: 1.1 !important; white-space: nowrap; }
+
+        /* SLOGAN & NÉT LƯỢN: Hạ nhẹ xuống top: 26.5% để cân bằng khoảng trắng */
+        .cv-slogan-box { position: absolute; left: 3%; top: 26.5%; width: 94%; display: flex; align-items: baseline; }
+        .cv-slogan-text-1 { color: #ED1B24; font-family: "Dancing Script", cursive !important; font-size: 4.8cqi; font-weight: 700; line-height: 1 !important; white-space: nowrap; flex-shrink: 0; }
+        .cv-slogan-text-2 { color: #ED1B24; font-family: "Oswald", sans-serif !important; font-size: 5.2cqi; font-weight: 700; line-height: 1 !important; margin-left: 1.8cqi; white-space: nowrap; }
         
-        /* TIÊU ĐỀ */
-        .title-area { position: absolute; left: 15.0%; top: 2.3%; width: 83.0%; height: 22.5%; display: flex; align-items: flex-start; justify-content: center; overflow: visible; z-index: 4; }
-        .company-title { margin: 0; width: 100%; color: #2E3094; font-family: "Oswald", "Roboto Condensed", sans-serif; font-size: 4.02cqi; font-weight: 700; line-height: 1.04; letter-spacing: -0.06cqi; text-align: center; transform: none; }
-        .company-title span { display: block; white-space: nowrap; }
-        .company-title span + span { margin-top: 0.58cqi; }
+        .cv-swoosh { position: absolute; left: 26%; top: 35.5%; width: 68%; height: 1.5cqi; border-bottom: 0.35cqi solid #ED1B24; border-radius: 50%; }
+
+        /* CÁC DÒNG DỊCH VỤ: Dịch nhẹ xuống tương ứng */
+        .cv-service-item { position: absolute; left: 3.5%; width: 95%; display: flex; align-items: center; }
+        .cv-service-item:nth-child(1) { top: 41%; }
+        .cv-service-item:nth-child(2) { top: 51.5%; }
+        .cv-service-item:nth-child(3) { top: 62%; }
+        .cv-service-item:nth-child(4) { top: 72.5%; }
         
-        /* DÒNG DỊCH VỤ + SLOGAN */
-        .subtitle-area { position: absolute; left: 2.0%; top: 25.4%; width: 96.2%; height: 9.5%; display: flex; align-items: center; white-space: nowrap; z-index: 5; }
-        .subtitle-text { color: #ED1B24; font-family: "Dancing Script", cursive; font-size: 3.95cqi; font-weight: 700; line-height: 1; margin: 0; transform: translateY(-1%); flex-shrink: 0; }
-        .slogan-text { color: #ED1B24; font-family: "Roboto Condensed", sans-serif; font-size: 3.68cqi; font-weight: 700; line-height: 1; margin-left: 5.4cqi; transform: none; }
+        .cv-service-icon { width: 3.8cqi; height: 3.8cqi; fill: #2278A8; flex-shrink: 0; display: flex; justify-content: center; align-items: center; }
+        .cv-service-icon svg { width: 100%; height: 100%; display: block; }
+        .cv-service-text { margin-left: 1.8cqi; color: #162B75; font-family: "Roboto Condensed", sans-serif !important; font-size: 3.2cqi; font-weight: 700; white-space: nowrap; line-height: 1.1 !important; letter-spacing: -0.01cqi !important; }
+
+        /* FOOTER & QR CODE */
+        .cv-footer { position: absolute; left: 0; bottom: 0; width: 100%; height: 19%; background: #162B75; }
+        .cv-footer-row-1 { position: absolute; left: 4%; top: 22%; display: flex; align-items: center; color: #fff; font-size: 3cqi; font-weight: 600; font-family: "Roboto Condensed", sans-serif !important; white-space: nowrap; }
+        .cv-footer-row-2 { position: absolute; left: 4%; top: 56%; display: flex; align-items: center; color: #fff; font-size: 3cqi; font-weight: 600; font-family: "Roboto Condensed", sans-serif !important; white-space: nowrap; }
         
-        /* KHU VỰC DỊCH VỤ */
-        .services-area { position: absolute; left: 2.0%; top: 36.6%; width: 95.8%; z-index: 3; }
-        .service-item { width: 100%; display: flex; align-items: center; margin-bottom: 0.38cqi; min-height: 5.55cqi; }
-        .service-icon { width: 3.0cqi; height: 3.0cqi; min-width: 3.0cqi; margin-right: 1.05cqi; fill: #2278A8; display: block; flex: 0 0 3.0cqi; }
-        .service-text { color: #2E3094; font-family: "Roboto Condensed", sans-serif; font-size: 3.02cqi; font-weight: 600; line-height: 1.08; letter-spacing: -0.035cqi; white-space: nowrap; transform: none; }
-        
-        /* FOOTER */
-        .footer-area { position: absolute; left: 0; bottom: 0; width: 100%; height: 19.45%; background: #2E3094; display: flex; align-items: center; justify-content: center; padding: 0 1.0%; z-index: 10; }
-        .contact-info { color: #fff; font-family: "Roboto Condensed", sans-serif; font-size: 2.60cqi; font-weight: 600; line-height: 1.18; letter-spacing: -0.025cqi; text-align: center; width: 88.5%; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.42cqi; }
-        .qr-area { position: absolute; right: 1.0%; top: 50%; transform: translateY(-50%); width: 9.15%; aspect-ratio: 1/1; background: #fff; padding: 0.35%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .qr-area img { width: 100%; height: 100%; object-fit: contain; display: block; image-rendering: pixelated; }
+        .cv-footer-row-1 i, .cv-footer-row-2 i { font-size: 3.2cqi; margin-right: 1.2cqi; width: 3.5cqi; text-align: center; }
+        .cv-footer-divider { margin: 0 1.2cqi; font-weight: 300; opacity: 0.8; }
+
+        .cv-qr { position: absolute; right: 2%; top: 12%; height: 76%; aspect-ratio: 1/1; background: #fff; padding: 0.6cqi; display: flex; align-items: center; justify-content: center; border-radius: 2px; }
+        .cv-qr img { width: 100%; height: 100%; object-fit: contain; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen pb-[env(safe-area-inset-bottom)]">
@@ -120,7 +139,7 @@
                 </div>
             </div>
             
-            <!-- Nút Đổi Theme Công Thái Học -->
+            <!-- Nút Đổi Theme -->
             <div class="flex gap-2">
                 <button onclick="changeTheme('warm')" class="w-7 h-7 rounded-full bg-[#FAFAF9] border-2 border-gray-300 shadow-sm clickable focus:ring-2 focus:ring-gray-400" title="Trắng Ấm"></button>
                 <button onclick="changeTheme('lemon')" class="w-7 h-7 rounded-full bg-[#FEFCE8] border-2 border-yellow-300 shadow-sm clickable focus:ring-2 focus:ring-yellow-400" title="Vàng Chanh"></button>
@@ -130,17 +149,16 @@
 
         <!-- Điều Hướng 3 Tab -->
         <nav class="max-w-6xl mx-auto grid grid-cols-3 text-center text-xs md:text-sm font-bold border-t border-black/5 mt-1">
-            <button onclick="switchTab('tab-home')" id="btn-tab-home" class="py-3 border-b-2 dynamic-text border-[var(--accent-primary)] clickable transition-all"><i class="fa-solid fa-layer-group"></i> Dịch Vụ</button>
-            <button onclick="switchTab('tab-card')" id="btn-tab-card" class="py-3 border-b-2 border-transparent opacity-60 hover:opacity-100 clickable transition-all"><i class="fa-solid fa-address-card"></i> Card Visit</button>
+            <button onclick="switchTab('tab-home')" id="btn-tab-home" class="py-3 border-b-2 border-transparent opacity-60 hover:opacity-100 clickable transition-all"><i class="fa-solid fa-layer-group"></i> Dịch Vụ</button>
+            <button onclick="switchTab('tab-card')" id="btn-tab-card" class="py-3 border-b-2 dynamic-text border-[var(--accent-primary)] clickable transition-all"><i class="fa-solid fa-address-card"></i> Card Visit</button>
             <button onclick="switchTab('tab-letter')" id="btn-tab-letter" class="py-3 border-b-2 border-transparent opacity-60 hover:opacity-100 clickable transition-all"><i class="fa-solid fa-envelope-open-text"></i> Thư Ngỏ</button>
         </nav>
     </header>
 
-    <!-- Khu Vực Nội Dung Thay Đổi -->
     <main class="flex-1 max-w-6xl mx-auto w-full p-3 md:p-4">
         
         <!-- Tab 1: Dịch Vụ & Báo Giá -->
-        <div id="tab-home" class="tab-content active">
+        <div id="tab-home" class="tab-content">
             <div class="dynamic-card p-4 rounded-lg shadow-sm border mb-4 text-center">
                 <h2 class="text-xl md:text-2xl font-bold dynamic-text font-['Oswald'] uppercase">Luôn Đồng Hành Cùng Bạn</h2>
                 <p class="text-sm opacity-80 mt-1">Cam kết xử lý nhanh chóng, chính xác lỗi kỹ thuật tận nơi.</p>
@@ -185,74 +203,80 @@
             </div>
         </div>
 
-        <!-- Tab 2: Card Visit HTML Đóng Gói (ĐÃ PATCH LỖI FONT VÀ TIÊU ĐỀ) -->
-        <div id="tab-card" class="tab-content">
-            <div class="max-w-2xl mx-auto">
+        <!-- Tab 2: Card Visit HTML Đóng Gói (ĐÃ PATCH KHOẢNG CÁCH) -->
+        <div id="tab-card" class="tab-content active">
+            <div class="max-w-4xl mx-auto">
                 <div class="mb-3 flex items-center justify-between">
                     <h2 class="font-bold text-lg border-l-4 dynamic-text border-[var(--accent-primary)] pl-2">Danh Thiếp Online</h2>
                     <button onclick="copyInfo()" class="dynamic-bg px-3 py-1.5 rounded-full text-xs font-bold shadow-sm clickable"><i class="fa-solid fa-copy mr-1"></i>Lưu thông tin</button>
                 </div>
                 
-                <!-- Box Card Visit Phản Hồi Responsive Mới -->
-                <div class="card-container">
-                    
-                    <div class="logo-area">
-                        <img src="logo.png" alt="Logo Tân Thành Phát">
-                    </div>
+                <!-- Box Card Visit -->
+                <div class="card-wrapper">
+                    <div class="card-container">
+                        
+                        <div class="cv-logo">
+                            <img src="logo.png" alt="Logo Tân Thành Phát" onerror="this.src='https://via.placeholder.com/150'">
+                        </div>
 
-                    <div class="title-area">
-                        <h1 class="company-title">
-                            <span>TT THIẾT BỊ &amp; KỸ THUẬT MÁY VĂN PHÒNG</span>
-                            <span>TÂN THÀNH PHÁT</span>
-                        </h1>
-                    </div>
+                        <div class="cv-title-area">
+                            <div class="cv-title-1">TT THIẾT BỊ &amp; KỸ THUẬT MÁY VĂN PHÒNG</div>
+                            <div class="cv-title-2">TÂN THÀNH PHÁT</div>
+                        </div>
 
-                    <div class="subtitle-area">
-                        <div class="subtitle-text">Dịch vụ chính:</div>
-                        <div class="slogan-text">LUÔN ĐỒNG HÀNH CÙNG BẠN</div>
-                    </div>
+                        <div class="cv-slogan-box">
+                            <div class="cv-slogan-text-1">Dịch vụ chính:</div>
+                            <div class="cv-slogan-text-2">LUÔN ĐỒNG HÀNH CÙNG BẠN</div>
+                        </div>
+                        
+                        <div class="cv-swoosh"></div>
 
-                    <div class="services-area">
-                        <!-- 1 -->
-                        <div class="service-item">
-                            <svg class="service-icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M21.7 19.3l-6.1-6.1c.4-.8.6-1.7.6-2.7C16.2 6.9 13.3 4 9.7 4c-1.1 0-2.2.3-3.1.8l3.8 3.8-2.6 2.6L4 7.4c-.5.9-.8 2-.8 3.1 0 3.6 2.9 6.5 6.5 6.5 1 0 1.9-.2 2.7-.6l6.1 6.1c.4.4 1 .4 1.4 0l1.8-1.8c.4-.4.4-1 0-1.4zM8.2 15.8a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
-                            </svg>
-                            <div class="service-text">Sửa chữa, bảo trì nhanh tận nơi Máy Tính, Mạng, Camera, Máy in...</div>
+                        <div class="cv-services">
+                            <div class="cv-service-item">
+                                <div class="cv-service-icon">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 19.3l-6.1-6.1c.4-.8.6-1.7.6-2.7C16.2 6.9 13.3 4 9.7 4c-1.1 0-2.2.3-3.1.8l3.8 3.8-2.6 2.6L4 7.4c-.5.9-.8 2-.8 3.1 0 3.6 2.9 6.5 6.5 6.5 1 0 1.9-.2 2.7-.6l6.1 6.1c.4.4 1 .4 1.4 0l1.8-1.8c.4-.4.4-1 0-1.4zM8.2 15.8a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                                </div>
+                                <div class="cv-service-text">Sửa chữa, bảo trì nhanh tận nơi Máy Tính, Mạng, Camera, Máy in...</div>
+                            </div>
+                            <div class="cv-service-item">
+                                <div class="cv-service-icon">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2h4v4h-4zM4 18h4v4H4zM10 18h4v4h-4zM16 18h4v4h-4zM11 6v3H6v3H4V9h5V6zM13 6v3h5v3h2V9h-5V6zM11 9h2v6h-2zM6 15h12v2H6z"/></svg>
+                                </div>
+                                <div class="cv-service-text">Tư vấn, Lắp đặt hệ thống Máy vi tính, Mạng, Camera...</div>
+                            </div>
+                            <div class="cv-service-item">
+                                <div class="cv-service-icon">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6.2 6h14.1l-1.9 7H8.5L6.2 6zM5.2 4L4.4 2H1v2h2l3.6 7.6-.9 1.7c-.2.4-.3.8-.3 1.2 0 1.1.9 2 2 2h12v-2H7.8c-.1 0-.2-.1-.2-.2l.1-.3.9-1.5h8.1c.8 0 1.5-.4 1.9-1.1L21.9 5c.1-.2.1-.3.1-.5 0-.3-.3-.5-.6-.5H5.2z"/></svg>
+                                </div>
+                                <div class="cv-service-text">Cung cấp, Bán máy cũ/mới, Linh kiện, Phụ kiện, Phần mềm bản quyền</div>
+                            </div>
+                            <div class="cv-service-item">
+                                <div class="cv-service-icon">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l7 3v5.2c0 5-3 9.6-7 11.8-4-2.2-7-6.8-7-11.8V5l7-3zM12 6c-2.2 0-4 1.8-4 4v2H6v2h2v2h2v-2h4v2h2v-2h2v-2h-2v-2c0-2.2-1.8-4-4-4zM10 10c0-1.1.9-2 2-2s2 .9 2 2v2h-4z"/></svg>
+                                </div>
+                                <div class="cv-service-text">Xử lý lỗi Virus, Lỗi phần mềm, Dịch vụ tận nơi theo yêu cầu</div>
+                            </div>
                         </div>
-                        <!-- 2 -->
-                        <div class="service-item">
-                            <svg class="service-icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M10 2h4v4h-4zM4 18h4v4H4zM10 18h4v4h-4zM16 18h4v4h-4zM11 6v3H6v3H4V9h5V6zM13 6v3h5v3h2V9h-5V6zM11 9h2v6h-2zM6 15h12v2H6z"/>
-                            </svg>
-                            <div class="service-text">Tư vấn, Lắp đặt hệ thống Máy vi tính, Mạng, Camera...</div>
-                        </div>
-                        <!-- 3 -->
-                        <div class="service-item">
-                            <svg class="service-icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6.2 6h14.1l-1.9 7H8.5L6.2 6zM5.2 4L4.4 2H1v2h2l3.6 7.6-.9 1.7c-.2.4-.3.8-.3 1.2 0 1.1.9 2 2 2h12v-2H7.8c-.1 0-.2-.1-.2-.2l.1-.3.9-1.5h8.1c.8 0 1.5-.4 1.9-1.1L21.9 5c.1-.2.1-.3.1-.5 0-.3-.3-.5-.6-.5H5.2z"/>
-                            </svg>
-                            <div class="service-text">Cung cấp, Bán máy cũ/mới, Linh kiện, Phụ kiện, Phần mềm bản quyền</div>
-                        </div>
-                        <!-- 4 -->
-                        <div class="service-item">
-                            <svg class="service-icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M12 2l7 3v5.2c0 5-3 9.6-7 11.8-4-2.2-7-6.8-7-11.8V5l7-3zM12 6c-2.2 0-4 1.8-4 4v2H6v2h2v2h2v-2h4v2h2v-2h2v-2h-2v-2c0-2.2-1.8-4-4-4zM10 10c0-1.1.9-2 2-2s2 .9 2 2v2h-4z"/>
-                            </svg>
-                            <div class="service-text">Xử lý lỗi Virus, Lỗi phần mềm, Dịch vụ tận nơi theo yêu cầu</div>
-                        </div>
-                    </div>
 
-                    <div class="footer-area">
-                        <div class="contact-info">
-                            <div class="contact-line">Đ/c: KCN Nội Bài - Thôn Ninh Bắc - Xã Nội Bài - Hà Nội</div>
-                            <div class="contact-line">ĐT / Zalo: 0936.168.219&nbsp;&nbsp;&nbsp;&nbsp; Email: mayvptxt@gmail.com</div>
+                        <!-- Chân Trang Xanh Dương -->
+                        <div class="cv-footer">
+                            <div class="cv-footer-row-1">
+                                <i class="fa-solid fa-location-dot"></i>
+                                Đ/c: KCN Nội Bài - Thôn Ninh Bắc - Xã Nội Bài - Hà Nội
+                            </div>
+                            <div class="cv-footer-row-2">
+                                <i class="fa-solid fa-phone-volume"></i>
+                                ĐT / Zalo: 0936.168.219
+                                <span class="cv-footer-divider">|</span>
+                                <i class="fa-solid fa-envelope"></i>
+                                Email: mayvptxt@gmail.com
+                            </div>
+                            <div class="cv-qr">
+                                <img src="qr.png" alt="QR Code" onerror="this.src='https://via.placeholder.com/150'">
+                            </div>
                         </div>
-                        <div class="qr-area">
-                            <img src="qr.png" alt="QR Code">
-                        </div>
-                    </div>
 
+                    </div>
                 </div>
 
             </div>
