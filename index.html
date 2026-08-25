@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Tân Thành Phát - Thiết Bị & Kỹ Thuật Máy Văn Phòng</title>
+    <meta name="description" content="Chuyên cung cấp, sửa chữa, bảo trì tận nơi Máy tính, Máy in, Camera, Mạng. Hotline: 0936.168.219 - Luôn đồng hành cùng bạn.">
+    
+    <!-- Tích hợp TailwindCSS siêu nhẹ qua CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Oswald:wght@500;600;700&family=Roboto+Condensed:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CORE ENGINE & THEMES */
+        :root {
+            --bg-body: #FAFAF9; /* Trắng ấm mặc định */
+            --text-main: #1C1917;
+            --accent-primary: #EE4D2D; /* Đỏ/Cam Shopee */
+            --card-bg: #FFFFFF;
+            --border-color: #E7E5E4;
+            --safe-bottom: env(safe-area-inset-bottom, 20px);
+        }
+        
+        /* Theme: Vàng Chanh */
+        body.theme-lemon { --bg-body: #FEFCE8; --text-main: #422006; --accent-primary: #EAB308; --card-bg: #FEF9C3; --border-color: #FEF08A; }
+        /* Theme: Xanh Ngọc Bích */
+        body.theme-jade { --bg-body: #F0FDF4; --text-main: #064E3B; --accent-primary: #10B981; --card-bg: #ECFDF5; --border-color: #A7F3D0; }
+
+        body { 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .dynamic-card { background-color: var(--card-bg); border-color: var(--border-color); }
+        .dynamic-text { color: var(--accent-primary); }
+        .dynamic-bg { background-color: var(--accent-primary); color: #fff; }
+
+        /* SHOPEE UI ELEMENTS */
+        .shopee-border-bottom {
+            background-image: repeating-linear-gradient(45deg, #6fa6d6, #6fa6d6 33px, transparent 0, transparent 41px, #f18d9b 0, #f18d9b 74px, transparent 0, transparent 82px);
+            background-position-x: -30px; background-size: 116px 3px; height: 3px; width: 100%;
+        }
+        .shopee-card {
+            border: 1px solid var(--border-color); border-radius: 4px;
+            transition: transform 0.1s cubic-bezier(0.4,0,0.6,1), box-shadow 0.1s;
+        }
+        .shopee-card:active { transform: scale(0.98); border-color: var(--accent-primary); }
+        
+        /* CÔNG THÁI HỌC THAO TÁC */
+        .clickable { cursor: pointer; touch-action: manipulation; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* CARD VISIT ĐÓNG GÓI CHUẨN MẪU */
+        .card-visit-container { font-family: "Roboto Condensed", Arial, sans-serif; border: 3px solid #F58226; background: #fff; position: relative; width: 100%; aspect-ratio: 1381/793; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .cv-logo { position: absolute; left: 5%; top: 5%; width: 12%; height: 20%; display: flex; align-items: center; justify-content: center; }
+        .cv-title { position: absolute; left: 18%; top: 3%; width: 80%; color: #2E3094; font-family: "Oswald", sans-serif; font-size: 3.5vw; font-weight: 700; line-height: 1.1; }
+        .cv-slogan-box { position: absolute; left: 3%; top: 26%; width: 94%; display: flex; align-items: center; }
+        .cv-slogan-title { color: #ED1B24; font-family: "Dancing Script", cursive; font-size: 3.5vw; font-weight: 700; white-space: nowrap; }
+        .cv-slogan-text { color: #ED1B24; font-size: 3.2vw; font-weight: 700; margin-left: 2vw; }
+        .cv-services { position: absolute; left: 3%; top: 38%; width: 94%; }
+        .cv-service-item { display: flex; align-items: center; margin-bottom: 1.5%; font-size: 2.6vw; color: #2E3094; font-weight: 600; }
+        .cv-footer { position: absolute; left: 0; bottom: 0; width: 100%; height: 20%; background: #2E3094; display: flex; align-items: center; padding: 0 2%; }
+        .cv-contact { color: #fff; font-size: 2.3vw; font-weight: 600; width: 88%; text-align: center; }
+        .cv-qr { position: absolute; right: 2%; top: 10%; height: 80%; aspect-ratio: 1/1; background: #fff; padding: 2px; }
+        @media (min-width: 768px) {
+            .cv-title { font-size: 20px; } .cv-slogan-title { font-size: 22px; } .cv-slogan-text { font-size: 20px; } .cv-service-item { font-size: 16px; } .cv-contact { font-size: 14px; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen pb-[env(safe-area-inset-bottom)]">
+
+    <!-- Header Thông Minh Cố Định -->
+    <header class="dynamic-card shadow-sm sticky top-0 z-40 w-full border-b">
+        <div class="shopee-border-bottom absolute top-0 left-0"></div>
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center mt-1">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-microchip dynamic-text text-2xl drop-shadow-sm"></i>
+                <div>
+                    <h1 class="font-bold text-sm md:text-lg leading-tight uppercase tracking-tight">Tân Thành Phát</h1>
+                    <p class="text-[10px] md:text-xs opacity-70 font-medium">Thiết Bị & Kỹ Thuật Máy Văn Phòng</p>
+                </div>
+            </div>
+            
+            <!-- Nút Đổi Theme Công Thái Học -->
+            <div class="flex gap-2">
+                <button onclick="changeTheme('warm')" class="w-7 h-7 rounded-full bg-[#FAFAF9] border-2 border-gray-300 shadow-sm clickable focus:ring-2 focus:ring-gray-400" title="Trắng Ấm"></button>
+                <button onclick="changeTheme('lemon')" class="w-7 h-7 rounded-full bg-[#FEFCE8] border-2 border-yellow-300 shadow-sm clickable focus:ring-2 focus:ring-yellow-400" title="Vàng Chanh"></button>
+                <button onclick="changeTheme('jade')" class="w-7 h-7 rounded-full bg-[#F0FDF4] border-2 border-green-300 shadow-sm clickable focus:ring-2 focus:ring-green-400" title="Xanh Ngọc"></button>
+            </div>
+        </div>
+
+        <!-- Điều Hướng 3 Tab -->
+        <nav class="max-w-6xl mx-auto grid grid-cols-3 text-center text-xs md:text-sm font-bold border-t border-black/5 mt-1">
+            <button onclick="switchTab('tab-home')" id="btn-tab-home" class="py-3 border-b-2 dynamic-text border-[var(--accent-primary)] clickable transition-all"><i class="fa-solid fa-layer-group"></i> Dịch Vụ</button>
+            <button onclick="switchTab('tab-card')" id="btn-tab-card" class="py-3 border-b-2 border-transparent opacity-60 hover:opacity-100 clickable transition-all"><i class="fa-solid fa-address-card"></i> Card Visit</button>
+            <button onclick="switchTab('tab-letter')" id="btn-tab-letter" class="py-3 border-b-2 border-transparent opacity-60 hover:opacity-100 clickable transition-all"><i class="fa-solid fa-envelope-open-text"></i> Thư Ngỏ</button>
+        </nav>
+    </header>
+
+    <!-- Khu Vực Nội Dung Thay Đổi -->
+    <main class="flex-1 max-w-6xl mx-auto w-full p-3 md:p-4">
+        
+        <!-- Tab 1: Dịch Vụ & Báo Giá (Layout 3 Cột + Shopee UI) -->
+        <div id="tab-home" class="tab-content active">
+            <!-- Banner Slogan -->
+            <div class="dynamic-card p-4 rounded-lg shadow-sm border mb-4 text-center">
+                <h2 class="text-xl md:text-2xl font-bold dynamic-text font-['Oswald'] uppercase">Luôn Đồng Hành Cùng Bạn</h2>
+                <p class="text-sm opacity-80 mt-1">Cam kết xử lý nhanh chóng, chính xác lỗi kỹ thuật tận nơi.</p>
+            </div>
+
+            <!-- Cấu trúc 3 cột Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+                <!-- Card 1 -->
+                <article class="shopee-card dynamic-card flex flex-col p-3 relative overflow-hidden clickable group">
+                    <div class="absolute top-1 left-[-2px] bg-red-500 text-white text-[10px] font-medium px-2 py-0.5 rounded-r-sm shadow-sm z-10">Bảo trì tận nơi</div>
+                    <div class="h-32 bg-gray-100 rounded mb-3 flex items-center justify-center group-active:opacity-80 transition-opacity">
+                        <i class="fa-solid fa-desktop text-4xl opacity-50"></i>
+                    </div>
+                    <h3 class="font-bold text-sm leading-snug line-clamp-2">Sửa chữa, bảo trì Máy Tính, Mạng, Camera, Máy in</h3>
+                    <div class="mt-auto pt-2 flex items-baseline justify-between">
+                        <span class="dynamic-text font-bold text-lg"><span class="text-xs underline align-top mr-0.5">đ</span>Liên hệ</span>
+                        <a href="tel:0936168219" class="dynamic-bg px-3 py-1 rounded text-xs font-bold shadow-sm">Gọi thợ</a>
+                    </div>
+                </article>
+
+                <!-- Card 2 -->
+                <article class="shopee-card dynamic-card flex flex-col p-3 relative overflow-hidden clickable group">
+                    <div class="absolute top-1 left-[-2px] bg-blue-500 text-white text-[10px] font-medium px-2 py-0.5 rounded-r-sm shadow-sm z-10">Giải pháp toàn diện</div>
+                    <div class="h-32 bg-gray-100 rounded mb-3 flex items-center justify-center group-active:opacity-80 transition-opacity">
+                        <i class="fa-solid fa-network-wired text-4xl opacity-50"></i>
+                    </div>
+                    <h3 class="font-bold text-sm leading-snug line-clamp-2">Tư vấn, Lắp đặt hệ thống Máy vi tính, Mạng, Camera</h3>
+                    <div class="mt-auto pt-2 flex items-baseline justify-between">
+                        <span class="dynamic-text font-bold text-lg"><span class="text-xs underline align-top mr-0.5">đ</span>Khảo sát Free</span>
+                        <a href="https://zalo.me/0936168219" target="_blank" class="bg-blue-500 text-white px-3 py-1 rounded text-xs font-bold shadow-sm">Zalo</a>
+                    </div>
+                </article>
+
+                <!-- Card 3 -->
+                <article class="shopee-card dynamic-card flex flex-col p-3 relative overflow-hidden clickable group">
+                    <div class="absolute top-1 left-[-2px] bg-orange-500 text-white text-[10px] font-medium px-2 py-0.5 rounded-r-sm shadow-sm z-10">Bản quyền 100%</div>
+                    <div class="h-32 bg-gray-100 rounded mb-3 flex items-center justify-center group-active:opacity-80 transition-opacity">
+                        <i class="fa-solid fa-box-open text-4xl opacity-50"></i>
+                    </div>
+                    <h3 class="font-bold text-sm leading-snug line-clamp-2">Cung cấp máy cũ/mới, Linh kiện, Phụ kiện, Phần mềm</h3>
+                    <div class="mt-auto pt-2 flex items-baseline justify-between">
+                        <span class="dynamic-text font-bold text-lg"><span class="text-xs underline align-top mr-0.5">đ</span>Báo giá</span>
+                        <a href="tel:0936168219" class="dynamic-bg px-3 py-1 rounded text-xs font-bold shadow-sm">Hotline</a>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+
+        <!-- Tab 2: Card Visit HTML Đóng Gói -->
+        <div id="tab-card" class="tab-content">
+            <div class="max-w-2xl mx-auto">
+                <div class="mb-3 flex items-center justify-between">
+                    <h2 class="font-bold text-lg border-l-4 dynamic-text border-[var(--accent-primary)] pl-2">Danh Thiếp Online</h2>
+                    <button onclick="copyInfo()" class="dynamic-bg px-3 py-1.5 rounded-full text-xs font-bold shadow-sm clickable"><i class="fa-solid fa-copy mr-1"></i>Lưu thông tin</button>
+                </div>
+                <!-- Box Card Visit Phản Hồi Responsive -->
+                <div class="card-visit-container">
+                    <div class="cv-logo"><i class="fa-solid fa-shield-halved text-[#2E3094] text-[6vw] md:text-[30px]"></i></div>
+                    <div class="cv-title">TT THIẾT BỊ & KỸ THUẬT MÁY VĂN PHÒNG<br>TÂN THÀNH PHÁT</div>
+                    <div class="cv-slogan-box">
+                        <span class="cv-slogan-title">Dịch vụ chính:</span>
+                        <span class="cv-slogan-text">LUÔN ĐỒNG HÀNH CÙNG BẠN</span>
+                    </div>
+                    <div class="cv-services">
+                        <div class="cv-service-item"><i class="fa-solid fa-wrench mr-2 text-[#2278A8]"></i> Sửa chữa, bảo trì nhanh tận nơi Máy Tính, Mạng, Camera, Máy in...</div>
+                        <div class="cv-service-item"><i class="fa-solid fa-sitemap mr-2 text-[#2278A8]"></i> Tư vấn, Lắp đặt hệ thống Máy vi tính, Mạng, Camera...</div>
+                        <div class="cv-service-item"><i class="fa-solid fa-cart-shopping mr-2 text-[#2278A8]"></i> Cung cấp, Bán máy cũ/mới, Linh kiện, Phụ kiện, Phần mềm...</div>
+                        <div class="cv-service-item"><i class="fa-solid fa-virus-slash mr-2 text-[#2278A8]"></i> Xử lý lỗi Virus, Lỗi phần mềm, Dịch vụ tận nơi theo yêu cầu</div>
+                    </div>
+                    <div class="cv-footer">
+                        <div class="cv-contact">
+                            <div>Đ/c: KCN Nội Bài - Thôn Ninh Bắc - Xã Nội Bài - Hà Nội</div>
+                            <div>ĐT / Zalo: 0936.168.219 | Email: mayvptxt@gmail.com</div>
+                        </div>
+                        <div class="cv-qr text-black flex items-center justify-center text-[10px] font-bold">QR CODE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Thư Ngỏ -->
+        <div id="tab-letter" class="tab-content">
+            <div class="max-w-3xl mx-auto dynamic-card p-5 md:p-8 rounded-lg shadow-sm border">
+                <div class="text-center mb-6 border-b pb-4">
+                    <h2 class="text-2xl font-bold dynamic-text uppercase mb-1">Thư Ngỏ</h2>
+                    <p class="text-sm opacity-70">TT Thiết Bị & Kỹ Thuật Máy Văn Phòng Tân Thành Phát</p>
+                </div>
+                <div class="space-y-4 text-sm md:text-base leading-relaxed opacity-90 text-justify">
+                    <p><strong>Kính gửi Quý Khách hàng và Đối tác,</strong></p>
+                    <p>Lời đầu tiên, <strong>Tân Thành Phát</strong> xin gửi lời chào trân trọng, lời chúc sức khỏe và thành công tới Quý vị.</p>
+                    <p>Với định hướng <em>"Luôn đồng hành cùng bạn"</em>, chúng tôi tự hào là đơn vị cung cấp giải pháp toàn diện, xử lý triệt để các vấn đề kỹ thuật liên quan đến hệ thống thiết bị văn phòng, máy tính, mạng và camera an ninh.</p>
+                    <p>Chúng tôi cam kết mang lại:</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Dịch vụ nhanh chóng, khắc phục sự cố tận nơi với tiêu chuẩn kỹ thuật cao nhất.</li>
+                        <li>Trang thiết bị, linh kiện thay thế chính hãng, nguồn gốc rõ ràng.</li>
+                        <li>Quy trình bảo hành minh bạch, uy tín.</li>
+                    </ul>
+                    <p>Rất hân hạnh được hợp tác và phục vụ Quý khách!</p>
+                    <div class="mt-8 pt-4">
+                        <p class="font-bold">Trân trọng,</p>
+                        <p class="dynamic-text font-bold mt-1">Đại diện Tân Thành Phát</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Block Hỗ trợ Sticky Đáy (Zalo / Call) -->
+    <div class="fixed bottom-4 right-4 z-50 flex flex-col gap-3">
+        <a href="https://zalo.me/0936168219" target="_blank" class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform clickable">
+            <i class="fa-solid fa-comment-dots text-2xl"></i>
+        </a>
+        <a href="tel:0936168219" class="w-12 h-12 dynamic-bg rounded-full flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform clickable">
+            <i class="fa-solid fa-phone-volume text-xl animate-pulse"></i>
+        </a>
+    </div>
+
+    <!-- Script Điều Khiển Core -->
+    <script>
+        // Hàm chuyển đổi Tab SPA (0 giây độ trễ)
+        function switchTab(tabId) {
+            // Reset nội dung
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // Reset trạng thái Nút bấm
+            document.querySelectorAll('nav button').forEach(el => {
+                el.classList.remove('dynamic-text', 'border-[var(--accent-primary)]');
+                el.classList.add('border-transparent', 'opacity-60');
+            });
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('border-transparent', 'opacity-60');
+            activeBtn.classList.add('dynamic-text', 'border-[var(--accent-primary)]');
+            
+            // Rung nhẹ phản hồi cho Mobile
+            if(navigator.vibrate) navigator.vibrate(15);
+        }
+
+        // Hàm Đổi Theme
+        function changeTheme(themeName) {
+            document.body.className = 'flex flex-col min-h-screen pb-[env(safe-area-inset-bottom)] theme-' + themeName;
+            if(navigator.vibrate) navigator.vibrate(20);
+        }
+
+        // Hàm Copy thông tin
+        function copyInfo() {
+            const info = "TT Máy Văn Phòng Tân Thành Phát\nHotline/Zalo: 0936.168.219\nĐịa chỉ: KCN Nội Bài - Thôn Ninh Bắc - Xã Nội Bài - Hà Nội";
+            navigator.clipboard.writeText(info).then(() => {
+                alert("Đã lưu thông tin liên hệ vào bộ nhớ tạm!");
+            });
+        }
+    </script>
+</body>
+</html>
