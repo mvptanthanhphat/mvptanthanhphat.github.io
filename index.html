@@ -276,7 +276,7 @@
             <div class="max-w-4xl mx-auto">
                 <div class="mb-3 flex items-center justify-between"><h2 class="font-bold text-lg border-l-4 dynamic-text border-[var(--accent-primary)] pl-2">Danh Thiếp Online</h2><button onclick="copyInfo()" class="dynamic-bg px-3 py-1.5 rounded-full text-xs font-bold shadow-sm clickable outline-none"><i class="fa-solid fa-copy mr-1"></i>Lưu thông tin</button></div>
                 <div class="card-wrapper"><div class="card-container">
-                    <div class="cv-logo"><img src="logo.png" alt="Logo Tân Thành Phát" onerror="this.src='https://via.placeholder.com/150'"></div>
+                    <div class="cv-logo"><img src="logo.png" loading="lazy" decoding="async" alt="Logo Tân Thành Phát" onerror="this.src='https://via.placeholder.com/150'"></div>
                     <div class="cv-title-area"><div class="cv-title-1">TT THIẾT BỊ &amp; KỸ THUẬT MÁY VĂN PHÒNG</div><div class="cv-title-2">TÂN THÀNH PHÁT</div></div>
                     <div class="cv-slogan-box"><div class="cv-slogan-text-1">Dịch vụ chính:</div><div class="cv-slogan-text-2">LUÔN ĐỒNG HÀNH CÙNG BẠN</div></div><div class="cv-swoosh"></div>
                     <div class="cv-services">
@@ -290,7 +290,7 @@
                             <div class="cv-footer-row"><i class="fa-solid fa-location-dot"></i> Đ/c: KCN Nội Bài - Thôn Ninh Bắc - Xã Nội Bài - Hà Nội</div>
                             <div class="cv-footer-row"><i class="fa-solid fa-phone-volume"></i> ĐT / Zalo: 0936.168.219 <span class="cv-footer-divider">|</span> <i class="fa-solid fa-envelope"></i> Email: mayvptxt@gmail.com</div>
                         </div>
-                        <div class="cv-qr"><img src="qr.png" alt="QR Code" onerror="this.src='https://via.placeholder.com/150'"></div>
+                        <div class="cv-qr"><img src="qr.png" loading="lazy" decoding="async" alt="QR Code" onerror="this.src='https://via.placeholder.com/150'"></div>
                     </div>
                 </div></div>
             </div>
@@ -340,7 +340,6 @@
 
     <!-- ==================================================
          WIDGET 1: RADIO NGUYÊN BẢN 100% 
-         (Tránh lỗi từ chối kết nối trên điện thoại)
          ================================================== -->
     <div id="radioWindow" class="fixed z-[100000] hidden flex-col bg-[#1a1a1a] border border-gray-700 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] transition-all duration-300 scale-0 opacity-0 transform-gpu" style="top: 80px; right: 20px; width: 360px; height: 480px; resize: both; overflow: hidden; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);">
         <div id="radioWindowHeader" class="bg-gradient-to-r from-purple-800 to-indigo-900 px-3 py-2 flex justify-between items-center text-white border-b border-white/20 shrink-0 cursor-move touch-none select-none z-20">
@@ -413,7 +412,7 @@
         <button onclick="closeProductDetail()" class="fixed top-4 right-4 z-[9999] w-10 h-10 bg-white text-black rounded-full flex items-center justify-center hover:bg-gray-200 shadow-2xl outline-none"><i class="fa-solid fa-times text-xl"></i></button>
         <div class="bg-white w-full h-full md:w-[900px] md:h-auto md:max-h-[85vh] md:rounded-lg shadow-2xl flex flex-col md:flex-row relative transform scale-95 transition-transform duration-300">
             <div class="w-full md:w-[55%] flex flex-col shrink-0 bg-white relative border-r border-gray-100">
-                <div class="relative w-full aspect-square bg-gray-50 flex items-center justify-center overflow-hidden border-b border-gray-100"><img id="modalImage" src="" class="absolute inset-0 w-full h-full object-contain p-4" alt="Product"></div>
+                <div class="relative w-full aspect-square bg-gray-50 flex items-center justify-center overflow-hidden border-b border-gray-100"><img id="modalImage" src="" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-contain p-4" alt="Product"></div>
                 <div class="px-5 py-4 space-y-4 bg-white mt-auto">
                     <div class="flex items-center justify-between"><div class="flex items-center gap-2 text-sm"><span class="text-gray-500">Đang chọn:</span><span id="selectedVariantNameDisplay" class="font-bold text-gray-800 border-b-2 border-[var(--accent-primary)]">Mặc định</span></div><div class="text-xs text-gray-400 font-mono">Còn hàng</div></div>
                     <div class="flex items-center justify-between bg-[var(--accent-primary)]/5 p-3 rounded border border-[var(--accent-primary)]/10">
@@ -449,7 +448,7 @@
                         <div class="space-y-3">
                             <label class="flex items-center gap-3 p-3 border rounded cursor-pointer hover:bg-gray-50 has-[:checked]:border-[var(--accent-primary)] has-[:checked]:bg-[var(--accent-primary)]/5"><input type="radio" name="payment" value="cod" checked onchange="togglePaymentMethod()" class="w-4 h-4"><i class="fa-solid fa-money-bill-wave text-green-600 text-xl"></i><div class="font-medium text-sm">Tiền mặt (COD)</div></label>
                             <label class="flex items-center gap-3 p-3 border rounded cursor-pointer hover:bg-gray-50 has-[:checked]:border-[var(--accent-primary)] has-[:checked]:bg-[var(--accent-primary)]/5"><input type="radio" name="payment" value="banking" onchange="togglePaymentMethod()" class="w-4 h-4"><i class="fa-solid fa-building-columns text-blue-600 text-xl"></i><div class="font-medium text-sm">Chuyển khoản (Quét mã QR)</div></label>
-                            <div id="bankingInfo" class="hidden mt-2 p-4 border border-blue-200 rounded-lg bg-blue-50/50 relative"><div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div><div class="text-center mb-4"><div class="text-xs text-gray-500 font-bold">Quét mã thanh toán</div><div class="bg-white p-2 inline-block rounded border"><img id="qrCodeImg" src="" class="w-40 h-40 object-contain"></div></div><div class="space-y-2 text-sm"><div class="flex justify-between border-b pb-1"><span>Ngân hàng:</span><span class="font-bold">TECHCOMBANK</span></div><div class="flex justify-between border-b pb-1"><span>STK:</span><span class="font-bold">19037189711011</span></div><div class="flex justify-between border-b pb-1"><span>Chủ thẻ:</span><span class="font-bold">NGUYEN THI THAM</span></div><div class="flex justify-between"><span>Nội dung:</span><span class="font-bold dynamic-text" id="bankContent">...</span></div></div></div>
+                            <div id="bankingInfo" class="hidden mt-2 p-4 border border-blue-200 rounded-lg bg-blue-50/50 relative"><div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div><div class="text-center mb-4"><div class="text-xs text-gray-500 font-bold">Quét mã thanh toán</div><div class="bg-white p-2 inline-block rounded border"><img id="qrCodeImg" src="" loading="lazy" decoding="async" class="w-40 h-40 object-contain"></div></div><div class="space-y-2 text-sm"><div class="flex justify-between border-b pb-1"><span>Ngân hàng:</span><span class="font-bold">TECHCOMBANK</span></div><div class="flex justify-between border-b pb-1"><span>STK:</span><span class="font-bold">19037189711011</span></div><div class="flex justify-between border-b pb-1"><span>Chủ thẻ:</span><span class="font-bold">NGUYEN THI THAM</span></div><div class="flex justify-between"><span>Nội dung:</span><span class="font-bold dynamic-text" id="bankContent">...</span></div></div></div>
                         </div>
                     </div>
                 </div>
@@ -493,7 +492,7 @@
                     let price = p.variants ? p.variants[0].price : p.price;
                     let articleHTML = `<article class="shopee-card dynamic-card flex flex-col p-2 relative overflow-hidden clickable group bg-white" onclick="openProductDetail('${p.id}')">
                         <div class="shopee-badge-fav">${p.category}</div>
-                        <div class="aspect-square bg-gray-50 flex items-center justify-center border-b mb-2"><img src="${p.img}" class="w-full h-full object-contain p-1 group-active:scale-95 transition-transform"></div>
+                        <div class="aspect-square bg-gray-50 flex items-center justify-center border-b mb-2"><img src="${p.img}" loading="lazy" decoding="async" class="w-full h-full object-contain p-1 group-active:scale-95 transition-transform"></div>
                         <h3 class="text-xs text-gray-800 line-clamp-2 leading-tight mb-1 min-h-[30px]">${p.name}</h3>
                         <div class="mt-auto"><span class="dynamic-text font-bold text-sm"><span class="text-[9px] underline">đ</span>${formatMoney(price)}</span></div>
                     </article>`;
@@ -531,7 +530,7 @@
         function updateCartBadge() { const b=document.getElementById('cartCount'); b.innerText=cartItems.length; b.classList.add('scale-125'); setTimeout(()=>b.classList.remove('scale-125'),200); }
         function openCheckout() { if(!cartItems.length) {alert("Giỏ hàng trống!"); return;} renderCartList(); updateQRCode(); document.getElementById('checkoutModal').classList.remove('hidden'); setTimeout(()=>document.getElementById('checkoutModal').classList.remove('translate-y-full'),10); document.body.style.overflow='hidden'; }
         function closeCheckout() { document.getElementById('checkoutModal').classList.add('translate-y-full'); setTimeout(()=>{document.getElementById('checkoutModal').classList.add('hidden'); document.body.style.overflow='';},300); }
-        function renderCartList() { const c=document.getElementById('checkoutCartItems'); c.innerHTML=''; let total=0; cartItems.forEach((i,idx)=>{ total+=i.price*i.qty; c.innerHTML+=`<div class="flex gap-3 bg-gray-50 p-2 rounded border border-gray-100"><img src="${i.img}" class="w-16 h-16 object-contain bg-white rounded border"><div class="flex-1"><div class="text-sm font-bold text-gray-800 line-clamp-1">${i.name}</div><div class="text-[10px] text-gray-500 bg-white inline-block px-1 border rounded mt-1">${i.variant}</div><div class="flex justify-between items-end mt-1"><span class="dynamic-text font-bold text-sm">${formatMoney(i.price)}₫</span><span class="text-xs font-bold text-gray-600">x${i.qty}</span></div></div><button onclick="askDelete(${idx})" class="text-gray-400 hover:text-red-500 px-2 outline-none"><i class="fa-solid fa-trash"></i></button></div>`; }); document.getElementById('cartTotalItems').innerText=cartItems.length+" sp"; document.getElementById('finalTotalDisplay').innerText=formatMoney(total)+" ₫"; }
+        function renderCartList() { const c=document.getElementById('checkoutCartItems'); c.innerHTML=''; let total=0; cartItems.forEach((i,idx)=>{ total+=i.price*i.qty; c.innerHTML+=`<div class="flex gap-3 bg-gray-50 p-2 rounded border border-gray-100"><img src="${i.img}" loading="lazy" decoding="async" class="w-16 h-16 object-contain bg-white rounded border"><div class="flex-1"><div class="text-sm font-bold text-gray-800 line-clamp-1">${i.name}</div><div class="text-[10px] text-gray-500 bg-white inline-block px-1 border rounded mt-1">${i.variant}</div><div class="flex justify-between items-end mt-1"><span class="dynamic-text font-bold text-sm">${formatMoney(i.price)}₫</span><span class="text-xs font-bold text-gray-600">x${i.qty}</span></div></div><button onclick="askDelete(${idx})" class="text-gray-400 hover:text-red-500 px-2 outline-none"><i class="fa-solid fa-trash"></i></button></div>`; }); document.getElementById('cartTotalItems').innerText=cartItems.length+" sp"; document.getElementById('finalTotalDisplay').innerText=formatMoney(total)+" ₫"; }
         function askDelete(idx) { if(confirm("Xóa sản phẩm này?")){ cartItems.splice(idx,1); localStorage.setItem('ttp_cart',JSON.stringify(cartItems)); renderCartList(); updateCartBadge(); updateQRCode(); if(!cartItems.length) closeCheckout(); } }
         function togglePaymentMethod() { const m=document.querySelector('input[name="payment"]:checked').value; const b=document.getElementById('bankingInfo'); if(m==='banking'){ b.classList.remove('hidden'); updateQRCode(); } else b.classList.add('hidden'); }
         function updateQRCode() { const p=document.getElementById('cusPhone').value||"KHACH"; const t=cartItems.reduce((s,i)=>s+(i.price*i.qty),0); const c=`TTP ${p}`; document.getElementById('bankContent').innerText=c; document.getElementById('qrCodeImg').src=`https://img.vietqr.io/image/TCB-19037189711011-compact2.png?amount=${t}&addInfo=${encodeURIComponent(c)}`; }
@@ -564,7 +563,7 @@
             }
         }
 
-        // --- Cửa Sổ Audio Player Widget & Patch Lỗi Đơ Scroll (Anh đã kiểm định) ---
+        // --- Cửa Sổ Audio Player Widget & Patch Lỗi Đơ Scroll ---
         let isAudioFullscreen = false;
         function toggleAudioWindow() { 
             const w = document.getElementById('xsAudioWindow'); 
@@ -880,8 +879,11 @@
             var self=this,stage=U.by('player-stage');
             stage.classList.add('lifeos-fb-sdk-host');
             var size=this.targetFbSize(),host=document.createElement('div'),plugin=document.createElement('div');
+            
+            // Ép relative để overlay phủ kín chuẩn xác
             host.className='lifeos-fb-sdk-host';
-            host.style.position = 'relative'; // Neo overlay
+            host.style.position = 'relative'; 
+            
             plugin.className='fb-video';
             plugin.setAttribute('data-href',item.url);
             plugin.setAttribute('data-width',String(size.w));
@@ -890,12 +892,17 @@
             plugin.setAttribute('data-allowfullscreen','true');
             host.appendChild(plugin);
             
-            // Overlay "Hứng Click" Mở Loa
+            // PATCH: Inject Overlay "Hứng Click" Mở Loa
             var soundOverlay = document.createElement('div');
-            soundOverlay.style.cssText = 'position:absolute; inset:0; z-index:99; cursor:pointer; background:rgba(0,0,0,0.01);';
-            soundOverlay.title = 'Chạm để bật tiếng';
-            soundOverlay.onclick = function() {
-                if(self.fbInstance) self.forceFacebookSound(self.fbInstance, serial);
+            soundOverlay.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; z-index:9999; cursor:pointer; background:transparent;';
+            soundOverlay.title = 'Chạm màn hình để bật âm thanh';
+            soundOverlay.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if(self.fbInstance) {
+                    self.forceFacebookSound(self.fbInstance, serial);
+                    try{ self.fbInstance.play(); } catch(err){}
+                }
                 soundOverlay.remove();
             };
             host.appendChild(soundOverlay);
@@ -905,6 +912,7 @@
             this.fbExpectedSerial=serial;
             Media.facebookExternal=item.url;
             Media.setStatus('Đang mở Facebook Reel bằng SDK…','loading');
+            
             this.ensureFacebook().then(function(FB){
                 if(serial!==self.serial||!document.documentElement.contains(host))return;
                 if(!self.fbSubscribed){
@@ -917,7 +925,7 @@
                             try{msg.instance.play()}catch(e){}
                             try{msg.instance.subscribe('finishedPlaying',function(){if(serial===self.serial)self.signalEnded(serial,'facebook-finishedPlaying')})}catch(e){}
                             
-                            /* Thuật toán Bắt Vòng Lặp (Auto Next) */
+                            /* PATCH: Thuật toán Bắt Vòng Lặp (Auto Next) Tối ưu */
                             var lastPos=0; 
                             clearInterval(self.fbPoll); 
                             self.fbPoll=setInterval(function(){
@@ -926,13 +934,14 @@
                                 }
                                 try{
                                     var pos=Number(msg.instance.getCurrentPosition&&msg.instance.getCurrentPosition()||0);
-                                    if(lastPos > 2 && pos < lastPos - 1.5 && pos < 1){
+                                    // Đổi điều kiện bắt lặp chuẩn (bỏ pos < 1 để chống lỗi trượt nhịp)
+                                    if(lastPos > 2 && pos < (lastPos - 1.5)){
                                         self.signalEnded(serial,'facebook-loop-detected');
                                         return;
                                     }
                                     lastPos=pos;
                                 }catch(e){}
-                            }, 300); 
+                            }, 250); // Ép tốc độ quét xuống 250ms để bắt nhịp nhạy hơn
                             Media.setStatus('Facebook đang phát','ok')
                         }
                     })
