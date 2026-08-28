@@ -903,7 +903,7 @@
             Media.youtubeExternal=type==='playlist'
                 ? 'https://www.youtube.com/playlist?list='+encodeURIComponent(id)
                 : 'https://www.youtube.com/watch?v='+encodeURIComponent(id);
-            this.ensureYouTube().then(function(YT){
+            Media.ensureYouTube().then(function(YT){
                 if(serial!==self.serial)return;
                 var vars={
                     autoplay:1,playsinline:1,enablejsapi:1,rel:0,loop:0,
