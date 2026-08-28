@@ -84,7 +84,7 @@
         .cv-qr img { width: 100%; height: 100%; object-fit: contain; }
 
         /* ==================================================
-           3. BẢN VÁ FULLSCREEN AUDIO ĐỘC LẬP
+           3. BẢN VÁ FULLSCREEN AUDIO (CHỐNG MÙ BÍ 100%)
            ================================================== */
         :root {
           --xs-bg:#eef2f7; --xs-panel:#fff; --xs-line:#dbe3ee; --xs-text:#162033; --xs-muted:#66758b;
@@ -141,7 +141,6 @@
             </div>
             
             <div class="flex items-center gap-2 md:gap-4">
-                <!-- VÁ: NÚT RADIO CHẠY THEO HÀM MỚI -->
                 <button onclick="toggleRadioWindow()" class="hover:text-yellow-100 font-bold flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full clickable transition-all border border-white/20 text-yellow-300 outline-none">
                     <i class="fa-solid fa-compact-disc animate-spin-slow"></i><span class="hidden sm:inline">Radio</span>
                 </button>
@@ -175,7 +174,6 @@
                     <i class="fa-solid fa-file-invoice-dollar text-[18px] md:text-xl text-[var(--text-main)] drop-shadow-sm"></i>
                     <span class="text-[9px] md:text-[10px] text-[var(--text-main)] font-medium mt-0.5 hidden md:block">Đơn mua</span>
                 </div>
-                <!-- VÁ: ĐỔI OPENCHECKOUTMODAL THÀNH OPENCHECKOUT ĐỂ GỌI ĐÚNG HÀM GỐC -->
                 <div class="relative px-2 cursor-pointer group flex flex-col items-center justify-center clickable outline-none" onclick="openCheckout()">
                     <i class="fa-solid fa-cart-shopping text-[20px] md:text-2xl dynamic-text drop-shadow-sm"></i>
                     <span class="text-[9px] md:text-[10px] text-[var(--text-main)] font-medium mt-0.5 hidden md:block">Giỏ hàng</span>
@@ -277,7 +275,6 @@
             <div class="max-w-4xl mx-auto">
                 <div class="mb-3 flex items-center justify-between"><h2 class="font-bold text-lg border-l-4 dynamic-text border-[var(--accent-primary)] pl-2">Danh Thiếp Online</h2><button onclick="copyInfo()" class="dynamic-bg px-3 py-1.5 rounded-full text-xs font-bold shadow-sm clickable outline-none"><i class="fa-solid fa-copy mr-1"></i>Lưu thông tin</button></div>
                 <div class="card-wrapper"><div class="card-container">
-                    <!-- VÁ: Lazy Load Hình ảnh -->
                     <div class="cv-logo"><img src="logo.png" loading="lazy" decoding="async" alt="Logo Tân Thành Phát" onerror="this.src='https://via.placeholder.com/150'"></div>
                     <div class="cv-title-area"><div class="cv-title-1">TT THIẾT BỊ &amp; KỸ THUẬT MÁY VĂN PHÒNG</div><div class="cv-title-2">TÂN THÀNH PHÁT</div></div>
                     <div class="cv-slogan-box"><div class="cv-slogan-text-1">Dịch vụ chính:</div><div class="cv-slogan-text-2">LUÔN ĐỒNG HÀNH CÙNG BẠN</div></div><div class="cv-swoosh"></div>
@@ -326,7 +323,7 @@
     <footer class="fixed bottom-0 left-0 w-full bg-[#1a1a1a]/90 backdrop-blur-md border-t border-white/10 text-white z-[30] shadow-[0_-5px_20px_rgba(0,0,0,0.5)] pb-[env(safe-area-inset-bottom)] pointer-events-auto">
         <div class="max-w-6xl mx-auto px-3 py-3 md:py-4 flex items-center justify-between gap-3">
             <div class="hidden sm:block flex-shrink-0 text-left">
-                <p class="font-bold text-[var(--accent-primary)] uppercase text-[11px] md:text-xs tracking-wider mb-0.5 drop-shadow-md"><i class="fa-solid fa-microchip mr-1"></i> TÂN THÀNH PHÁT</p>
+                <p class="font-bold text-[var(--accent-primary)] uppercase text-[11px] md:text-xs tracking-wider mb-0.5 drop-shadow-md"><i class="fa-solid fa-microchip mr-1"></i> TÂN Thành Phát</p>
                 <p class="text-gray-300 text-[9px] md:text-[10px]">Thiết bị & Kỹ thuật văn phòng</p>
             </div>
             <div class="flex flex-col md:flex-row text-[10px] md:text-xs text-gray-300 flex-1 justify-center items-center md:items-start md:border-l md:border-white/10 md:pl-4 gap-1 md:gap-4 font-medium">
@@ -341,21 +338,20 @@
     </footer>
 
     <!-- ==================================================
-         WIDGET 1: RADIO (ĐÃ VÁ BẰNG DATA-SRC GIỐNG MIMIFLOWER ĐỂ CHỐNG LỖI KẾT NỐI)
+         WIDGET 1: RADIO (ĐÃ VÁ LẠI CHUẨN GỐC TỪ LIFEOS)
          ================================================== -->
     <div id="radioWindow" class="fixed z-[100000] hidden flex-col bg-[#1a1a1a] border border-gray-700 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] transition-all duration-300 scale-0 opacity-0 transform-gpu" style="top: 80px; right: 20px; width: 360px; height: 480px; resize: both; overflow: hidden; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);">
         <div id="radioWindowHeader" class="bg-gradient-to-r from-purple-800 to-indigo-900 px-3 py-2 flex justify-between items-center text-white border-b border-white/20 shrink-0 cursor-move touch-none select-none z-20">
             <span class="text-[11px] font-bold tracking-widest uppercase flex items-center gap-2 drop-shadow-md"><i class="fa-solid fa-compact-disc text-blue-300"></i> NonStopPlay Radio</span>
             <div class="flex items-center gap-1">
-                <!-- VÁ NÚT RESET LẤY LINK TỪ DATA-SRC -->
-                <button onclick="document.getElementById('radioIframe').src = document.getElementById('radioIframe').getAttribute('data-src')" class="text-white/80 hover:text-white px-2 py-1 outline-none active:scale-90 transition-transform" title="Tải lại sóng"><i class="fa-solid fa-rotate-right text-xs"></i></button>
+                <button onclick="document.getElementById('radioIframe').src = document.getElementById('radioIframe').src" class="text-white/80 hover:text-white px-2 py-1 outline-none active:scale-90 transition-transform" title="Tải lại sóng"><i class="fa-solid fa-rotate-right text-xs"></i></button>
                 <button onclick="toggleRadioWindow()" class="text-white/80 hover:text-white px-2 py-1 outline-none active:scale-90 transition-transform" title="Đóng"><i class="fa-solid fa-times text-sm"></i></button>
             </div>
         </div>
         <div class="w-full flex-1 relative pointer-events-auto bg-black overflow-auto custom-scrollbar">
             <div id="radioDragOverlay" class="absolute inset-0 z-10 hidden cursor-move"></div>
-            <!-- VÁ: DÙNG DATA-SRC VÀ SRC ABOUT:BLANK ĐỂ CHẶN LỖI BACKGROUND KẾT NỐI -->
-            <iframe id="radioIframe" data-src="https://www.nonstopplay.com/player/playerbbandmain.html" src="about:blank" frameborder="0" allowtransparency="true" allow="autoplay; fullscreen" class="w-full h-full border-none block" style="min-height: 400px; min-width: 320px;"></iframe>
+            <!-- Bê nguyên tag HTML iframe từ file gốc của anh -->
+            <iframe id="radioIframe" src="https://www.nonstopplay.com/player/playerbbandmain.html" frameborder="0" allowtransparency="true" allow="autoplay; fullscreen" class="w-full h-full border-none block" style="min-height: 400px; min-width: 320px;"></iframe>
         </div>
     </div>
 
@@ -552,33 +548,22 @@
         function closeSupportModal() { const m = document.getElementById('supportModal'); m.classList.add('opacity-0'); document.getElementById('supportModalContent').classList.add('scale-95'); setTimeout(() => { m.classList.add('hidden'); document.body.style.overflow = ''; }, 300); }
         function openSmartGuide() { document.getElementById('pwaModal').classList.remove('hidden'); }
 
-        // --- Cửa Sổ Radio --- (VÁ ĐÚNG LOGIC CỦA INDEX FINAL.HTML CHỐNG TỪ CHỐI KẾT NỐI)
+        // --- Cửa Sổ Radio Nguyên Bản Của HTML Cũ (Đảm bảo chạy di động 100%) ---
         let windowHighestZIndex = 100000;
         function toggleRadioWindow() {
             if(navigator.vibrate) navigator.vibrate(15);
-            const widget = document.getElementById('radioWindow');
-            const iframe = document.getElementById('radioIframe');
-            if (widget.classList.contains('hidden') || widget.classList.contains('scale-0')) {
-                // Tiêm src từ data-src khi show để tránh bị block lúc chạy ngầm
-                if (!iframe.src || iframe.src.includes('about:blank') || iframe.src !== iframe.getAttribute('data-src')) {
-                    iframe.src = iframe.getAttribute('data-src');
-                }
-                widget.classList.remove('hidden');
-                // Ép browser render lại
-                void widget.offsetWidth;
-                widget.classList.remove('scale-0','opacity-0');
-                
-                windowHighestZIndex++;
-                widget.style.zIndex = windowHighestZIndex;
+            const w = document.getElementById('radioWindow');
+            if (w.classList.contains('hidden') || w.classList.contains('scale-0')) {
+                w.classList.remove('hidden');
+                setTimeout(()=>w.classList.remove('scale-0','opacity-0'), 10);
+                w.style.zIndex = ++windowHighestZIndex;
             } else {
-                widget.classList.add('scale-0','opacity-0');
-                setTimeout(()=>{
-                    if(widget.classList.contains('opacity-0')) widget.classList.add('hidden');
-                }, 300);
+                w.classList.add('scale-0','opacity-0');
+                setTimeout(()=>w.classList.add('hidden'), 300);
             }
         }
 
-        // --- Cửa Sổ Audio Player Widget & Patch Lỗi Đơ Scroll ---
+        // --- Cửa Sổ Audio Player Widget & Patch Lỗi Đơ Scroll (Anh đã kiểm định) ---
         let isAudioFullscreen = false;
         function toggleAudioWindow() { 
             const w = document.getElementById('xsAudioWindow'); 
@@ -591,6 +576,7 @@
                 w.classList.add('opacity-0'); 
                 setTimeout(() => {
                     w.classList.add('hidden');
+                    // PATCH: Dọn dẹp trạng thái fullscreen khi đóng cửa sổ để tránh lỗi đơ scroll trang chủ
                     if (isAudioFullscreen) {
                         isAudioFullscreen = false;
                         w.classList.remove('fullscreen-audio');
@@ -615,6 +601,7 @@
                 btn.innerHTML = '<i class="fa-solid fa-expand"></i>';
                 document.body.style.overflow = ''; 
             }
+            // Kích hoạt lại resize cho LifeOS nếu đang mở tab fb
             try{ if(window.MediaModule && window.MediaModule.currentTab === 'facebook') { window.dispatchEvent(new Event('resize')); } }catch(e){}
         }
 
@@ -641,67 +628,69 @@
 
     <!-- ==================================================
          5. BỘ LỆNH JAVASCRIPT GỐC CỦA LIFEOS MEDIA ENGINE
+         + VÁ 1: FIX CÚ PHÁP YOUTUBE (CHỐNG MÀN ĐEN).
+         + VÁ 2: FACEBOOK SOUND OVERLAY + AUTO-NEXT (BẮT VÒNG LẶP).
          ================================================== -->
     <style id="lifeos-css-module">
         /* CSS Gốc LifeOS Phục vụ Layout Flex Bẻ Cột trên Mobile */
         .lifeos-media-shell { display: flex; flex-direction: column; width: 100%; height: 100%; overflow: hidden; background: #fff; color: #1f2937; }
-        [data-theme="dark"] .lifeos-media-shell { background: #111827; color: #f9fafb; }
+        [data-xs-theme="dark"] .lifeos-media-shell { background: #111827; color: #f9fafb; }
         .lifeos-toolbar { height: 52px; display: flex; align-items: center; padding: 0 12px; border-bottom: 1px solid #e5e7eb; background: #f8fafc; }
-        [data-theme="dark"] .lifeos-toolbar { background: #1f2937; border-color: #374151; }
+        [data-xs-theme="dark"] .lifeos-toolbar { background: #1f2937; border-color: #374151; }
         .lifeos-toolbar-actions { display: flex; align-items: center; flex: 1; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
         .lifeos-toolbar-actions::-webkit-scrollbar { display: none; }
-        .lifeos-subtab { height: 36px; border: 1px solid #e5e7eb; background: #fff; color: #6b7280; border-radius: 11px; font-weight: 900; padding: 0 12px; margin-right: 6px; white-space: nowrap; cursor: pointer; flex: 0 0 auto; }
-        [data-theme="dark"] .lifeos-subtab { background: #111827; border-color: #374151; color: #9ca3af; }
+        .lifeos-subtab { height: 36px; border: 1px solid #e5e7eb; background: #fff; color: #6b7280; border-radius: 11px; font-weight: 900; padding: 0 12px; margin-right: 6px; white-space: nowrap; cursor: pointer; flex: 0 0 auto; outline: none; }
+        [data-xs-theme="dark"] .lifeos-subtab { background: #111827; border-color: #374151; color: #9ca3af; }
         .lifeos-subtab.active { background: #2563eb; border-color: #2563eb; color: #fff; }
-        [data-theme="dark"] .lifeos-subtab.active { background: #fb7185; border-color: #fb7185; }
+        [data-xs-theme="dark"] .lifeos-subtab.active { background: #fb7185; border-color: #fb7185; }
         
-        .lifeos-btn { height: 36px; border-radius: 11px; border: 1px solid #e5e7eb; background: #fff; color: #1f2937; font-size: 12px; font-weight: 800; padding: 0 11px; cursor: pointer; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; margin-left: 6px; }
-        [data-theme="dark"] .lifeos-btn { background: #111827; border-color: #374151; color: #f9fafb; }
+        .lifeos-btn { height: 36px; border-radius: 11px; border: 1px solid #e5e7eb; background: #fff; color: #1f2937; font-size: 12px; font-weight: 800; padding: 0 11px; cursor: pointer; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; margin-left: 6px; outline: none; }
+        [data-xs-theme="dark"] .lifeos-btn { background: #111827; border-color: #374151; color: #f9fafb; }
         .lifeos-btn.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
-        [data-theme="dark"] .lifeos-btn.primary { background: #fb7185; border-color: #fb7185; }
+        [data-xs-theme="dark"] .lifeos-btn.primary { background: #fb7185; border-color: #fb7185; }
         .lifeos-btn.danger { background: #fef2f2; border-color: #fecdd3; color: #be123c; }
-        [data-theme="dark"] .lifeos-btn.danger { background: #4c1d95; border-color: #f43f5e; color: #fda4af; }
+        [data-xs-theme="dark"] .lifeos-btn.danger { background: #4c1d95; border-color: #f43f5e; color: #fda4af; }
         
-        /* Chế độ Grid trên PC */
         .lifeos-media-work { flex: 1; display: grid; grid-template-columns: minmax(290px,38%) 1fr; min-height: 0; }
         
-        /* Chế độ bẻ cột (Flex Column) cho Mobile Fullscreen */
+        /* BẢN VÁ FULLSCREEN BẺ CỘT TRÊN ĐIỆN THOẠI CHỐNG MÙ BÍ */
         .fullscreen-audio .lifeos-media-work { display: flex !important; flex-direction: column !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding-bottom: 20px; }
         .fullscreen-audio .lifeos-media-left { border-right: none !important; border-bottom: 1px solid #e5e7eb; flex: none !important; }
-        [data-theme="dark"] .fullscreen-audio .lifeos-media-left { border-bottom-color: #374151 !important; }
+        [data-xs-theme="dark"] .fullscreen-audio .lifeos-media-left { border-bottom-color: #374151 !important; }
         .fullscreen-audio .lifeos-media-list { max-height: 38vh !important; overflow-y: auto !important; flex: none !important; }
         .fullscreen-audio .lifeos-media-right { border-top: none !important; padding: 12px !important; flex: none !important; }
         .fullscreen-audio .lifeos-player-stage { min-height: 250px !important; }
 
         .lifeos-media-left { display: flex; flex-direction: column; border-right: 1px solid #e5e7eb; background: #fff; }
-        [data-theme="dark"] .lifeos-media-left { border-right-color: #374151; background: #1f2937; }
+        [data-xs-theme="dark"] .lifeos-media-left { border-right-color: #374151; background: #1f2937; }
         .lifeos-filter { display: flex; align-items: center; padding: 7px 9px; border-bottom: 1px solid #e5e7eb; }
-        [data-theme="dark"] .lifeos-filter { border-bottom-color: #374151; }
+        [data-xs-theme="dark"] .lifeos-filter { border-bottom-color: #374151; }
         .lifeos-search { height: 34px; border: 1px solid #e5e7eb; border-radius: 11px; padding: 0 11px; min-width: 0; flex: 1; background: #f8fafc; outline: none; }
-        [data-theme="dark"] .lifeos-search { background: #111827; border-color: #374151; color: #f9fafb; }
+        [data-xs-theme="dark"] .lifeos-search { background: #111827; border-color: #374151; color: #f9fafb; }
         
         .lifeos-status { min-height: 28px; padding: 6px 10px; border-bottom: 1px solid #e5e7eb; background: #f8fafc; color: #6b7280; font-size: 10px; font-weight: 900; }
-        [data-theme="dark"] .lifeos-status { background: #111827; border-color: #374151; color: #9ca3af; }
-        .lifeos-status.loading { color: #2563eb; } [data-theme="dark"] .lifeos-status.loading { color: #fb7185; }
+        [data-xs-theme="dark"] .lifeos-status { background: #111827; border-color: #374151; color: #9ca3af; }
+        .lifeos-status.loading { color: #2563eb; } [data-xs-theme="dark"] .lifeos-status.loading { color: #fb7185; }
         .lifeos-status.ok { color: #16a34a; } .lifeos-status.error { color: #dc2626; }
         
         .lifeos-media-list { flex: 1; overflow-y: auto; padding: 7px; -webkit-overflow-scrolling: touch; pointer-events: auto; }
         .lifeos-item { height: 56px; border: 1px solid transparent; border-radius: 13px; padding: 7px 9px; display: flex; align-items: center; margin-bottom: 5px; background: #f8fafc; cursor: pointer; user-select: none; }
-        [data-theme="dark"] .lifeos-item { background: #111827; color: #f9fafb; }
+        [data-xs-theme="dark"] .lifeos-item { background: #111827; color: #f9fafb; }
         .lifeos-item.active { border-color: #93c5fd; background: #eff6ff; color: #1d4ed8; }
-        [data-theme="dark"] .lifeos-item.active { border-color: #f43f5e; background: #4c1d95; color: #fda4af; }
+        [data-xs-theme="dark"] .lifeos-item.active { border-color: #f43f5e; background: #4c1d95; color: #fda4af; }
         .lifeos-num { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: #fff; border: 1px solid #e5e7eb; font-size: 11px; font-weight: 950; margin-right: 9px; flex: 0 0 auto; }
-        [data-theme="dark"] .lifeos-num { background: #1f2937; border-color: #374151; }
+        [data-xs-theme="dark"] .lifeos-num { background: #1f2937; border-color: #374151; }
         .lifeos-title { font-size: 13px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .lifeos-meta { font-size: 10px; color: #6b7280; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        [data-theme="dark"] .lifeos-meta { color: #9ca3af; }
+        [data-xs-theme="dark"] .lifeos-meta { color: #9ca3af; }
         
         .lifeos-media-right { display: flex; flex-direction: column; padding: 12px; background: #fff; }
-        [data-theme="dark"] .lifeos-media-right { background: #1f2937; }
+        [data-xs-theme="dark"] .lifeos-media-right { background: #1f2937; }
         .lifeos-player-stage { flex: 1; min-height: 200px; background: #0f172a; display: flex; align-items: center; justify-content: center; position: relative; border-radius: 12px; overflow: hidden; }
         .lifeos-player-stage audio { width: 90%; max-width: 560px; }
         .lifeos-player-stage video, .lifeos-player-stage iframe { width: 100% !important; height: 100% !important; max-width: 100vw !important; max-height: 70vh !important; border: 0; object-fit: contain !important; display: block !important; margin: 0 auto !important; }
         
+        /* Tối ưu Facebook SDK */
         .lifeos-fb-sdk-host { display: flex !important; align-items: center !important; justify-content: center !important; flex: 0 0 auto !important; margin: auto !important; max-width: 100% !important; max-height: 100% !important; }
         .lifeos-fb-sdk-host .fb_iframe_widget, .lifeos-fb-sdk-host .fb_iframe_widget span { display: block !important; margin: auto !important; }
         .lifeos-fb-fallback-frame { display: block !important; margin: auto !important; border: 0 !important; background: #000 !important; transform: none !important; zoom: 1 !important; max-width: 100% !important; max-height: 100% !important; }
@@ -744,6 +733,7 @@
         init:function(){
             if(this.ready)return;this.ready=true;var self=this;
             
+            // Build UI into #lifeos-media-wrapper
             var wrap = U.by('lifeos-media-wrapper');
             if(wrap) {
                 wrap.innerHTML = `
@@ -832,12 +822,13 @@
         normalizePack:function(pack){var out={radio:[],tv:[]},seen={},gm=this.channelGroupMap(pack),self=this;function push(obj,path){if(!obj||typeof obj!=='object'||Array.isArray(obj))return;var urls=self.channelUrls(obj);if(!urls.length)return;var type=self.inferChannelType(obj,path,gm),group=String(obj.group||obj.group_id||path.split('/').slice(-1)[0]||'all'),gr=gm[group]||{},name=String(obj.name||obj.title||obj.id||urls[0]),id=String(obj.id||obj.key||name+'_'+urls[0]),key=type+'|'+urls[0]+'|'+name;if(seen[key])return;seen[key]=1;var item={};Object.keys(obj).forEach(function(k){item[k]=obj[k]});item.id=id;item.name=name;item.type=type;item.group=group;item.group_name=String(obj.group_name||gr.name||group);item.url=urls[0];item.sources=urls;out[type].push(item)}function walk(node,path,depth){if(!node||depth>8)return;if(Array.isArray(node)){node.forEach(function(x,i){walk(x,path+'/'+i,depth+1)});return}if(typeof node!=='object')return;push(node,path);Object.keys(node).forEach(function(k){if(k!=='groups')walk(node[k],path+'/'+k,depth+1)})}walk(pack,'root',0);return out},
         channelCount:function(pack){var n=this.normalizePack(pack);return n.radio.length+n.tv.length},
         loadChannels:function(force){var self=this;if(this._channelFetch)return this._channelFetch;var previous={radio:(this.channels.radio||[]).slice(),tv:(this.channels.tv||[]).slice()},previousCount=previous.radio.length+previous.tv.length,cached=U.json(this.CHANNEL_CACHE,null),base=cached||this.fallbackPack,normalized=this.normalizePack(base);if(!force&&previousCount>=this.MIN_CHANNELS){this.setStatus('Kho kênh đang dùng · '+previous.radio.length+' Radio · '+previous.tv.length+' Tivi','ok');return Promise.resolve(this.channels)}if(!this.channels.radio.length&&!this.channels.tv.length)this.channels=normalized;if(cached&&!force&&this.channelCount(cached)>=this.MIN_CHANNELS){this.channels=normalized;this.loaded.radio=this.loaded.tv=true;this.dataVersion.radio++;this.dataVersion.tv++;this.setStatus('Kho kênh đã lưu · '+this.channels.radio.length+' Radio · '+this.channels.tv.length+' Tivi','ok');return Promise.resolve(this.channels)}this.busy.channels=true;this.updateToolbar();this.setStatus('Đang tải kho Radio/Tivi gốc…','loading');var stamp=force?'t='+Date.now():'v=10',urls=['./smartbox_channels.json?'+stamp,'https://tunhienhieuchuyen.github.io/smartbox_channels.json?'+stamp,'https://raw.githubusercontent.com/tunhienhieuchuyen/tunhienhieuchuyen.github.io/refs/heads/main/smartbox_channels.json?'+stamp];this._channelFetch=this.trySequential(urls,function(url){return self.fetchJson(url,!!force,7000).then(function(pack){if(self.channelCount(pack)<self.MIN_CHANNELS)throw new Error('Danh sách kênh quá ít');return pack})}).then(function(pack){U.set(self.CHANNEL_CACHE,pack);self.channels=self.normalizePack(pack);self.loaded.radio=self.loaded.tv=true;self.dataVersion.radio++;self.dataVersion.tv++;self.setStatus('Kho kênh gốc · '+self.channels.radio.length+' Radio · '+self.channels.tv.length+' Tivi','ok');return self.channels}).catch(function(err){if(cached&&self.channelCount(cached)>=self.MIN_CHANNELS){self.channels=self.normalizePack(cached);self.setStatus('Đang dùng kho kênh đã lưu','warn');return self.channels}if(previousCount>=self.MIN_CHANNELS){self.channels=previous;self.setStatus('Đang giữ '+previous.radio.length+' Radio · '+previous.tv.length+' Tivi','warn');return self.channels}self.channels=self.normalizePack(self.fallbackPack);self.setStatus('Đang dùng '+(self.channels.radio.length+self.channels.tv.length)+' kênh dự phòng','warn');return self.channels}).finally(function(){self.busy.channels=false;self._channelFetch=null;self.updateToolbar();if(self.active&&(self.currentTab==='radio'||self.currentTab==='tv'))self.render(true)});return this._channelFetch},
+        
+        // PATCH 1: VÁ LỖI CÚ PHÁP YOUTUBE CHỐNG ĐEN MÀN HÌNH
+        ensureYouTube:function(){var self=this;if(window.YT&&window.YT.Player)return Promise.resolve(window.YT);if(this.ytPromise)return this.ytPromise;this.ytPromise=new Promise(function(resolve,reject){var done=false,poll=0,timer=0;function finish(){if(done||!window.YT||!window.YT.Player)return;done=true;clearInterval(poll);clearTimeout(timer);resolve(window.YT)}var old=window.onYouTubeIframeAPIReady;window.onYouTubeIframeAPIReady=function(){try{if(typeof old==='function')old()}finally{finish()}};var script=U.by('lifeos-youtube-api');if(!script){script=document.createElement('script');script.id='lifeos-youtube-api';script.src='https://www.youtube.com/iframe_api';script.onerror=function(){if(done)return;done=true;clearInterval(poll);clearTimeout(timer);reject(new Error('Lỗi tải YT API'))};document.head.appendChild(script)}poll=setInterval(finish,100);timer=setTimeout(function(){if(done)return;done=true;clearInterval(poll);reject(new Error('YT API Timeout'))},12000)}).then(function(v){return v},function(e){self.ytPromise=null;throw e});return this.ytPromise},
+        
         validVideoId:function(id){return/^[A-Za-z0-9_-]{11}$/.test(String(id||''))},
         validPlaylistId:function(id){return/^[A-Za-z0-9_-]{10,100}$/.test(String(id||''))},
         normalizeYouTube:function(list){var self=this,out=[],seen={};(Array.isArray(list)?list:[]).forEach(function(raw,i){raw=raw||{};var type=String(raw.type||'').toLowerCase()==='playlist'?'playlist':'video',id=String(raw.id||'').trim(),title=String(raw.title||raw.name||('Mục YT '+(i+1))).trim();if(type==='video'&&!self.validVideoId(id)){var m=id.match(/(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{11})/);id=m?m[1]:id}if((type==='video'&&self.validVideoId(id))||(type==='playlist'&&self.validPlaylistId(id))){var key=type+'|'+id;if(!seen[key]){seen[key]=1;out.push({id:id,name:title,title:title,type:type,ytType:type,source:'danhsach.js'})}}});return out},
-        
-        ensureYouTube:function(){var self=this;if(window.YT&&window.YT.Player)return Promise.resolve(window.YT);if(this.ytPromise)return this.ytPromise;this.ytPromise=new Promise(function(resolve,reject){var done=false,poll=0,timer=0;function finish(){if(done||!window.YT||!window.YT.Player)return;done=true;clearInterval(poll);clearTimeout(timer);resolve(window.YT)}var old=window.onYouTubeIframeAPIReady;window.onYouTubeIframeAPIReady=function(){try{if(typeof old==='function')old()}finally{finish()}};var script=U.by('lifeos-youtube-api');if(!script){script=document.createElement('script');script.id='lifeos-youtube-api';script.src='https://www.youtube.com/iframe_api';script.onerror=function(){if(done)return;done=true;clearInterval(poll);clearTimeout(timer);reject(new Error('Lỗi tải YT API'))};document.head.appendChild(script)}poll=setInterval(finish,100);timer=setTimeout(function(){if(done)return;done=true;clearInterval(poll);reject(new Error('YT API Timeout'))},12000)}).then(function(v){return v},function(e){self.ytPromise=null;throw e});return this.ytPromise},
-        
         loadYouTube:function(force){var self=this;if(this._youtubeFetch)return this._youtubeFetch;var previous=(this.youtubeItems||[]).slice(),fromWindow=this.normalizeYouTube(window.ytStaticPlaylist),cached=this.normalizeYouTube(U.json(this.YT_CACHE,[]));if(!force&&previous.length){this.setStatus('Danh sách YouTube đang dùng · '+previous.length+' mục','ok');return Promise.resolve(previous)}if(fromWindow.length&&!force){this.youtubeItems=fromWindow;U.set(this.YT_CACHE,fromWindow);this.loaded.youtube=true;this.dataVersion.youtube++;this.setStatus('Danh sách YouTube · '+fromWindow.length+' mục','ok');return Promise.resolve(fromWindow)}if(cached.length){this.youtubeItems=cached;this.loaded.youtube=true;this.dataVersion.youtube++;if(this.active&&this.currentTab==='youtube')this.render(false);this.setStatus('YouTube đã lưu · '+cached.length+' mục','ok')}if(!force&&cached.length)return Promise.resolve(cached);this.busy.youtube=true;this.updateToolbar();this.setStatus('Đang tải danhsach.js gốc…','loading');var stamp='lifeos_list='+(force?Date.now():'v3'),urls=['./danhsach.js?'+stamp,'https://tunhienhieuchuyen.github.io/danhsach.js?'+stamp,'https://raw.githubusercontent.com/tunhienhieuchuyen/tunhienhieuchuyen.github.io/refs/heads/main/danhsach.js?'+stamp];this._youtubeFetch=this.trySequential(urls,function(url){try{window.ytStaticPlaylist=undefined}catch(e){}return self.loadScript(url,'lifeos-yt-data',8000).then(function(){var items=self.normalizeYouTube(window.ytStaticPlaylist);if(!items.length)throw new Error('danhsach.js không có mục hợp lệ');return items})}).then(function(items){self.youtubeItems=items;U.set(self.YT_CACHE,items);self.loaded.youtube=true;self.dataVersion.youtube++;self.setStatus('Danh sách YouTube gốc · '+items.length+' mục','ok');return items}).catch(function(err){var keep=cached.length?cached:previous;if(keep.length){self.youtubeItems=keep;self.setStatus('Đang giữ '+keep.length+' mục YT hiện có','warn');return keep}self.youtubeItems=[];self.setStatus('Lỗi tải danhsach.js: '+(err&&err.message||err),'error');throw err}).finally(function(){self.busy.youtube=false;self._youtubeFetch=null;self.updateToolbar();if(self.active&&self.currentTab==='youtube')self.render(true)});return this._youtubeFetch},
         canonicalUrl:function(url){url=String(url||'').trim().replace(/#.*$/,'');if(/facebook\.com/i.test(url))url=url.replace(/\?.*$/,'').replace(/\/+$/,'');return url},
         normalizeFacebook:function(list){var self=this,out=[],seen={};(Array.isArray(list)?list:[]).forEach(function(raw,i){raw=raw||{};var url=String(raw.url||raw.link||raw.href||'').trim(),id=String(raw.id||raw.reelId||'').trim(),direct=String(raw.directUrl||raw.videoUrl||'').trim(),m=url.match(/facebook\.com\/(?:reel|reels)\/([0-9]+)/i);if(!id&&m)id=m[1];if(!url&&/^\d+$/.test(id))url='https://www.facebook.com/reel/'+id;if(!url&&!direct)return;var key=self.canonicalUrl(direct||url||id);if(!key||seen[key])return;seen[key]=1;out.push({id:id||key,name:String(raw.title||raw.name||('Facebook Reel '+(i+1))).trim(),type:'facebook_reel',url:url,directUrl:direct,durationSeconds:Number(raw.durationSeconds||0),source:'Facebook Reel'})});return out},
@@ -872,8 +863,97 @@
         playMp3:function(item,serial){var stage=U.by('player-stage'),a=document.createElement('audio');a.controls=true;a.autoplay=true;a.preload='metadata';a.src=item.url||item.stream_url;stage.appendChild(a);Media.audio=a;var self=this;a.onplaying=function(){Media.setStatus('Đang phát MP3 · '+(item.name||item.title),'ok')};a.onerror=function(){Media.setStatus('MP3 lỗi nguồn','error')};a.onended=function(){self.signalEnded(serial,'mp3-ended')};a.play().catch(function(){})},
         playStream:function(item,kind,serial){var self=this,stage=U.by('player-stage'),el=kind==='tv'?document.createElement('video'):document.createElement('audio'),queue=[item.url].concat(item.sources||[]).filter(Boolean),pos=0;el.controls=true;el.autoplay=true;el.preload='metadata';if(kind==='tv'){el.playsInline=true;el.setAttribute('playsinline','')}stage.appendChild(el);if(kind==='tv')Media.video=el;else Media.audio=el;function next(reason){if(serial!==self.serial)return;if(pos>=queue.length){Media.setStatus('Kênh lỗi trên thiết bị này','error');return}var url=queue[pos++];try{el.pause();el.removeAttribute('src');el.load()}catch(e){}Media.setStatus('Đang mở '+Media.tabName(kind)+' · nguồn '+pos+'/'+queue.length+'…','loading');el.onerror=function(){if(serial===self.serial)next('error')};el.onplaying=function(){if(serial===self.serial)Media.setStatus('Đang phát '+Media.tabName(kind)+' · '+(item.name||item.title),'ok')};el.src=url;el.play().catch(function(){})}if(!queue.length){Media.setStatus('Không có URL','error');return}next('start')},
         
-        // VÁ: TRẢ LẠI LUỒNG YOUTUBE NHƯ BẢN GỐC TÂN THÀNH PHÁT
-        playYouTube:function(item,serial){var self=this,stage=U.by('player-stage'),type=item.ytType||item.type||'video',id=item.id.replace(/^youtube\|video\|/,'').replace(/^youtube\|playlist\|/,''),holder=document.createElement('div');holder.id='lifeos-youtube-player-'+serial;stage.appendChild(holder);Media.youtubeExternal=type==='playlist'?'https://www.youtube.com/playlist?list='+encodeURIComponent(id):'https://www.youtube.com/watch?v='+encodeURIComponent(id);this.ensureYouTube().then(function(YT){if(serial!==self.serial)return;var vars={autoplay:1,playsinline:1,enablejsapi:1,rel:0,loop:0};if(type==='playlist'){vars.listType='playlist';vars.list=id;vars.index=0}var options={width:'100%',height:'100%',playerVars:vars,events:{onReady:function(ev){if(serial!==self.serial){try{ev.target.destroy()}catch(e){}return}self.ytPlayer=ev.target;try{Media.iframe=ev.target.getIframe()}catch(e){}try{ev.target.playVideo()}catch(e){}Media.setStatus('Đang phát YouTube','ok')},onStateChange:function(ev){if(serial!==self.serial)return;if(ev.data===YT.PlayerState.PLAYING&&type==='playlist'){try{self.ytPlaylistMaxIndex=Math.max(self.ytPlaylistMaxIndex,ev.target.getPlaylistIndex())}catch(e){}}if(ev.data!==YT.PlayerState.ENDED)return;if(type!=='playlist'){self.signalEnded(serial,'youtube-ended');return}setTimeout(function(){if(serial!==self.serial)return;var list=[],index=-1;try{list=ev.target.getPlaylist()||[];index=ev.target.getPlaylistIndex()}catch(e){}if(!list.length||index>=list.length-1||self.ytPlaylistMaxIndex>=list.length-1)self.signalEnded(serial,'youtube-playlist-ended')},600)}}};if(type!=='playlist')options.videoId=id;self.ytPlaylistMaxIndex=-1;self.ytPlayer=new YT.Player(holder.id,options)},function(){if(serial!==self.serial)return;stage.innerHTML='<div class="lifeos-player-empty text-red-500">Lỗi tải YouTube API</div>'})},
+        ytId: function(item) {
+            var id = String(item.id || '').trim();
+            id = id.replace(/^youtube\|video\|/, '').replace(/^youtube\|playlist\|/, '');
+            if (/^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+            var m = id.match(/(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{11})/);
+            return m ? m[1] : id;
+        },
+
+        playYouTube: function(item, serial) {
+            var self = this, stage = U.by('player-stage'), type = item.ytType || item.type || 'video', id = this.ytId(item);
+            if (!id) {
+                stage.innerHTML = '<div class="lifeos-player-empty">Lỗi ID YouTube</div>';
+                return;
+            }
+            stage.innerHTML = '';
+            var holder = document.createElement('div');
+            holder.id = 'lifeos-youtube-player-' + serial;
+            holder.style.width = '100%';
+            holder.style.height = '100%';
+            stage.appendChild(holder);
+            Media.youtubeExternal = type === 'playlist' ? 'https://www.youtube.com/playlist?list=' + encodeURIComponent(id) : 'https://www.youtube.com/watch?v=' + encodeURIComponent(id);
+            
+            this.ensureYouTube().then(function(YT) {
+                if (serial !== self.serial) return;
+                var origin = (location.protocol === 'http:' || location.protocol === 'https:') ? location.origin : '*';
+                var vars = { autoplay: 1, playsinline: 1, enablejsapi: 1, rel: 0, origin: origin };
+                if (type === 'playlist') { vars.listType = 'playlist'; vars.list = id; vars.index = 0; }
+                var options = {
+                    width: '100%', height: '100%', playerVars: vars,
+                    events: {
+                        onReady: function(ev) {
+                            if (serial !== self.serial) { try { ev.target.destroy() } catch(e){} return; }
+                            self.ytPlayer = ev.target;
+                            try { Media.iframe = ev.target.getIframe(); } catch(e){}
+                            try { ev.target.playVideo(); } catch(e){}
+                            Media.setStatus('Đang phát YouTube', 'ok');
+                        },
+                        onStateChange: function(ev) {
+                            if (serial !== self.serial) return;
+                            if (ev.data === YT.PlayerState.PLAYING && type === 'playlist') {
+                                try { self.ytPlaylistMaxIndex = Math.max(self.ytPlaylistMaxIndex, ev.target.getPlaylistIndex()); } catch(e){}
+                            }
+                            if (ev.data === YT.PlayerState.ENDED) {
+                                if (type !== 'playlist') {
+                                    self.signalEnded(serial, 'youtube-ended');
+                                } else {
+                                    setTimeout(function() {
+                                        if (serial !== self.serial) return;
+                                        var list = [], index = -1;
+                                        try { list = ev.target.getPlaylist() || []; index = ev.target.getPlaylistIndex(); } catch(e){}
+                                        if (!list.length || index >= list.length - 1 || self.ytPlaylistMaxIndex >= list.length - 1) {
+                                            self.signalEnded(serial, 'youtube-playlist-ended');
+                                        }
+                                    }, 600);
+                                }
+                            }
+                        },
+                        onError: function(ev) {
+                            if (serial === self.serial) {
+                                self.createYouTubeFallback(item, serial);
+                            }
+                        }
+                    }
+                };
+                if (type !== 'playlist') options.videoId = id;
+                self.ytPlaylistMaxIndex = -1;
+                self.ytPlayer = new YT.Player(holder.id, options);
+            }).catch(function(err) {
+                if (serial === self.serial) self.createYouTubeFallback(item, serial);
+            });
+        },
+
+        createYouTubeFallback: function(item, serial) {
+            if (serial !== this.serial) return;
+            var stage = U.by('player-stage'), type = item.ytType || item.type || 'video', id = this.ytId(item);
+            stage.innerHTML = '';
+            var origin = (location.protocol === 'http:' || location.protocol === 'https:') ? location.origin : '';
+            var src = type === 'playlist' ? 'https://www.youtube.com/embed/videoseries?list=' + encodeURIComponent(id) + '&autoplay=1&playsinline=1' : 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?autoplay=1&playsinline=1';
+            if (origin) src += '&origin=' + encodeURIComponent(origin);
+            var f = document.createElement('iframe');
+            f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+            f.allowFullscreen = true;
+            f.src = src;
+            f.style.width = '100%'; f.style.height = '100%'; f.style.border = 'none';
+            stage.appendChild(f);
+            Media.iframe = f;
+            Media.setStatus('Phát YouTube (Dự phòng)', 'warn');
+            var duration = Number(item.durationSeconds || 240);
+            var self = this;
+            setTimeout(function(){ self.signalEnded(serial, 'youtube-fallback'); }, duration * 1000);
+        },
 
         ensureFacebook:function(){var self=this;if(window.FB&&window.FB.XFBML&&window.FB.Event)return Promise.resolve(window.FB);if(this.fbPromise)return this.fbPromise;this.fbPromise=new Promise(function(resolve,reject){var done=false,poll=0,timer=0;function ready(){if(done||!window.FB||!window.FB.XFBML||!window.FB.Event)return;done=true;clearInterval(poll);clearTimeout(timer);resolve(window.FB)}var old=window.fbAsyncInit;window.fbAsyncInit=function(){try{if(typeof old==='function')old()}finally{ready()}};if(!U.by('fb-root')){var root=document.createElement('div');root.id='fb-root';document.body.insertBefore(root,document.body.firstChild)}var script=U.by('facebook-jssdk');if(!script){script=document.createElement('script');script.id='facebook-jssdk';script.async=true;script.defer=true;script.crossOrigin='anonymous';script.src='https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v19.0&autoLogAppEvents=0';script.onload=ready;script.onerror=function(){if(done)return;done=true;clearInterval(poll);clearTimeout(timer);reject(new Error('Lỗi tải FB SDK'))};document.head.appendChild(script)}poll=setInterval(ready,120);timer=setTimeout(function(){if(done)return;done=true;clearInterval(poll);reject(new Error('FB SDK Timeout'))},15000)}).then(function(v){return v},function(e){self.fbPromise=null;throw e});return this.fbPromise},
         targetFbSize:function(){var stage=U.by('player-stage'),sw=Math.max(1,(stage?stage.clientWidth:500)-12),sh=Math.max(1,(stage?stage.clientHeight:700)-12),w=Math.floor(sh*9/16);if(w>sw)w=sw;w=Math.max(220,w);var h=Math.floor(w*16/9);if(h>sh){h=sh;w=Math.floor(h*9/16)}return{w:w,h:h}},
@@ -884,14 +964,14 @@
         playFacebookDirect:function(item,url,serial){var self=this,stage=U.by('player-stage'),video=document.createElement('video');video.controls=true;video.autoplay=true;video.playsInline=true;video.preload='metadata';video.muted=false;video.defaultMuted=false;video.volume=1;video.removeAttribute('muted');video.setAttribute('playsinline','');stage.appendChild(video);Media.video=video;this.playerState='loading';video.addEventListener('playing',function(){if(serial===self.serial)self.playerState='playing'});video.addEventListener('pause',function(){if(serial===self.serial&&!video.ended)self.playerState='paused'});video.addEventListener('ended',function(){self.signalEnded(serial,'facebook-direct-ended')});video.addEventListener('error',function(){self.signalEnded(serial,'facebook-direct-error')});video.src=url;video.play().catch(function(){})},
         createFacebookFallback:function(item,serial){if(serial!==this.serial)return;var self=this,stage=U.by('player-stage'),size=this.targetFbSize();this.clearTimers();stage.innerHTML='';stage.classList.add('lifeos-fb-sdk-host');var frame=document.createElement('iframe');frame.className='lifeos-fb-fallback-frame';frame.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen'; frame.setAttribute('allowfullscreen', '');frame.allowFullscreen=true;frame.referrerPolicy='strict-origin-when-cross-origin';frame.scrolling='no';frame.style.width=size.w+'px';frame.style.height=size.h+'px';frame.src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(item.url)+'&show_text=false&autoplay=1&mute=0&allowfullscreen=true&width='+size.w;stage.appendChild(frame);Media.iframe=frame;Media.facebookExternal=item.url;this.playerState='playing';var duration=Number(item.durationSeconds||0);if(duration>0){this.fbFallbackTimer=setTimeout(function(){self.signalEnded(serial,'facebook-duration-fallback')},duration*1000+600);Media.setStatus('Facebook iframe · tự chuyển theo durationSeconds','warn')}else Media.setStatus('Facebook iframe không tự nhảy được','warn')},
         
-        // VÁ: TIÊM LỚP SOUNDOVERLAY VÀ FIX AUTONEXT LOOP NHƯ YÊU CẦU
+        // PATCH 2: VÁ LỖI CÂM VÀ AUTO NEXT CỦA FACEBOOK SDK
         playFacebookSdk:function(item,serial){
             var self=this,stage=U.by('player-stage');
             stage.classList.add('lifeos-fb-sdk-host');
             var size=this.targetFbSize(),host=document.createElement('div'),plugin=document.createElement('div');
             
             host.className='lifeos-fb-sdk-host';
-            host.style.position='relative';
+            host.style.position='relative'; // Neo overlay
             
             plugin.className='fb-video';
             plugin.setAttribute('data-href',item.url);
@@ -901,11 +981,16 @@
             plugin.setAttribute('data-allowfullscreen','true');
             host.appendChild(plugin);
             
+            // Lớp Overlay Hứng Click đầu tiên để vượt chính sách Autoplay Policy của trình duyệt
             var soundOverlay = document.createElement('div');
-            soundOverlay.style.cssText = 'position:absolute; inset:0; z-index:99; cursor:pointer; background:rgba(0,0,0,0.01);';
+            soundOverlay.style.cssText = 'position:absolute; width:100%; height:100%; z-index:99; cursor:pointer; background:rgba(0,0,0,0.01);';
             soundOverlay.title = 'Chạm để bật tiếng';
-            soundOverlay.onclick = function() {
-                if(self.fbInstance) self.forceFacebookSound(self.fbInstance, serial);
+            soundOverlay.onclick = function(e) {
+                e.stopPropagation(); // Ngăn iframe nhận click lỗi
+                if(self.fbInstance) {
+                    self.forceFacebookSound(self.fbInstance, serial);
+                    try { self.fbInstance.play(); } catch(err){}
+                }
                 soundOverlay.remove();
             };
             host.appendChild(soundOverlay);
@@ -928,6 +1013,7 @@
                             try{msg.instance.play()}catch(e){}
                             try{msg.instance.subscribe('finishedPlaying',function(){if(serial===self.serial)self.signalEnded(serial,'facebook-finishedPlaying')})}catch(e){}
                             
+                            /* Thuật toán Bắt Vòng Lặp (Auto Next) - Tăng độ nhạy xuống 250ms và Bỏ chặn pos < 1 */
                             var lastPos=0; 
                             clearInterval(self.fbPoll); 
                             self.fbPoll=setInterval(function(){
