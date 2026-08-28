@@ -2,7 +2,990 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Tân Thành Phát - Thiết Bị & Kỹ Thuật Máy Văn Phòng</title>
+    
+    <!-- TailwindCSS & Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================================================
+           1. CORE ENGINE TÂN THÀNH PHÁT
+           ================================================== */
+        :root {
+            --bg-body: #FAFAF9; --text-main: #1C1917; --accent-primary: #EE4D2D; --card-bg: #FFFFFF; --border-color: #E7E5E4;
+            --safe-bottom: env(safe-area-inset-bottom, 20px); --safe-top: env(safe-area-inset-top, 0px);
+        }
+        body.theme-lemon { --bg-body: #FEFCE8; --text-main: #422006; --accent-primary: #EAB308; --card-bg: #FEF9C3; --border-color: #FEF08A; }
+        body.theme-jade { --bg-body: #F0FDF4; --text-main: #064E3B; --accent-primary: #10B981; --card-bg: #ECFDF5; --border-color: #A7F3D0; }
+        body { background-color: var(--bg-body); color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease; }
+
+        .dynamic-card { background-color: var(--card-bg); border-color: var(--border-color); }
+        .dynamic-text { color: var(--accent-primary); }
+        .dynamic-bg { background-color: var(--accent-primary); color: #fff; }
+
+        .shopee-border-bottom { background-image: repeating-linear-gradient(45deg, #6fa6d6, #6fa6d6 33px, transparent 0, transparent 41px, #f18d9b 0, #f18d9b 74px, transparent 0, transparent 82px); background-position-x: -30px; background-size: 116px 3px; height: 3px; width: 100%; }
+        .shopee-card { border: 1px solid var(--border-color); border-radius: 4px; transition: transform 0.1s, box-shadow 0.1s; cursor: pointer; }
+        .shopee-card:active { transform: scale(0.98); border-color: var(--accent-primary); }
+        .shopee-badge-fav { position: absolute; top: 4px; left: -2px; background-color: #f25220; color: white; font-size: 10px; font-weight: 500; padding: 2px 5px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; z-index: 2; box-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .shopee-badge-fav::after { content: ''; position: absolute; left: 0; bottom: -3px; border-top: 3px solid #9a2c16; border-left: 2px solid transparent; width: 0; height: 0; }
+        
+        .clickable { cursor: pointer; touch-action: manipulation; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+        
+        .tab-content, .view-section { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active, .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; position: relative; background-color: #eab308; }
+        .status-dot::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background-color: #eab308; animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite; opacity: 0.6; }
+        @keyframes ping { 75%, 100% { transform: scale(2.5); opacity: 0; } }
+        @keyframes spinSlow { 100% { transform: rotate(360deg); } }
+        .animate-spin-slow { animation: spinSlow 4s linear infinite; }
+
+        /* ==================================================
+           2. CARD VISIT BLOCK
+           ================================================== */
+        .card-wrapper { width: 100%; margin: 0 auto; }
+        .card-container { container-type: inline-size; position: relative; width: 100%; aspect-ratio: 1381 / 793; background: #fff; border: 0.4cqi solid #F58226; border-radius: 0.6cqi; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; isolation: isolate; }
+        .card-container * { box-sizing: border-box; margin: 0; padding: 0; letter-spacing: normal !important; }
+        .cv-logo { position: absolute; left: 3.5%; top: 4%; width: 11%; height: 20%; display: flex; align-items: center; justify-content: center; }
+        .cv-logo img { width: 100%; height: 100%; object-fit: contain; }
+        .cv-title-area { position: absolute; left: 16%; top: 2.5%; width: 82%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8cqi; }
+        .cv-title-1 { color: #162B75; font-family: "Oswald", sans-serif !important; font-size: 3.8cqi; font-weight: 700; line-height: 1 !important; white-space: nowrap; }
+        .cv-title-2 { color: #162B75; font-family: "Oswald", sans-serif !important; font-size: 5cqi; font-weight: 700; line-height: 1 !important; white-space: nowrap; letter-spacing: 0.2em !important; margin-right: -0.2em; }
+        .cv-slogan-box { position: absolute; left: 3%; top: 26.5%; width: 94%; display: flex; align-items: baseline; }
+        .cv-slogan-text-1 { color: #ED1B24; font-family: "Dancing Script", cursive !important; font-size: 4.8cqi; font-weight: 700; line-height: 1 !important; white-space: nowrap; flex-shrink: 0; }
+        .cv-slogan-text-2 { color: #ED1B24; font-family: "Oswald", sans-serif !important; font-size: 5.2cqi; font-weight: 700; line-height: 1 !important; margin-left: 1.8cqi; white-space: nowrap; }
+        .cv-swoosh { position: absolute; left: 26%; top: 35.5%; width: 68%; height: 1.5cqi; border-bottom: 0.35cqi solid #ED1B24; border-radius: 50%; }
+        .cv-service-item { position: absolute; left: 3.5%; width: 95%; display: flex; align-items: center; }
+        .cv-service-item:nth-child(1) { top: 41%; }
+        .cv-service-item:nth-child(2) { top: 51.5%; }
+        .cv-service-item:nth-child(3) { top: 62%; }
+        .cv-service-item:nth-child(4) { top: 72.5%; }
+        .cv-service-icon { width: 3.8cqi; height: 3.8cqi; fill: #2278A8; flex-shrink: 0; display: flex; justify-content: center; align-items: center; }
+        .cv-service-icon svg { width: 100%; height: 100%; display: block; }
+        .cv-service-text { margin-left: 1.8cqi; color: #162B75; font-family: "Roboto Condensed", sans-serif !important; font-size: 3.2cqi; font-weight: 700; white-space: nowrap; line-height: 1.1 !important; }
+        .cv-footer { position: absolute; left: 0; bottom: 0; width: 100%; height: 19%; background: #162B75; }
+        .cv-footer-text-area { position: absolute; left: 4%; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 1.2cqi; }
+        .cv-footer-row { display: flex; align-items: center; color: #fff; font-size: 3cqi; font-weight: 600; font-family: "Roboto Condensed", sans-serif !important; white-space: nowrap; }
+        .cv-footer-row i { font-size: 3.2cqi; margin-right: 1.2cqi; width: 3.5cqi; text-align: center; }
+        .cv-footer-divider { margin: 0 1.2cqi; font-weight: 300; opacity: 0.8; }
+        .cv-qr { position: absolute; right: 2%; top: 12%; height: 76%; aspect-ratio: 1/1; background: #fff; padding: 0.6cqi; display: flex; align-items: center; justify-content: center; border-radius: 2px; }
+        .cv-qr img { width: 100%; height: 100%; object-fit: contain; }
+
+        /* ==================================================
+           3. BẢN VÁ FULLSCREEN AUDIO ĐỘC LẬP
+           ================================================== */
+        :root {
+          --xs-bg:#eef2f7; --xs-panel:#fff; --xs-line:#dbe3ee; --xs-text:#162033; --xs-muted:#66758b;
+          --xs-primary:#2563eb; --xs-soft:#eaf2ff; --xs-radius:18px; --xs-player:#101827;
+        }
+        #xsAudioWindow { box-shadow: 0 24px 70px rgba(0,0,0,.35); contain: layout style; color: var(--xs-text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; transition: all 0.2s ease-out; }
+        #xsAudioWindow[data-xs-theme="dark"] { --xs-bg:#111827; --xs-panel:#1f2937; --xs-text:#f9fafb; --xs-muted:#9ca3af; --xs-primary:#fb7185; --xs-line:#374151; --xs-soft:#1f2937; }
+        
+        #xsAudioWindow.fullscreen-audio {
+            position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+            width: 100vw !important; height: 100vh !important; height: 100dvh !important;
+            max-width: none !important; max-height: none !important;
+            border-radius: 0 !important; transform: none !important; z-index: 999999 !important;
+            display: flex !important; flex-direction: column !important;
+        }
+    </style>
+    
+    <!-- PATCH KEEPALIVE BACKGROUND -->
+    <script id="lifeos-background-play">
+        document.addEventListener("DOMContentLoaded", function() {
+            let audioCtx = null;
+            function keepAlive() {
+                try {
+                    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    if (audioCtx.state === 'suspended') audioCtx.resume();
+                    let buffer = audioCtx.createBuffer(1, 1, 22050);
+                    let source = audioCtx.createBufferSource();
+                    source.buffer = buffer; source.connect(audioCtx.destination); source.start(0);
+                } catch (e) {}
+            }
+            setInterval(keepAlive, 15000);
+            document.addEventListener("visibilitychange", function() { if (!document.hidden) keepAlive(); });
+
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.setActionHandler('play', function() { try { document.querySelector('video, audio')?.play(); } catch(e){} });
+                navigator.mediaSession.setActionHandler('pause', function() { try { document.querySelector('video, audio')?.pause(); } catch(e){} });
+                navigator.mediaSession.setActionHandler('previoustrack', function() { try { window.MediaModule && window.MediaModule.move(-1, true); } catch(e){} });
+                navigator.mediaSession.setActionHandler('nexttrack', function() { try { window.MediaModule && window.MediaModule.move(1, true); } catch(e){} });
+            }
+        });
+    </script>
+</head>
+<body class="bg-[var(--bg-body)] flex flex-col min-h-screen relative">
+    <audio id="xsSilenceAnchor" src="silence_30min.mp3" loop autoplay playsinline style="display:none;"></audio>
+
+    <!-- LỚP 1: TOP BAR -->
+    <div class="bg-gradient-to-r from-[var(--accent-primary)] to-[#ff7337] shadow-sm text-white pt-[env(safe-area-inset-top)] z-[45] relative">
+        <div class="max-w-6xl mx-auto px-2 md:px-4 flex justify-between items-center text-[10px] md:text-sm py-1.5 border-b border-white/20">
+            <div class="flex gap-3 md:gap-4">
+                <a href="https://mvptanthanhphat.github.io/admin.html" class="hover:text-gray-200 font-medium flex items-center gap-1 clickable outline-none"><i class="fa-solid fa-store"></i> <span class="hidden sm:inline">Kênh</span> Quản Trị</a>
+                <button onclick="openSmartGuide()" class="hover:text-gray-200 font-medium flex items-center gap-1 md:gap-2 bg-black/20 hover:bg-black/30 px-2 md:px-3 py-1 rounded-full clickable transition-all outline-none border border-white/10">
+                    <span class="status-dot"></span> <span class="font-bold">Cài ngay</span>
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-2 md:gap-4">
+                <button onclick="toggleRadioWindow()" class="hover:text-yellow-100 font-bold flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full clickable transition-all border border-white/20 text-yellow-300 outline-none">
+                    <i class="fa-solid fa-compact-disc animate-spin-slow"></i><span class="hidden sm:inline">Radio</span>
+                </button>
+                <button onclick="toggleAudioWindow()" class="hover:text-yellow-100 font-bold flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full clickable transition-all border border-white/20 text-yellow-300 outline-none">
+                    <i class="fa-solid fa-music"></i><span class="hidden sm:inline">Audio</span>
+                </button>
+                <a href="#" onclick="alert('Tính năng Thông báo đang được bảo trì cập nhật!')" class="hover:text-gray-200 hidden md:inline clickable outline-none">Thông báo</a>
+                <a href="#" onclick="openSupportModal()" class="hover:text-gray-200 hidden md:inline clickable outline-none">Hỗ trợ</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- LỚP 2: MAIN HEADER -->
+    <header class="dynamic-card shadow-sm sticky top-0 z-40 w-full border-b">
+        <div class="shopee-border-bottom absolute top-0 left-0"></div>
+        <div class="max-w-6xl mx-auto px-4 py-2 flex justify-between items-center mt-1">
+            <a href="https://mvptanthanhphat.github.io/" class="flex items-center gap-2 clickable shrink-0 outline-none">
+                <i class="fa-solid fa-microchip dynamic-text text-2xl drop-shadow-sm"></i>
+                <div>
+                    <h1 class="font-bold text-sm md:text-lg leading-tight uppercase tracking-tight text-[var(--text-main)]">Tân Thành Phát</h1>
+                    <p class="text-[10px] md:text-xs opacity-70 font-medium text-[var(--text-main)]">Thiết Bị & Kỹ Thuật Máy Văn Phòng</p>
+                </div>
+            </a>
+            <div class="flex items-center gap-3 shrink-0 ml-auto">
+                <div class="flex gap-1.5 border-r pr-3 border-gray-300 hidden sm:flex">
+                    <button onclick="changeTheme('warm')" class="w-6 h-6 rounded-full bg-[#FAFAF9] border border-gray-300 shadow-sm clickable outline-none"></button>
+                    <button onclick="changeTheme('lemon')" class="w-6 h-6 rounded-full bg-[#FEFCE8] border border-yellow-300 shadow-sm clickable outline-none"></button>
+                    <button onclick="changeTheme('jade')" class="w-6 h-6 rounded-full bg-[#F0FDF4] border border-green-300 shadow-sm clickable outline-none"></button>
+                </div>
+                <div class="relative px-2 cursor-pointer group flex flex-col items-center justify-center clickable outline-none" onclick="openOrderHistory()">
+                    <i class="fa-solid fa-file-invoice-dollar text-[18px] md:text-xl text-[var(--text-main)] drop-shadow-sm"></i>
+                    <span class="text-[9px] md:text-[10px] text-[var(--text-main)] font-medium mt-0.5 hidden md:block">Đơn mua</span>
+                </div>
+                <div class="relative px-2 cursor-pointer group flex flex-col items-center justify-center clickable outline-none" onclick="openCheckout()">
+                    <i class="fa-solid fa-cart-shopping text-[20px] md:text-2xl dynamic-text drop-shadow-sm"></i>
+                    <span class="text-[9px] md:text-[10px] text-[var(--text-main)] font-medium mt-0.5 hidden md:block">Giỏ hàng</span>
+                    <span id="cartCount" class="absolute -top-1 right-0 md:-right-1 dynamic-bg text-white text-[10px] font-bold px-1.5 py-[1px] rounded-full border border-white shadow-sm transition-transform duration-200">0</span>
+                </div>
+            </div>
+        </div>
+        <nav class="max-w-6xl mx-auto grid grid-cols-3 text-center text-xs md:text-sm font-bold border-t border-black/5 mt-1">
+            <button onclick="switchTab('tab-home')" id="btn-tab-home" class="py-2.5 border-b-2 dynamic-text border-[var(--accent-primary)] clickable transition-all outline-none"><i class="fa-solid fa-layer-group"></i> Dịch Vụ</button>
+            <button onclick="switchTab('tab-card')" id="btn-tab-card" class="py-2.5 border-b-2 border-transparent opacity-60 hover:opacity-100 clickable transition-all outline-none"><i class="fa-solid fa-address-card"></i> Card Visit</button>
+            <button onclick="switchTab('tab-letter')" id="btn-tab-letter" class="py-2.5 border-b-2 border-transparent opacity-60 hover:opacity-100 clickable transition-all outline-none"><i class="fa-solid fa-envelope-open-text"></i> Thư Ngỏ</button>
+        </nav>
+    </header>
+
+    <main class="flex-1 max-w-6xl mx-auto w-full p-3 md:p-4 relative pb-28">
+        
+        <!-- ========================================== -->
+        <!-- TAB 1: DỊCH VỤ & BÁO GIÁ                   -->
+        <!-- ========================================== -->
+        <div id="tab-home" class="tab-content active">
+            <div id="view-list" class="view-section active">
+                <div class="dynamic-card p-4 rounded-lg shadow-sm border mb-4 text-center">
+                    <h2 class="text-xl md:text-2xl font-bold dynamic-text font-['Oswald'] uppercase">Luôn Đồng Hành Cùng Bạn</h2>
+                    <p class="text-sm opacity-80 mt-1">Cam kết xử lý nhanh chóng, chính xác lỗi kỹ thuật tận nơi.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <article onclick="openDetailView('bao-tri')" class="shopee-card dynamic-card flex flex-col p-3 relative overflow-hidden clickable group">
+                        <div class="shopee-badge-fav"><i class="fa-solid fa-check text-[8px]"></i> Chuyên nghiệp</div>
+                        <div class="h-32 bg-gray-100 rounded mb-3 flex items-center justify-center group-active:opacity-80 transition-opacity"><i class="fa-solid fa-desktop text-4xl opacity-50"></i></div>
+                        <h3 class="font-bold text-sm leading-snug line-clamp-2">Sửa chữa, bảo trì Máy Tính, Mạng, Camera, Máy in</h3>
+                        <div class="mt-auto pt-2 flex items-baseline justify-between"><span class="dynamic-text font-bold text-lg"><span class="text-xs underline align-top mr-0.5">đ</span>Bảng giá</span><span class="dynamic-bg px-3 py-1 rounded text-xs font-bold shadow-sm">Chi tiết <i class="fa-solid fa-chevron-right text-[10px] ml-1"></i></span></div>
+                    </article>
+                    <article onclick="openDetailView('giai-phap')" class="shopee-card dynamic-card flex flex-col p-3 relative overflow-hidden clickable group">
+                        <div class="shopee-badge-fav"><i class="fa-solid fa-check text-[8px]"></i> Khảo sát Free</div>
+                        <div class="h-32 bg-gray-100 rounded mb-3 flex items-center justify-center group-active:opacity-80 transition-opacity"><i class="fa-solid fa-network-wired text-4xl opacity-50"></i></div>
+                        <h3 class="font-bold text-sm leading-snug line-clamp-2">Tư vấn, Lắp đặt hệ thống Máy vi tính, Mạng, Camera</h3>
+                        <div class="mt-auto pt-2 flex items-baseline justify-between"><span class="dynamic-text font-bold text-lg"><span class="text-xs underline align-top mr-0.5">đ</span>Thi công</span><span class="dynamic-bg px-3 py-1 rounded text-xs font-bold shadow-sm">Chi tiết <i class="fa-solid fa-chevron-right text-[10px] ml-1"></i></span></div>
+                    </article>
+                    <article onclick="openDetailView('san-pham')" class="shopee-card dynamic-card flex flex-col p-3 relative overflow-hidden clickable group">
+                        <div class="shopee-badge-fav"><i class="fa-solid fa-check text-[8px]"></i> Bản quyền 100%</div>
+                        <div class="h-32 bg-gray-100 rounded mb-3 flex items-center justify-center group-active:opacity-80 transition-opacity"><i class="fa-solid fa-box-open text-4xl opacity-50"></i></div>
+                        <h3 class="font-bold text-sm leading-snug line-clamp-2">Cung cấp máy cũ/mới, Linh kiện, Phụ kiện, Phần mềm</h3>
+                        <div class="mt-auto pt-2 flex items-baseline justify-between"><span class="dynamic-text font-bold text-lg"><span class="text-xs underline align-top mr-0.5">đ</span>Gian hàng</span><span class="dynamic-bg px-3 py-1 rounded text-xs font-bold shadow-sm">Mua ngay <i class="fa-solid fa-cart-plus text-[10px] ml-1"></i></span></div>
+                    </article>
+                </div>
+            </div>
+
+            <div id="view-detail-bao-tri" class="view-section">
+                <button onclick="closeDetailView()" class="mb-4 text-sm font-bold opacity-70 hover:opacity-100 clickable flex items-center gap-2 transition-opacity outline-none"><i class="fa-solid fa-arrow-left"></i> Trở về</button>
+                <div class="dynamic-card p-4 md:p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center gap-3 border-b pb-3 mb-4"><div class="w-10 h-10 rounded bg-red-100 text-red-500 flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-desktop"></i></div><div><h2 class="text-lg md:text-xl font-bold dynamic-text leading-tight">Báo Giá Bảo Trì</h2><p class="text-[11px] md:text-xs opacity-70">Xử lý sự cố tận nơi</p></div></div>
+                    <div class="overflow-x-auto custom-scrollbar pb-2">
+                        <table class="w-full text-sm text-left border-collapse min-w-[500px]">
+                            <thead class="bg-gray-100 text-gray-700"><tr><th class="px-3 py-2.5 rounded-tl w-1/4">Thiết bị</th><th class="px-3 py-2.5">Hạng mục</th><th class="px-3 py-2.5 rounded-tr text-right whitespace-nowrap">Chi phí</th></tr></thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50"><td class="px-3 py-3.5 font-bold text-[#162B75] align-top"><i class="fa-solid fa-laptop-code mr-1 opacity-70"></i> PC / Laptop</td><td class="px-3 py-3.5 opacity-90">Vệ sinh, tra keo tản nhiệt. Cài đặt HĐH, sửa lỗi.</td><td class="px-3 py-3.5 text-right font-bold dynamic-text align-top">100k - 150k</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="px-3 py-3.5 font-bold text-[#162B75] align-top"><i class="fa-solid fa-print mr-1 opacity-70"></i> Máy In</td><td class="px-3 py-3.5 opacity-90">Xử lý kẹt giấy. Đổ mực, vệ sinh, kiểm tra sấy.</td><td class="px-3 py-3.5 text-right font-bold dynamic-text align-top">80k - 150k</td></tr>
+                                <tr class="bg-blue-50/50"><td class="px-3 py-3.5 font-bold text-blue-700 align-top border-l-2 border-blue-500"><i class="fa-regular fa-building mr-1"></i> Doanh Nghiệp</td><td class="px-3 py-3.5 text-blue-900 font-medium">Bảo dưỡng định kỳ. Hỗ trợ 24/7.</td><td class="px-3 py-3.5 text-right font-bold text-blue-700 align-top">Từ 1 Triệu</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-detail-giai-phap" class="view-section">
+                <button onclick="closeDetailView()" class="mb-4 text-sm font-bold opacity-70 hover:opacity-100 clickable flex items-center gap-2 transition-opacity outline-none"><i class="fa-solid fa-arrow-left"></i> Trở về</button>
+                <div class="dynamic-card p-4 md:p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center gap-3 border-b pb-3 mb-4"><div class="w-10 h-10 rounded bg-blue-100 text-blue-500 flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-network-wired"></i></div><div><h2 class="text-lg md:text-xl font-bold dynamic-text leading-tight">Giải Pháp Thi Công</h2><p class="text-[11px] md:text-xs opacity-70">Mạng LAN, Camera an ninh, Thiết bị văn phòng</p></div></div>
+                    <div class="overflow-x-auto custom-scrollbar pb-2">
+                        <table class="w-full text-sm text-left border-collapse min-w-[500px]">
+                            <thead class="bg-gray-100 text-gray-700"><tr><th class="px-3 py-2.5 rounded-tl w-1/3">Dịch vụ</th><th class="px-3 py-2.5">Quy trình</th><th class="px-3 py-2.5 rounded-tr text-right whitespace-nowrap">Đơn giá</th></tr></thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50"><td class="px-3 py-3.5 font-bold text-[#162B75] align-top"><i class="fa-solid fa-video mr-1 opacity-70"></i> Camera</td><td class="px-3 py-3.5 opacity-90">Khảo sát, đi dây. Lắp đặt, xem trên ĐT.</td><td class="px-3 py-3.5 text-right font-bold dynamic-text align-top">Từ 450k</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="px-3 py-3.5 font-bold text-[#162B75] align-top"><i class="fa-solid fa-wifi mr-1 opacity-70"></i> Mạng LAN / WiFi</td><td class="px-3 py-3.5 opacity-90">Kéo cáp, cấu hình Router, WiFi Mesh.</td><td class="px-3 py-3.5 text-right font-bold dynamic-text align-top">Từ 150k</td></tr>
+                                <tr class="hover:bg-gray-50"><td class="px-3 py-3.5 font-bold text-[#162B75] align-top"><i class="fa-solid fa-fingerprint mr-1 opacity-70"></i> Chấm công</td><td class="px-3 py-3.5 opacity-90">Lắp máy vân tay/khuôn mặt, phần mềm.</td><td class="px-3 py-3.5 text-right font-bold dynamic-text align-top">Từ 1.200k</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-detail-san-pham" class="view-section">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+                    <button onclick="closeDetailView()" class="text-sm font-bold opacity-70 hover:opacity-100 clickable flex items-center gap-2 outline-none shrink-0"><i class="fa-solid fa-arrow-left"></i> Trở về</button>
+                    <div class="relative w-full md:max-w-md">
+                        <input type="text" id="storeSearchInput" placeholder="Tìm máy tính, máy in, camera..." class="w-full pl-4 pr-10 py-2 border-2 border-[var(--accent-primary)] rounded-full text-gray-800 focus:outline-none shadow-sm text-sm" oninput="searchProducts(this.value)">
+                        <button class="absolute right-0 top-0 bottom-0 dynamic-text px-4 hover:opacity-80 clickable outline-none border-none"><i class="fa-solid fa-search"></i></button>
+                    </div>
+                    <div class="bg-red-50 text-red-600 px-3 py-1.5 rounded-full text-xs font-bold border border-red-200 shrink-0 hidden md:flex items-center"><i class="fa-solid fa-fire mr-1.5"></i> Gian hàng 100% Chính hãng</div>
+                </div>
+                <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3"></div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 2: CARD VISIT                          -->
+        <!-- ========================================== -->
+        <div id="tab-card" class="tab-content">
+            <div class="max-w-4xl mx-auto">
+                <div class="mb-3 flex items-center justify-between"><h2 class="font-bold text-lg border-l-4 dynamic-text border-[var(--accent-primary)] pl-2">Danh Thiếp Online</h2><button onclick="copyInfo()" class="dynamic-bg px-3 py-1.5 rounded-full text-xs font-bold shadow-sm clickable outline-none"><i class="fa-solid fa-copy mr-1"></i>Lưu thông tin</button></div>
+                <div class="card-wrapper"><div class="card-container">
+                    <div class="cv-logo"><img src="logo.png" loading="lazy" decoding="async" alt="Logo Tân Thành Phát" onerror="this.src='https://via.placeholder.com/150'"></div>
+                    <div class="cv-title-area"><div class="cv-title-1">TT THIẾT BỊ &amp; KỸ THUẬT MÁY VĂN PHÒNG</div><div class="cv-title-2">TÂN THÀNH PHÁT</div></div>
+                    <div class="cv-slogan-box"><div class="cv-slogan-text-1">Dịch vụ chính:</div><div class="cv-slogan-text-2">LUÔN ĐỒNG HÀNH CÙNG BẠN</div></div><div class="cv-swoosh"></div>
+                    <div class="cv-services">
+                        <div class="cv-service-item"><div class="cv-service-icon"><svg viewBox="0 0 24 24"><path d="M21.7 19.3l-6.1-6.1c.4-.8.6-1.7.6-2.7C16.2 6.9 13.3 4 9.7 4c-1.1 0-2.2.3-3.1.8l3.8 3.8-2.6 2.6L4 7.4c-.5.9-.8 2-.8 3.1 0 3.6 2.9 6.5 6.5 6.5 1 0 1.9-.2 2.7-.6l6.1 6.1c.4.4 1 .4 1.4 0l1.8-1.8c.4-.4.4-1 0-1.4zM8.2 15.8a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg></div><div class="cv-service-text">Sửa chữa, bảo trì nhanh tận nơi Máy Tính, Mạng, Camera, Máy in...</div></div>
+                        <div class="cv-service-item"><div class="cv-service-icon"><svg viewBox="0 0 24 24"><path d="M10 2h4v4h-4zM4 18h4v4H4zM10 18h4v4h-4zM16 18h4v4h-4zM11 6v3H6v3H4V9h5V6zM13 6v3h5v3h2V9h-5V6zM11 9h2v6h-2zM6 15h12v2H6z"/></svg></div><div class="cv-service-text">Tư vấn, Lắp đặt hệ thống Máy vi tính, Mạng, Camera...</div></div>
+                        <div class="cv-service-item"><div class="cv-service-icon"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6.2 6h14.1l-1.9 7H8.5L6.2 6zM5.2 4L4.4 2H1v2h2l3.6 7.6-.9 1.7c-.2.4-.3.8-.3 1.2 0 1.1.9 2 2 2h12v-2H7.8c-.1 0-.2-.1-.2-.2l.1-.3.9-1.5h8.1c.8 0 1.5-.4 1.9-1.1L21.9 5c.1-.2.1-.3.1-.5 0-.3-.3-.5-.6-.5H5.2z"/></svg></div><div class="cv-service-text">Cung cấp, Bán máy cũ/mới, Linh kiện, Phụ kiện, Phần mềm bản quyền</div></div>
+                        <div class="cv-service-item"><div class="cv-service-icon"><svg viewBox="0 0 24 24"><path d="M12 2l7 3v5.2c0 5-3 9.6-7 11.8-4-2.2-7-6.8-7-11.8V5l7-3zM12 6c-2.2 0-4 1.8-4 4v2H6v2h2v2h2v-2h4v2h2v-2h2v-2h-2v-2c0-2.2-1.8-4-4-4zM10 10c0-1.1.9-2 2-2s2 .9 2 2v2h-4z"/></svg></div><div class="cv-service-text">Xử lý lỗi Virus, Lỗi phần mềm, Dịch vụ tận nơi theo yêu cầu</div></div>
+                    </div>
+                    <div class="cv-footer">
+                        <div class="cv-footer-text-area">
+                            <div class="cv-footer-row"><i class="fa-solid fa-location-dot"></i> Đ/c: KCN Nội Bài - Thôn Ninh Bắc - Xã Nội Bài - Hà Nội</div>
+                            <div class="cv-footer-row"><i class="fa-solid fa-phone-volume"></i> ĐT / Zalo: 0936.168.219 <span class="cv-footer-divider">|</span> <i class="fa-solid fa-envelope"></i> Email: mayvptxt@gmail.com</div>
+                        </div>
+                        <div class="cv-qr"><img src="qr.png" loading="lazy" decoding="async" alt="QR Code" onerror="this.src='https://via.placeholder.com/150'"></div>
+                    </div>
+                </div></div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 3: THƯ NGỎ                             -->
+        <!-- ========================================== -->
+        <div id="tab-letter" class="tab-content">
+            <div class="max-w-3xl mx-auto dynamic-card p-5 md:p-8 rounded-lg shadow-sm border">
+                <div class="text-center mb-6 border-b pb-4">
+                    <h2 class="text-2xl font-bold dynamic-text uppercase mb-1">Thư Ngỏ</h2>
+                    <p class="text-sm opacity-70">TT Thiết Bị & Kỹ Thuật Máy Văn Phòng Tân Thành Phát</p>
+                </div>
+                <div class="space-y-4 text-sm md:text-base leading-relaxed opacity-90 text-justify">
+                    <p><strong>Kính gửi Quý Khách hàng và Đối tác,</strong></p>
+                    <p>Lời đầu tiên, <strong>Tân Thành Phát</strong> xin gửi lời chào trân trọng, lời chúc sức khỏe và thành công tới Quý vị.</p>
+                    <p>Với định hướng <em>"Luôn đồng hành cùng bạn"</em>, chúng tôi tự hào cung cấp giải pháp toàn diện về hệ thống thiết bị văn phòng, máy tính, mạng và camera an ninh.</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Dịch vụ nhanh chóng, khắc phục sự cố tận nơi.</li>
+                        <li>Trang thiết bị, linh kiện thay thế chính hãng.</li>
+                        <li>Bảo hành minh bạch, uy tín.</li>
+                    </ul>
+                    <div class="mt-8 pt-4"><p class="font-bold">Trân trọng,</p><p class="dynamic-text font-bold mt-1">Đại diện Tân Thành Phát</p></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- STICKY FOOTER -->
+    <footer class="fixed bottom-0 left-0 w-full bg-[#1a1a1a]/90 backdrop-blur-md border-t border-white/10 text-white z-[30] shadow-[0_-5px_20px_rgba(0,0,0,0.5)] pb-[env(safe-area-inset-bottom)] pointer-events-auto">
+        <div class="max-w-6xl mx-auto px-3 py-3 md:py-4 flex items-center justify-between gap-3">
+            <div class="hidden sm:block flex-shrink-0 text-left">
+                <p class="font-bold text-[var(--accent-primary)] uppercase text-[11px] md:text-xs tracking-wider mb-0.5 drop-shadow-md"><i class="fa-solid fa-microchip mr-1"></i> TÂN THÀNH PHÁT</p>
+                <p class="text-gray-300 text-[9px] md:text-[10px]">Thiết bị & Kỹ thuật văn phòng</p>
+            </div>
+            <div class="flex flex-col md:flex-row text-[10px] md:text-xs text-gray-300 flex-1 justify-center items-center md:items-start md:border-l md:border-white/10 md:pl-4 gap-1 md:gap-4 font-medium">
+                <p class="flex items-center gap-1.5"><i class="fa-solid fa-location-dot text-[var(--accent-primary)]"></i> <span>KCN Nội Bài, Hà Nội</span></p>
+                <p class="flex items-center gap-1.5"><i class="fa-solid fa-phone text-[var(--accent-primary)]"></i> <a href="tel:0936168219" class="text-white hover:text-[var(--accent-primary)] font-bold tracking-wide transition-colors">0936.168.219</a></p>
+            </div>
+            <a href="https://mvptanthanhphat.github.io/map.html" target="_blank" class="flex items-center gap-1.5 bg-gradient-to-r from-[var(--accent-primary)] to-orange-500 rounded-full px-3 md:px-4 py-1.5 md:py-2 active:scale-95 transition-transform shadow-[0_3px_10px_rgba(238,77,45,0.4)] border border-white/20 flex-shrink-0 outline-none backdrop-blur-md">
+                <i class="fa-solid fa-map-location-dot text-white text-sm animate-pulse"></i>
+                <span class="text-[10px] md:text-[11px] font-bold text-white whitespace-nowrap uppercase">Chỉ đường</span>
+            </a>
+        </div>
+    </footer>
+
+    <!-- ==================================================
+         WIDGET 1: RADIO NGUYÊN BẢN 100%
+         ================================================== -->
+    <div id="radioWindow" class="fixed z-[100000] hidden flex-col bg-[#1a1a1a] border border-gray-700 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] transition-all duration-300 scale-0 opacity-0 transform-gpu" style="top: 80px; right: 20px; width: 360px; height: 480px; resize: both; overflow: hidden; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);">
+        <div id="radioWindowHeader" class="bg-gradient-to-r from-purple-800 to-indigo-900 px-3 py-2 flex justify-between items-center text-white border-b border-white/20 shrink-0 cursor-move touch-none select-none z-20">
+            <span class="text-[11px] font-bold tracking-widest uppercase flex items-center gap-2 drop-shadow-md"><i class="fa-solid fa-compact-disc text-blue-300"></i> NonStopPlay Radio</span>
+            <div class="flex items-center gap-1">
+                <button onclick="document.getElementById('radioIframe').src = document.getElementById('radioIframe').src" class="text-white/80 hover:text-white px-2 py-1 outline-none active:scale-90 transition-transform" title="Tải lại sóng"><i class="fa-solid fa-rotate-right text-xs"></i></button>
+                <button onclick="toggleRadioWindow()" class="text-white/80 hover:text-white px-2 py-1 outline-none active:scale-90 transition-transform" title="Đóng"><i class="fa-solid fa-times text-sm"></i></button>
+            </div>
+        </div>
+        <div class="w-full flex-1 relative pointer-events-auto bg-black overflow-auto custom-scrollbar">
+            <div id="radioDragOverlay" class="absolute inset-0 z-10 hidden cursor-move"></div>
+            <iframe id="radioIframe" src="https://www.nonstopplay.com/player/playerbbandmain.html" frameborder="0" allowtransparency="true" allow="autoplay; fullscreen" class="w-full h-full border-none block" style="min-height: 400px; min-width: 320px;"></iframe>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         WIDGET 2: AUDIO PLAYER (LIFEOS)
+         ================================================== -->
+    <div id="xsAudioWindow" data-xs-theme="dark" class="fixed z-[100000] hidden flex-col bg-[#111827] border border-gray-700 rounded-xl overflow-hidden opacity-0 transform-gpu transition-all duration-300" style="top: 80px; right: 20px; width: 440px; height: 600px; resize: both; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);">
+        <div id="xsAudioWindowHeader" class="bg-gradient-to-r from-[var(--accent-primary)] to-orange-500 px-3 py-2 flex justify-between items-center text-white shrink-0 cursor-move touch-none select-none z-20">
+            <span class="text-[11px] font-bold tracking-widest uppercase flex items-center gap-2"><i class="fa-solid fa-music text-yellow-200"></i> Bảng Giải Trí Media</span>
+            <div class="flex items-center gap-2">
+                <button onclick="toggleAudioFullscreen()" id="btnAudioFullscreen" class="text-white/80 hover:text-white px-2 py-1 outline-none font-bold text-sm transition-all"><i class="fa-solid fa-expand"></i></button>
+                <button onclick="toggleAudioWindow()" class="text-white/80 hover:text-white px-2 py-1 outline-none font-bold text-sm"><i class="fa-solid fa-times"></i></button>
+            </div>
+        </div>
+        <!-- VÙNG CHỨA LIFEOS ENGINE -->
+        <div id="lifeos-media-wrapper" class="w-full h-full flex-1 relative min-h-0 bg-[#111827] flex flex-col"></div>
+    </div>
+
+    <!-- CÁC MODAL HỆ THỐNG -->
+    <div id="pwaModal" class="hidden fixed inset-0 z-[100005] bg-black/70 flex items-end md:items-center justify-center backdrop-blur-sm">
+        <div class="w-full md:w-[420px] bg-white rounded-t-3xl md:rounded-2xl shadow-2xl overflow-hidden pb-safe">
+            <div class="bg-gradient-to-br from-[var(--accent-primary)] to-orange-500 p-6 text-white relative">
+                <div class="flex items-start gap-4"><div class="bg-white p-2 rounded-xl text-[var(--accent-primary)] text-3xl"><i class="fa-solid fa-microchip"></i></div><div class="flex-1"><h3 class="font-bold text-xl">Cài đặt Tân Thành Phát</h3><p class="text-xs opacity-90">Web App nhẹ & mượt</p></div><button onclick="document.getElementById('pwaModal').classList.add('hidden')" class="text-white outline-none"><i class="fa-solid fa-xmark text-2xl"></i></button></div>
+            </div>
+            <div class="px-5 py-6 text-center text-sm text-gray-700">Hãy nhấn vào biểu tượng Menu của trình duyệt (3 chấm) và chọn <b>Thêm vào Màn hình chính (Add to Home Screen)</b> để sử dụng như một Ứng dụng độc lập!</div>
+        </div>
+    </div>
+
+    <div id="supportModal" class="fixed inset-0 bg-black/60 hidden z-[100005] flex items-center justify-center p-4 backdrop-blur-sm transition-opacity opacity-0">
+        <div class="w-full max-w-sm bg-[#FFFDF5] rounded-xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="supportModalContent">
+            <div class="bg-gradient-to-r from-orange-400 to-[var(--accent-primary)] p-4 flex justify-between items-center text-white">
+                <div><h3 class="font-bold text-xl drop-shadow-md">Hỗ trợ</h3><p class="text-[10px] opacity-90">Tân Thành Phát • Sóc Sơn</p></div>
+                <div class="flex gap-2"><button onclick="closeSupportModal()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors outline-none"><i class="fa-solid fa-xmark"></i></button></div>
+            </div>
+            <div class="p-4 space-y-3">
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-orange-100">
+                    <h4 class="text-xl font-black text-[var(--accent-primary)] mb-1">Tân Thành Phát</h4>
+                    <p class="text-sm font-bold text-gray-800 mb-3">Thiết bị & Kỹ thuật Máy văn phòng</p>
+                    <div class="space-y-2 text-sm text-gray-700">
+                        <p class="flex items-start gap-2"><i class="fa-solid fa-location-dot mt-1 text-[var(--accent-primary)]"></i> <span>KCN Nội Bài, Xã Nội Bài, Sóc Sơn, Hà Nội</span></p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-phone text-[var(--accent-primary)]"></i> <span class="font-black text-lg text-[var(--accent-primary)]">0936.168.219</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 pt-0 flex gap-3">
+                <a href="tel:0936168219" class="flex-1 bg-[var(--accent-primary)] text-white py-3 rounded-lg font-black text-center shadow-md active:scale-95 transition-transform flex items-center justify-center gap-2"><i class="fa-solid fa-phone-volume animate-pulse"></i> Gọi ngay</a>
+                <a href="https://mvptanthanhphat.github.io/map.html" target="_blank" class="flex-1 bg-[#222] text-white py-3 rounded-lg font-black text-center shadow-md active:scale-95 transition-transform flex items-center justify-center gap-2"><i class="fa-solid fa-map-location-dot"></i> Chỉ đường</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="orderHistoryModal" class="fixed inset-0 bg-gray-100 hidden z-[70] overflow-y-auto transition-transform duration-300 translate-x-full pb-safe pt-[env(safe-area-inset-top)]">
+        <div class="bg-white border-b sticky top-0 z-50 shadow-sm"><div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between"><div class="flex items-center gap-3"><i class="fa-solid fa-clock-rotate-left dynamic-text text-xl"></i><div class="text-xl text-gray-700 font-bold">Đơn Hàng Của Tôi</div></div><button onclick="closeOrderHistory()" class="text-gray-500 font-medium outline-none">Đóng</button></div></div>
+        <div class="max-w-6xl mx-auto px-4 py-6 pb-20" id="orderHistoryList"></div>
+    </div>
+
+    <div id="detailModal" class="fixed inset-0 bg-black/80 hidden z-[60] flex items-center justify-center p-0 md:p-4 backdrop-blur-sm transition-opacity duration-300 opacity-0 overflow-y-auto pt-[env(safe-area-inset-top)]">
+        <button onclick="closeProductDetail()" class="fixed top-4 right-4 z-[9999] w-10 h-10 bg-white text-black rounded-full flex items-center justify-center hover:bg-gray-200 shadow-2xl outline-none"><i class="fa-solid fa-times text-xl"></i></button>
+        <div class="bg-white w-full h-full md:w-[900px] md:h-auto md:max-h-[85vh] md:rounded-lg shadow-2xl flex flex-col md:flex-row relative transform scale-95 transition-transform duration-300">
+            <div class="w-full md:w-[55%] flex flex-col shrink-0 bg-white relative border-r border-gray-100">
+                <div class="relative w-full aspect-square bg-gray-50 flex items-center justify-center overflow-hidden border-b border-gray-100"><img id="modalImage" src="" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-contain p-4" alt="Product"></div>
+                <div class="px-5 py-4 space-y-4 bg-white mt-auto">
+                    <div class="flex items-center justify-between"><div class="flex items-center gap-2 text-sm"><span class="text-gray-500">Đang chọn:</span><span id="selectedVariantNameDisplay" class="font-bold text-gray-800 border-b-2 border-[var(--accent-primary)]">Mặc định</span></div><div class="text-xs text-gray-400 font-mono">Còn hàng</div></div>
+                    <div class="flex items-center justify-between bg-[var(--accent-primary)]/5 p-3 rounded border border-[var(--accent-primary)]/10">
+                        <div id="modalPrice" class="text-2xl font-bold dynamic-text">-- ₫</div>
+                        <div class="flex items-center border border-gray-300 rounded shadow-sm bg-white"><button onclick="updateQty(-1)" class="w-9 h-9 font-bold outline-none">-</button><input id="qtyInput" type="number" value="1" class="w-10 h-9 text-center font-bold dynamic-text bg-white outline-none" readonly><button onclick="updateQty(1)" class="w-9 h-9 font-bold outline-none">+</button></div>
+                    </div>
+                    <div class="flex gap-3 pt-1"><button onclick="addToCart()" class="flex-1 bg-orange-50 border border-[var(--accent-primary)] dynamic-text hover:bg-orange-100 font-bold py-3.5 rounded shadow-sm flex items-center justify-center gap-2 active:scale-95 uppercase text-sm clickable outline-none"><i class="fa-solid fa-cart-plus"></i> Thêm Giỏ</button><button onclick="buyNow()" class="flex-1 dynamic-bg font-bold py-3.5 rounded shadow-lg active:scale-95 uppercase text-sm clickable outline-none">Mua Ngay</button></div>
+                </div>
+            </div>
+            <div class="w-full md:w-[45%] flex flex-col bg-gray-50 border-t md:border-t-0 border-gray-100">
+                <div class="p-5 space-y-4 overflow-y-auto custom-scrollbar flex-1 pb-10">
+                    <div><span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Sản phẩm</span><h2 id="modalTitle" class="text-xl font-bold text-gray-800 leading-snug">...</h2></div>
+                    <div class="bg-white p-4 rounded border border-gray-200 shadow-sm"><h4 class="text-sm font-bold text-gray-700 mb-2 border-b pb-2"><i class="fa-solid fa-list-ul dynamic-text"></i> Phân loại / Cấu hình:</h4><div id="variantListText" class="flex flex-wrap gap-2"></div></div>
+                    <div class="bg-white p-4 rounded border border-gray-200 shadow-sm space-y-2 text-sm text-gray-600"><div class="flex gap-2"><i class="fa-solid fa-truck-fast text-green-500 mt-0.5"></i> Lắp đặt, giao hàng tận nơi.</div><div class="flex gap-2"><i class="fa-solid fa-shield-halved text-blue-500 mt-0.5"></i> Bảo hành chính hãng 12-24 tháng.</div></div>
+                    <div id="modalDesc" class="text-sm text-gray-600 leading-relaxed text-justify opacity-90 border-t border-dashed pt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="checkoutModal" class="fixed inset-0 bg-gray-100 hidden z-[70] overflow-y-auto transition-transform duration-300 translate-y-full pb-safe pt-[env(safe-area-inset-top)]">
+        <div class="bg-white border-b sticky top-0 z-50 shadow-sm"><div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between"><div class="dynamic-text text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-bag-shopping"></i> Giỏ Hàng</div><button onclick="closeCheckout()" class="text-gray-500 hover:text-black font-medium outline-none"><i class="fa-solid fa-times text-xl"></i> Đóng</button></div></div>
+        <div class="max-w-6xl mx-auto px-4 py-6 pb-32">
+            <div class="flex flex-col lg:flex-row gap-6">
+                <div class="w-full lg:w-2/3 space-y-4">
+                    <div class="bg-white p-6 rounded shadow-sm relative"><div class="shopee-border-bottom absolute top-0 left-0"></div><h3 class="dynamic-text text-lg font-bold mb-4 mt-2">Thông tin nhận hàng / lắp đặt</h3>
+                        <form id="checkoutForm" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="block text-sm text-gray-600 mb-1">Họ tên *</label><input type="text" id="cusName" class="w-full border p-2 rounded outline-none"></div><div><label class="block text-sm text-gray-600 mb-1">Số điện thoại *</label><input type="tel" id="cusPhone" class="w-full border p-2 rounded outline-none" oninput="updateQRCode()"></div></div>
+                            <div><label class="block text-sm text-gray-600 mb-1">Địa chỉ cụ thể *</label><input type="text" id="cusAddress" class="w-full border p-2 rounded outline-none"></div>
+                        </form>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow-sm"><h3 class="text-gray-800 font-bold mb-4">Phương thức thanh toán</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-3 p-3 border rounded cursor-pointer hover:bg-gray-50 has-[:checked]:border-[var(--accent-primary)] has-[:checked]:bg-[var(--accent-primary)]/5"><input type="radio" name="payment" value="cod" checked onchange="togglePaymentMethod()" class="w-4 h-4"><i class="fa-solid fa-money-bill-wave text-green-600 text-xl"></i><div class="font-medium text-sm">Tiền mặt (COD)</div></label>
+                            <label class="flex items-center gap-3 p-3 border rounded cursor-pointer hover:bg-gray-50 has-[:checked]:border-[var(--accent-primary)] has-[:checked]:bg-[var(--accent-primary)]/5"><input type="radio" name="payment" value="banking" onchange="togglePaymentMethod()" class="w-4 h-4"><i class="fa-solid fa-building-columns text-blue-600 text-xl"></i><div class="font-medium text-sm">Chuyển khoản (Quét mã QR)</div></label>
+                            <div id="bankingInfo" class="hidden mt-2 p-4 border border-blue-200 rounded-lg bg-blue-50/50 relative"><div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div><div class="text-center mb-4"><div class="text-xs text-gray-500 font-bold">Quét mã thanh toán</div><div class="bg-white p-2 inline-block rounded border"><img id="qrCodeImg" src="" loading="lazy" decoding="async" class="w-40 h-40 object-contain"></div></div><div class="space-y-2 text-sm"><div class="flex justify-between border-b pb-1"><span>Ngân hàng:</span><span class="font-bold">TECHCOMBANK</span></div><div class="flex justify-between border-b pb-1"><span>STK:</span><span class="font-bold">19037189711011</span></div><div class="flex justify-between border-b pb-1"><span>Chủ thẻ:</span><span class="font-bold">NGUYEN THI THAM</span></div><div class="flex justify-between"><span>Nội dung:</span><span class="font-bold dynamic-text" id="bankContent">...</span></div></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/3"><div class="bg-white p-6 rounded shadow-sm sticky top-[80px]"><div class="flex justify-between items-center border-b pb-2 mb-4"><h3 class="font-bold">Đơn hàng</h3><span class="text-xs" id="cartTotalItems">0 sp</span></div><div id="checkoutCartItems" class="space-y-4 mb-4 max-h-[300px] overflow-y-auto custom-scrollbar pr-2"></div><div class="flex justify-between items-center border-t pt-4 mb-6"><span class="font-bold">Tổng cộng:</span><span id="finalTotalDisplay" class="text-2xl font-bold dynamic-text">0₫</span></div><button onclick="submitOrder()" id="btnOrder" class="w-full dynamic-bg py-3 rounded font-bold uppercase transition clickable outline-none">Đặt Hàng</button></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals nội bộ Của LifeOS -->
+    <div id="transfer-hud" class="hidden"></div>
+    <div id="toast-stack" class="fixed top-20 left-1/2 -translate-x-1/2 z-[1500] w-[90vw] max-w-[440px] pointer-events-none"></div>
+
+    <!-- TÂN THÀNH PHÁT JAVASCRIPT -->
+    <script>
+        // Các Hàm E-Commerce Mock
+        const mockProducts = [
+            { id: 'p1', category: 'Máy in', name: 'Máy in Laser Trắng Đen Brother MFC-L2701DW', price: 6890000, img: 'https://via.placeholder.com/300x300.png?text=Brother+L2701DW', desc: 'Đa chức năng In, Copy, Scan, Fax. In đảo mặt tự động, kết nối Wifi.' },
+            { id: 'p2', category: 'Máy tính', name: 'PC Văn Phòng Đồng Bộ HP ProDesk 400 G7', price: 7500000, img: 'https://via.placeholder.com/300x300.png?text=HP+ProDesk', variants: [ {name: "Core i3 / 8GB", price: 7500000}, {name: "Core i5 / 16GB", price: 9800000} ], desc: 'Hoạt động cực êm ái, độ bền linh kiện cao, kèm sẵn Windows bản quyền.' },
+            { id: 'p3', category: 'Camera', name: 'Camera Trong Nhà Không Dây Ezviz 2MP', price: 550000, img: 'https://via.placeholder.com/300x300.png?text=Ezviz+2MP', desc: 'Xoay 360 độ, đàm thoại 2 chiều, theo dõi chuyển động qua điện thoại.' },
+            { id: 'p4', category: 'Phụ kiện', name: 'Bộ Phát Wifi 6 TP-Link Archer AX3000', price: 1250000, img: 'https://via.placeholder.com/300x300.png?text=TPLink+AX3000', desc: 'Tốc độ WiFi 6 Gigabit mạnh mẽ, xử lý kết nối nhiều thiết bị tốt.' },
+            { id: 'p5', category: 'Máy Photocopy', name: 'Máy Photocopy Ricoh MP 3554', price: 18500000, img: 'https://via.placeholder.com/300x300.png?text=Ricoh+3554', desc: 'Hàng bãi Nhật độ mới 95%. Tốc độ 35 bản/phút, nồi đồng cối đá.' },
+            { id: 'p6', category: 'Máy chiếu', name: 'Máy Chiếu XGIMI MoGo Pro (Full HD, Pin 10k mAh)', price: 12490000, img: 'https://via.placeholder.com/300x300.png?text=XGIMI+MoGo', desc: 'Máy chiếu mini di động, Android TV chính chủ, loa Harman Kardon.' },
+            { id: 'p7', category: 'Loa', name: 'Loa Bluetooth Marshall Stanmore II', price: 7990000, img: 'https://via.placeholder.com/300x300.png?text=Marshall', desc: 'Âm thanh sống động, thiết kế cổ điển sang trọng.' },
+            { id: 'p8', category: 'Phụ kiện', name: 'Chuột Logitech Signature M650 (Silent)', price: 650000, img: 'https://via.placeholder.com/300x300.png?text=Logitech+M650', variants: [ {name: "Màu Trắng", price: 650000}, {name: "Màu Hồng", price: 650000} ], desc: 'Click không tiếng ồn, cuộn SmartWheel, kết nối Bluetooth/Receiver.' }
+        ];
+
+        let cartItems = JSON.parse(localStorage.getItem('ttp_cart') || '[]');
+        let orderHistory = JSON.parse(localStorage.getItem('ttp_orders') || '[]');
+        let currentProduct = null; let selectedVariantIndex = 0;
+
+        function formatMoney(n) { return new Intl.NumberFormat('vi-VN').format(n); }
+        
+        function renderProducts(filtered = mockProducts) {
+            try {
+                const grid = document.getElementById('productGrid');
+                if(!grid) return;
+                grid.innerHTML = '';
+                if(filtered.length === 0) { grid.innerHTML = '<div class="col-span-full py-10 text-center text-gray-500 text-sm">Không tìm thấy sản phẩm.</div>'; return; }
+                
+                filtered.forEach(p => {
+                    let price = p.variants ? p.variants[0].price : p.price;
+                    let articleHTML = `<article class="shopee-card dynamic-card flex flex-col p-2 relative overflow-hidden clickable group bg-white" onclick="openProductDetail('${p.id}')">
+                        <div class="shopee-badge-fav">${p.category}</div>
+                        <div class="aspect-square bg-gray-50 flex items-center justify-center border-b mb-2"><img src="${p.img}" loading="lazy" decoding="async" class="w-full h-full object-contain p-1 group-active:scale-95 transition-transform"></div>
+                        <h3 class="text-xs text-gray-800 line-clamp-2 leading-tight mb-1 min-h-[30px]">${p.name}</h3>
+                        <div class="mt-auto"><span class="dynamic-text font-bold text-sm"><span class="text-[9px] underline">đ</span>${formatMoney(price)}</span></div>
+                    </article>`;
+                    grid.innerHTML += articleHTML;
+                });
+                updateCartBadge();
+            } catch(e) { console.error("Lỗi Render:", e); }
+        }
+
+        function searchProducts(q) { const term = q.toLowerCase(); const filtered = mockProducts.filter(p => p.name.toLowerCase().includes(term) || p.category.toLowerCase().includes(term)); renderProducts(filtered); }
+        
+        function openProductDetail(id) {
+            try {
+                currentProduct = mockProducts.find(p=>p.id===id); 
+                if(!currentProduct) return;
+                selectedVariantIndex=0; document.getElementById('qtyInput').value=1;
+                document.getElementById('modalImage').src=currentProduct.img; document.getElementById('modalTitle').innerText=currentProduct.name; document.getElementById('modalDesc').innerText=currentProduct.desc;
+                const varDiv=document.getElementById('variantListText'); varDiv.innerHTML='';
+                if(currentProduct.variants){
+                    currentProduct.variants.forEach((v,i)=>{
+                        const b=document.createElement('button'); b.className = i===0 ? "px-3 py-1.5 border border-[var(--accent-primary)] bg-[var(--accent-primary)]/10 dynamic-text rounded-sm text-xs font-bold outline-none" : "px-3 py-1.5 border border-gray-200 bg-white text-gray-600 rounded-sm text-xs hover:border-[var(--accent-primary)] outline-none";
+                        b.innerText=v.name; b.onclick=(e)=>{ Array.from(varDiv.children).forEach(c=>c.className="px-3 py-1.5 border border-gray-200 bg-white text-gray-600 rounded-sm text-xs hover:border-[var(--accent-primary)] outline-none"); e.target.className="px-3 py-1.5 border border-[var(--accent-primary)] bg-[var(--accent-primary)]/10 dynamic-text rounded-sm text-xs font-bold outline-none"; selectedVariantIndex=i; document.getElementById('modalPrice').innerText=formatMoney(v.price)+' ₫'; document.getElementById('selectedVariantNameDisplay').innerText=v.name; };
+                        varDiv.appendChild(b);
+                    });
+                    document.getElementById('modalPrice').innerText=formatMoney(currentProduct.variants[0].price)+' ₫'; document.getElementById('selectedVariantNameDisplay').innerText=currentProduct.variants[0].name;
+                } else { document.getElementById('modalPrice').innerText=formatMoney(currentProduct.price)+' ₫'; document.getElementById('selectedVariantNameDisplay').innerText="Mặc định"; }
+                
+                document.getElementById('detailModal').classList.remove('hidden'); setTimeout(()=>document.getElementById('detailModal').classList.remove('opacity-0'),10); document.body.style.overflow='hidden';
+            } catch(e) { console.error("Lỗi Modal:", e); }
+        }
+        function closeProductDetail() { document.getElementById('detailModal').classList.add('opacity-0'); setTimeout(()=>{document.getElementById('detailModal').classList.add('hidden'); document.body.style.overflow='';},300); }
+        function updateQty(c) { const i=document.getElementById("qtyInput"); let v=parseInt(i.value)+c; if(v<1) v=1; i.value=v; }
+        function addToCart() { if(!currentProduct) return; let vName="Mặc định", price=currentProduct.price; if(currentProduct.variants){ vName=currentProduct.variants[selectedVariantIndex].name; price=currentProduct.variants[selectedVariantIndex].price; } const qty=parseInt(document.getElementById("qtyInput").value); const ex=cartItems.find(i=>i.id===currentProduct.id && i.variant===vName); if(ex) ex.qty+=qty; else cartItems.push({id:currentProduct.id, name:currentProduct.name, price:price, qty:qty, variant:vName, img:currentProduct.img}); localStorage.setItem('ttp_cart', JSON.stringify(cartItems)); updateCartBadge(); closeProductDetail(); alert("Đã thêm " + currentProduct.name + " vào giỏ hàng"); }
+        function buyNow() { addToCart(); setTimeout(openCheckout, 300); }
+        function updateCartBadge() { const b=document.getElementById('cartCount'); b.innerText=cartItems.length; b.classList.add('scale-125'); setTimeout(()=>b.classList.remove('scale-125'),200); }
+        function openCheckout() { if(!cartItems.length) {alert("Giỏ hàng trống!"); return;} renderCartList(); updateQRCode(); document.getElementById('checkoutModal').classList.remove('hidden'); setTimeout(()=>document.getElementById('checkoutModal').classList.remove('translate-y-full'),10); document.body.style.overflow='hidden'; }
+        function closeCheckout() { document.getElementById('checkoutModal').classList.add('translate-y-full'); setTimeout(()=>{document.getElementById('checkoutModal').classList.add('hidden'); document.body.style.overflow='';},300); }
+        function renderCartList() { const c=document.getElementById('checkoutCartItems'); c.innerHTML=''; let total=0; cartItems.forEach((i,idx)=>{ total+=i.price*i.qty; c.innerHTML+=`<div class="flex gap-3 bg-gray-50 p-2 rounded border border-gray-100"><img src="${i.img}" loading="lazy" decoding="async" class="w-16 h-16 object-contain bg-white rounded border"><div class="flex-1"><div class="text-sm font-bold text-gray-800 line-clamp-1">${i.name}</div><div class="text-[10px] text-gray-500 bg-white inline-block px-1 border rounded mt-1">${i.variant}</div><div class="flex justify-between items-end mt-1"><span class="dynamic-text font-bold text-sm">${formatMoney(i.price)}₫</span><span class="text-xs font-bold text-gray-600">x${i.qty}</span></div></div><button onclick="askDelete(${idx})" class="text-gray-400 hover:text-red-500 px-2 outline-none"><i class="fa-solid fa-trash"></i></button></div>`; }); document.getElementById('cartTotalItems').innerText=cartItems.length+" sp"; document.getElementById('finalTotalDisplay').innerText=formatMoney(total)+" ₫"; }
+        function askDelete(idx) { if(confirm("Xóa sản phẩm này?")){ cartItems.splice(idx,1); localStorage.setItem('ttp_cart',JSON.stringify(cartItems)); renderCartList(); updateCartBadge(); updateQRCode(); if(!cartItems.length) closeCheckout(); } }
+        function togglePaymentMethod() { const m=document.querySelector('input[name="payment"]:checked').value; const b=document.getElementById('bankingInfo'); if(m==='banking'){ b.classList.remove('hidden'); updateQRCode(); } else b.classList.add('hidden'); }
+        function updateQRCode() { const p=document.getElementById('cusPhone').value||"KHACH"; const t=cartItems.reduce((s,i)=>s+(i.price*i.qty),0); const c=`TTP ${p}`; document.getElementById('bankContent').innerText=c; document.getElementById('qrCodeImg').src=`https://img.vietqr.io/image/TCB-19037189711011-compact2.png?amount=${t}&addInfo=${encodeURIComponent(c)}`; }
+        function submitOrder() { const n=document.getElementById('cusName').value, p=document.getElementById('cusPhone').value, a=document.getElementById('cusAddress').value; if(!n||!p||!a) {alert("Vui lòng điền đủ thông tin!"); return;} const btn=document.getElementById('btnOrder'); btn.innerHTML=`<i class="fa-solid fa-spinner fa-spin"></i> ĐANG XỬ LÝ...`; btn.disabled=true; setTimeout(()=>{ alert(`Thành công! Đơn hàng đã lưu.\nChúng tôi sẽ gọi lại số ${p} ngay.`); const order = { id: 'TTP'+Math.floor(Math.random()*10000), date: new Date().toLocaleDateString('vi-VN'), total: document.getElementById('finalTotalDisplay').innerText, items: [...cartItems] }; orderHistory.unshift(order); localStorage.setItem('ttp_orders', JSON.stringify(orderHistory)); cartItems=[]; localStorage.setItem('ttp_cart','[]'); updateCartBadge(); document.getElementById('checkoutForm').reset(); closeCheckout(); btn.innerHTML="ĐẶT HÀNG"; btn.disabled=false; }, 1000); }
+        function openOrderHistory() { const list = document.getElementById('orderHistoryList'); list.innerHTML=''; if(!orderHistory.length) { list.innerHTML = '<div class="text-center text-gray-500 py-10 font-medium">Bạn chưa có đơn hàng nào.</div>'; } else { orderHistory.forEach(o => { list.innerHTML += `<div class="bg-white p-4 rounded shadow-sm border border-gray-100 mb-3"><div class="flex justify-between items-center border-b pb-2 mb-3"><span class="font-bold text-gray-800">#${o.id}</span><span class="text-xs text-gray-500">${o.date}</span></div><div class="space-y-2 mb-3">${o.items.map(i=>`<div class="text-sm text-gray-600 flex justify-between gap-2"><span class="line-clamp-1">${i.qty}x ${i.name}</span></div>`).join('')}</div><div class="flex justify-between items-center border-t pt-3 mt-2"><span class="font-bold dynamic-text text-lg">${o.total}</span><span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded font-bold uppercase border border-blue-100">Đã tiếp nhận</span></div></div>`; }); } document.getElementById('orderHistoryModal').classList.remove('hidden'); setTimeout(()=>document.getElementById('orderHistoryModal').classList.remove('translate-x-full'),10); document.body.style.overflow='hidden'; }
+        function closeOrderHistory() { document.getElementById('orderHistoryModal').classList.add('translate-x-full'); setTimeout(()=>{document.getElementById('orderHistoryModal').classList.add('hidden'); document.body.style.overflow='';},300); }
+
+        // --- Hàm UI Cơ Bản Tân Thành Phát ---
+        function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.getElementById(tabId).classList.add('active'); document.querySelectorAll('nav button').forEach(el => { el.classList.remove('dynamic-text', 'border-[var(--accent-primary)]'); el.classList.add('border-transparent', 'opacity-60'); }); const btn = document.getElementById('btn-' + tabId); btn.classList.remove('border-transparent', 'opacity-60'); btn.classList.add('dynamic-text', 'border-[var(--accent-primary)]'); if (tabId === 'tab-home') closeDetailView(); if(navigator.vibrate) navigator.vibrate(15); }
+        function openDetailView(sId) { document.querySelectorAll('.view-section').forEach(e=>e.classList.remove('active')); document.getElementById('view-detail-'+sId).classList.add('active'); window.scrollTo({top:0}); }
+        function closeDetailView() { document.querySelectorAll('.view-section').forEach(e=>e.classList.remove('active')); document.getElementById('view-list').classList.add('active'); document.getElementById('storeSearchInput').value=''; renderProducts(); }
+        function changeTheme(t) { document.body.className = 'flex flex-col min-h-screen pb-[env(safe-area-inset-bottom)] relative theme-' + t; if(navigator.vibrate) navigator.vibrate(20); }
+        function copyInfo() { navigator.clipboard.writeText("Tân Thành Phát - 0936.168.219").then(()=>alert("Đã copy!")); }
+        function openSupportModal() { const m = document.getElementById('supportModal'); m.classList.remove('hidden'); setTimeout(() => { m.classList.remove('opacity-0'); document.getElementById('supportModalContent').classList.remove('scale-95'); }, 10); document.body.style.overflow = 'hidden'; }
+        function closeSupportModal() { const m = document.getElementById('supportModal'); m.classList.add('opacity-0'); document.getElementById('supportModalContent').classList.add('scale-95'); setTimeout(() => { m.classList.add('hidden'); document.body.style.overflow = ''; }, 300); }
+        function openSmartGuide() { document.getElementById('pwaModal').classList.remove('hidden'); }
+
+        // --- Cửa Sổ Radio Nguyên Bản Của HTML Cũ ---
+        let windowHighestZIndex = 100000;
+        function toggleRadioWindow() {
+            if(navigator.vibrate) navigator.vibrate(15);
+            const w = document.getElementById('radioWindow');
+            if (w.classList.contains('hidden') || w.classList.contains('scale-0')) {
+                w.classList.remove('hidden');
+                setTimeout(()=>w.classList.remove('scale-0','opacity-0'), 10);
+                w.style.zIndex = ++windowHighestZIndex;
+            } else {
+                w.classList.add('scale-0','opacity-0');
+                setTimeout(()=>w.classList.add('hidden'), 300);
+            }
+        }
+
+        // --- Cửa Sổ Audio Player Widget (ĐÃ PATCH LỖI ĐƠ KHI ĐÓNG FULLSCREEN) ---
+        let isAudioFullscreen = false;
+        function toggleAudioWindow() { 
+            const w = document.getElementById('xsAudioWindow'); 
+            if(w.classList.contains('hidden')){ 
+                w.classList.remove('hidden'); 
+                setTimeout(()=>w.classList.remove('opacity-0'),10); 
+                w.style.zIndex=++windowHighestZIndex; 
+                try { document.querySelector('[data-media-tab="mp3"]').click(); } catch(e){}
+            } else { 
+                w.classList.add('opacity-0'); 
+                setTimeout(() => {
+                    w.classList.add('hidden');
+                    if (isAudioFullscreen) {
+                        isAudioFullscreen = false;
+                        w.classList.remove('fullscreen-audio');
+                        const btn = document.getElementById('btnAudioFullscreen');
+                        if (btn) btn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+                        document.body.style.overflow = ''; 
+                    }
+                }, 300); 
+            } 
+        }
+        
+        function toggleAudioFullscreen() {
+            const w = document.getElementById('xsAudioWindow');
+            const btn = document.getElementById('btnAudioFullscreen');
+            isAudioFullscreen = !isAudioFullscreen;
+            if(isAudioFullscreen) {
+                w.classList.add('fullscreen-audio');
+                btn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+                document.body.style.overflow = 'hidden'; 
+            } else {
+                w.classList.remove('fullscreen-audio');
+                btn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+                document.body.style.overflow = ''; 
+            }
+            try{ if(window.MediaModule && window.MediaModule.currentTab === 'facebook') { window.dispatchEvent(new Event('resize')); } }catch(e){}
+        }
+
+        const DragManager = {
+            init(hId, mId, oId) {
+                const header=document.getElementById(hId), modal=document.getElementById(mId), overlay=document.getElementById(oId);
+                if(!header||!modal) return;
+                let isDragging=false, startX, startY, initLeft, initTop;
+                const dragStart = (e) => { if(isAudioFullscreen || e.target.closest('button')||e.target.closest('select')) return; isDragging=true; windowHighestZIndex++; modal.style.zIndex=windowHighestZIndex; const cX=e.type.includes('mouse')?e.clientX:e.touches[0].clientX, cY=e.type.includes('mouse')?e.clientY:e.touches[0].clientY; startX=cX; startY=cY; const rect=modal.getBoundingClientRect(); initLeft=rect.left; initTop=rect.top; modal.style.right='auto'; modal.style.bottom='auto'; modal.style.left=initLeft+'px'; modal.style.top=initTop+'px'; if(overlay) overlay.classList.remove('hidden'); };
+                const dragMove = (e) => { if(!isDragging) return; e.preventDefault(); const cX=e.type.includes('mouse')?e.clientX:e.touches[0].clientX, cY=e.type.includes('mouse')?e.clientY:e.touches[0].clientY; let nL=initLeft+(cX-startX), nT=initTop+(cY-startY); nL=Math.max(-modal.offsetWidth+50, Math.min(nL, window.innerWidth-50)); nT=Math.max(0, Math.min(nT, window.innerHeight-50)); modal.style.left=nL+'px'; modal.style.top=nT+'px'; };
+                const dragEnd = () => { isDragging=false; if(overlay) overlay.classList.add('hidden'); };
+                modal.addEventListener('mousedown', ()=>{ if(!isAudioFullscreen){windowHighestZIndex++; modal.style.zIndex=windowHighestZIndex;} });
+                header.addEventListener('mousedown', dragStart); document.addEventListener('mousemove', dragMove, {passive:false}); document.addEventListener('mouseup', dragEnd);
+                header.addEventListener('touchstart', dragStart, {passive:false}); document.addEventListener('touchmove', dragMove, {passive:false}); document.addEventListener('touchend', dragEnd);
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            DragManager.init('xsAudioWindowHeader', 'xsAudioWindow', 'xsAudioDragOverlay');
+            DragManager.init('radioWindowHeader', 'radioWindow', 'radioDragOverlay');
+        });
+    </script>
+
+    <!-- ==================================================
+         5. BỘ LỆNH JAVASCRIPT GỐC LIFEOS MEDIA ENGINE
+         + ĐÃ VÁ LỖI CÚ PHÁP ĐỂ KHÔNG BỊ ĐEN MÀN HÌNH YOUTUBE
+         + ĐÃ VÁ LỖI FACEBOOK CÂM KHI AUTO-PLAY
+         ================================================== -->
+    <script>
+    (function(){
+    'use strict';
+    if(!Promise.allSettled){Promise.allSettled=function(list){return Promise.all(Array.prototype.map.call(list,function(x){return Promise.resolve(x).then(function(value){return{status:'fulfilled',value:value}},function(reason){return{status:'rejected',reason:reason}})}))}}
+    if(!String.prototype.padStart){String.padStart=function(n,p){var s=String(this),fill=String(p===undefined?' ':p);while(s.length<n)s=fill+s;return s.slice(-n)}}
+    var U={
+        q:function(s,r){return (r||document).querySelector(s)},
+        qa:function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))},
+        by:function(id){return document.getElementById(id)},
+        esc:function(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})},
+        json:function(k,d){try{var x=localStorage.getItem(k);return x?JSON.parse(x):d}catch(e){return d}},
+        set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}},
+        text:function(k,d){try{return localStorage.getItem(k)||d}catch(e){return d}},
+        putText:function(k,v){try{localStorage.setItem(k,String(v));return true}catch(e){return false}},
+        debounce:function(fn,ms){var h=0;return function(){var a=arguments,s=this;clearTimeout(h);h=setTimeout(function(){fn.apply(s,a)},ms)}},
+        uid:function(p){return(p||'id')+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8)},
+        requestIdle:function(fn){if(window.requestIdleCallback)return requestIdleCallback(fn,{timeout:500});return setTimeout(fn,20)},
+        cancelIdle:function(id){if(window.cancelIdleCallback)return cancelIdleCallback(id);clearTimeout(id)}
+    };
+
+    var Media={
+        active:false,ready:false,currentTab:'mp3',loaded:{mp3:false,radio:false,tv:false,youtube:false,facebook:false},busy:{mp3:false,channels:false,youtube:false,facebook:false},
+        channels:{radio:[],tv:[]},archiveMp3:[],familyMp3:[],youtubeItems:[],facebookItems:[],items:[],filtered:[],
+        selected:{mp3:0,radio:0,tv:0,youtube:0,facebook:0},playing:{tab:'',index:-1},
+        renderToken:0,renderIdle:0,hls:null,audio:null,video:null,iframe:null,localMp3:[],youtubeExternal:'',facebookExternal:'',
+        dataVersion:{mp3:0,radio:0,tv:0,youtube:0,facebook:0},_paintRow:null,_activeRow:null,_mp3Fetch:null,_channelFetch:null,_youtubeFetch:null,_facebookFetch:null,_hlsPromise:null,playToken:0,
+        MP3_CACHE:'xs_songs_v4',MP3_META:'xs_songs_v4_full_meta',CHANNEL_CACHE:'lifeos_smartbox_channels_full_v10',YT_CACHE:'lifeos_youtube_playlist_v1',FB_CACHE:'lifeos_facebook_reels_clean_r4',MIN_CHANNELS:20,MIN_MP3_EXPECTED:120,
+        fallbackPack:{groups:[{id:'radio_vn',name:'Radio Việt Nam',type:'radio'},{id:'tv_vn',name:'Tivi Việt Nam',type:'tv'}],radio:[{id:'radio_vov1',name:'VOV1',type:'radio',group:'radio_vn',url:'https://str.vov.gov.vn/vovlive/vov1vov5Vietnamese.sdp_aac/playlist.m3u8'}],tv:[{id:'tv_vtv1',name:'VTV1',type:'tv',group:'tv_vn',url:'https://live-vtv1.vtvdigital.vn/hls/0.m3u8'}]},
+        
+        init:function(){
+            if(this.ready)return;this.ready=true;var self=this;
+            U.qa('[data-media-tab]').forEach(function(b){b.addEventListener('click',function(){self.setTab(b.getAttribute('data-media-tab'))})});
+            var ms = U.by('media-search'); if(ms) ms.addEventListener('input',U.debounce(function(){self.render(true)},120));
+            var mst = U.by('media-stop'); if(mst) mst.addEventListener('click',function(){self.stopAll('user')});
+            var pp = U.by('player-prev'); if(pp) pp.addEventListener('click',function(){self.move(-1,true)});
+            var pn = U.by('player-next'); if(pn) pn.addEventListener('click',function(){self.move(1,true)});
+            var pl = U.by('player-play'); if(pl) pl.addEventListener('click',function(){self.togglePlay()});
+            var pf = U.by('player-full'); if(pf) pf.addEventListener('click',function(){self.fullscreen()});
+            var mrl = U.by('media-refresh-list'); if(mrl) mrl.addEventListener('click',function(){self.reloadList()});
+            var mrc = U.by('media-refresh-channels'); if(mrc) mrc.addEventListener('click',function(){self.reloadChannels()});
+            var ma = U.by('mp3-add'); if(ma) ma.addEventListener('click',function(){U.by('mp3-input').click()});
+            var mi = U.by('mp3-input'); if(mi) mi.addEventListener('change',function(){self.addLocalMp3(this.files);this.value=''});
+            var ml = U.by('media-list'); 
+            if(ml) {
+                ml.addEventListener('click',function(e){var row=e.target.closest('.lifeos-item');if(!row)return;self.selected[self.currentTab]=Number(row.getAttribute('data-index')||0);self.paintSelection();self.playSelected()});
+            }
+            
+            this.currentTab='mp3';
+            this.setTab(this.currentTab,true);
+            this.active = true;
+        },
+        tabName:function(tab){return tab==='mp3'?'MP3':tab==='radio'?'Radio':tab==='tv'?'Tivi':tab==='youtube'?'YouTube':'Facebook'},
+        setStatus:function(text,type){var e=U.by('media-source-status');if(!e)return;e.textContent=text||'';e.className='lifeos-status'+(type?' '+type:'')},
+        updateToolbar:function(){var channel=U.by('media-refresh-channels'),list=U.by('media-refresh-list'),busy=this.busy[this.currentTab];if(channel)channel.classList.toggle('hidden',this.currentTab!=='radio'&&this.currentTab!=='tv');if(list){list.disabled=!!busy;list.textContent=busy?'⏳ Đang tải':'↻ Tải lại'}},
+        setTab:function(tab,first){if(['mp3','radio','tv','youtube','facebook'].indexOf(tab)<0)tab='mp3';if(!first&&tab!==this.currentTab)this.stopAll('switch_media_tab');this.currentTab=tab;U.qa('[data-media-tab]').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-media-tab')===tab)});var mp3=U.by('mp3-add'),ms=U.by('media-search'),ml=U.by('media-list');if(mp3)mp3.classList.toggle('hidden',tab!=='mp3');if(ms)ms.value='';this.updateToolbar();if(ml)ml.removeAttribute('data-signature');this.ensureData(tab,false);this.render(true);},
+        ensureData:function(tab,force){var self=this,p;if(tab==='radio'||tab==='tv')p=this.loadChannels(!!force);else if(tab==='youtube')p=this.loadYouTube(!!force);else if(tab==='facebook')p=this.loadFacebook(!!force);else p=this.loadMp3(!!force);return Promise.resolve(p).then(function(){self.loaded[tab]=true;self.render(true);return true},function(e){self.setStatus('Không tải được kho '+self.tabName(tab)+': '+(e&&e.message||e),'error');self.render(true);return false})},
+        trySequential:function(urls,fn){var i=0;function next(last){if(i>=urls.length)return Promise.reject(last||new Error('Không còn nguồn dự phòng'));var u=urls[i++];return Promise.resolve(fn(u,i-1)).catch(next)}return next(null)},
+        fetchJson:function(url,force,timeout){var ctrl=window.AbortController?new AbortController():null,t=0,opts={cache:force?'no-store':'default'};if(ctrl){opts.signal=ctrl.signal;t=setTimeout(function(){try{ctrl.abort()}catch(e){}},timeout||7000)}return fetch(url,opts).then(function(r){if(t)clearTimeout(t);if(!r||!r.ok)throw new Error('HTTP '+(r&&r.status||0));return r.json()},function(e){if(t)clearTimeout(t);throw e})},
+        loadScript:function(src,id,timeout){return new Promise(function(resolve,reject){var old=id&&U.by(id);if(old&&old.parentNode)old.parentNode.removeChild(old);var s=document.createElement('script'),done=false,t=setTimeout(function(){if(done)return;done=true;if(s.parentNode)s.parentNode.removeChild(s);reject(new Error('Hết thời gian tải '+src))},timeout||7500);if(id)s.id=id;s.src=src;s.async=true;s.onload=function(){if(done)return;done=true;clearTimeout(t);resolve(src)};s.onerror=function(){if(done)return;done=true;clearTimeout(t);if(s.parentNode)s.parentNode.removeChild(s);reject(new Error('Không tải được '+src))};document.head.appendChild(s)})},
+        extOf:function(name){var m=String(name||'').match(/\.([a-z0-9]+)(?:$|[?#])/i);return m?m[1].toLowerCase():''},
+        stripAudioExt:function(v){return String(v==null?'':v).replace(/\.(mp3|mp4|m4a|aac|wav|ogg|oga|opus|webm|flac)(?:\?.*)?$/i,'').replace(/_+/g,' ').replace(/\s+/g,' ').trim()},
+        isAudioLike:function(obj,name,url){obj=obj||{};var ext=this.extOf(name)||this.extOf(url),fmt=String(obj.format||'').toUpperCase(),mime=[obj.mime,obj.mimeType,obj.type].join(' ').toLowerCase();if(/^(mp3|mp4|m4a|aac|wav|ogg|oga|opus|webm|flac)$/.test(ext))return true;if(fmt.indexOf('MP3')>=0||fmt.indexOf('M4A')>=0)return true;return mime.indexOf('audio')>=0},
+        archiveUrl:function(identifier,name){return'https://archive.org/download/'+encodeURIComponent(identifier)+'/'+String(name||'').split('/').map(function(x){return encodeURIComponent(x)}).join('/')},
+        normalizeSong:function(s){if(!s)return null;var url=String(s.stream_url||s.url||s.link||s.src||s.href||'').trim(),name=String(s.file_name||s.name||s.title||url).trim(),identifier=String(s.identifier||s.item||'').trim();if(!url&&identifier&&name)url=this.archiveUrl(identifier,name);if(!url||!this.isAudioLike(s,name,url))return null;var id=String(s.id||(identifier?identifier+'/'+name:'')||url),title=this.stripAudioExt((s.title&&String(s.title).trim()!==String(s.name||'').trim())?s.title:name)||'Bài nhạc';return{id:id,name:title,title:title,artist:this.stripAudioExt(s.artist||s.creator||s.uploader||'Xiemsansang'),type:'mp3',url:url,stream_url:url,duration:parseFloat(s.duration||0)||0,source:'archive',identifier:identifier,file_name:name,format:String(s.format||this.extOf(name).toUpperCase())}},
+        songFromArchiveFile:function(identifier,file,meta){var name=String(file&&(file.name||file.fileName||file.filename)||'').trim();if(!identifier||!name||!this.isAudioLike(file,name,''))return null;var metaTitle=meta&&meta.metadata&&String(meta.metadata.title||'').trim(),trackTitle=String(file.title||name).trim();if(trackTitle&&metaTitle&&trackTitle===metaTitle)trackTitle=name;return this.normalizeSong({id:identifier+'/'+name,identifier:identifier,name:name,title:trackTitle,artist:meta&&meta.metadata&&(meta.metadata.creator||meta.metadata.uploader||meta.metadata.title)||'Xiemsansang',stream_url:this.archiveUrl(identifier,name),duration:file.length||file.duration||0,format:file.format,mime:file.mime,source:'archive_metadata'})},
+        dedupeSongs:function(list){var self=this,out=[],seen={};(Array.isArray(list)?list:[]).forEach(function(x){var s=self.normalizeSong(x);if(!s)return;var key=String(s.id||s.url).toLowerCase();if(!key||seen[key])return;seen[key]=1;out.push(s)});return out},
+        readMp3Cache:function(){return this.dedupeSongs(U.json(this.MP3_CACHE,[]))},
+        writeMp3Cache:function(list,source){var clean=this.dedupeSongs(list);U.set(this.MP3_CACHE,clean);U.set(this.MP3_META,{source:source||'',count:clean.length,savedAt:Date.now()});return clean},
+        fetchArchiveIdentifier:function(identifier){var self=this;return this.fetchJson('https://archive.org/metadata/'+encodeURIComponent(identifier),true,12000).then(function(meta){var out=[];(meta.files||[]).forEach(function(f){var s=self.songFromArchiveFile(identifier,f,meta);if(s)out.push(s)});return self.dedupeSongs(out)})},
+        mapLimit:function(items,limit,fn,progress){items=Array.isArray(items)?items.slice():[];var out=new Array(items.length),next=0,done=0;function worker(){if(next>=items.length)return Promise.resolve();var i=next++;return Promise.resolve(fn(items[i],i)).then(function(v){out[i]=v},function(){out[i]=[]}).then(function(){done++;if(progress)progress(done,items.length);return worker()})}var jobs=[],n=Math.min(limit,items.length);for(var j=0;j<n;j++)jobs.push(worker());return Promise.all(jobs).then(function(){return out})},
+        fetchArchiveSearch:function(){var self=this,q='(identifier:giai-toa-moi-thu OR uploader:xiemsansang) AND mediatype:audio',url='https://archive.org/advancedsearch.php?q='+encodeURIComponent(q)+'&fl[]=identifier,title,creator&sort[]=publicdate+desc&rows=500&page=1&output=json';return this.fetchJson(url,true,15000).then(function(j){var docs=j&&j.response&&j.response.docs||[],ids=[],seen={};docs.forEach(function(d){var id=String(d.identifier||'').trim();if(id&&!seen[id]){seen[id]=1;ids.push(id)}});ids=ids.slice(0,120);return self.mapLimit(ids,3,function(id){return self.fetchArchiveIdentifier(id)},function(done,total){self.setStatus('Đang tải MP3 · '+done+'/'+total+'…','loading')}).then(function(parts){var flat=[];parts.forEach(function(p){flat=flat.concat(p||[])});return self.dedupeSongs(flat)})})},
+        loadMp3:function(force){var self=this;if(this._mp3Fetch)return this._mp3Fetch;var previous=(this.archiveMp3||[]).slice(),cached=this.readMp3Cache();if(!force&&previous.length){this.setStatus('Kho MP3 đang dùng · '+previous.length+' bài','ok');return Promise.resolve(this.sourceItems('mp3'))}if(cached.length){this.archiveMp3=cached;this.loaded.mp3=true;this.dataVersion.mp3++;if(this.active&&this.currentTab==='mp3')this.render(false);this.setStatus('Kho MP3 đã lưu · '+cached.length+' bài','ok')}if(!force&&cached.length)return Promise.resolve(this.sourceItems('mp3'));this.busy.mp3=true;this.updateToolbar();this.setStatus('Đang tải kho MP3 gốc…','loading');var direct=[];this._mp3Fetch=this.fetchArchiveIdentifier('giai-toa-moi-thu').then(function(list){direct=list||[];if(direct.length>=self.MIN_MP3_EXPECTED)return[];return self.fetchArchiveSearch()}).then(function(search){var merged=self.dedupeSongs([].concat(direct||[],search||[],cached||[]));if(!merged.length)throw new Error('Kho Archive rỗng');self.archiveMp3=self.writeMp3Cache(merged,'archive:giai-toa-moi-thu');self.loaded.mp3=true;self.dataVersion.mp3++;self.setStatus('Kho MP3 gốc · '+self.archiveMp3.length+' bài','ok');return self.sourceItems('mp3')}).catch(function(err){var keep=cached.length?cached:previous;if(keep.length){self.archiveMp3=keep;self.setStatus('Đang giữ '+keep.length+' bài MP3 hiện có','warn');return self.sourceItems('mp3')}self.setStatus('Lỗi tải MP3: '+(err&&err.message||err),'error');throw err}).finally(function(){self.busy.mp3=false;self._mp3Fetch=null;self.updateToolbar();if(self.active&&self.currentTab==='mp3')self.render(true)});return this._mp3Fetch},
+        addLocalMp3:function(files){var arr=Array.prototype.slice.call(files||[]),self=this;arr.forEach(function(f){if(String(f.type||'').indexOf('audio/')!==0&&!/\.(mp3|m4a|wav|flac)$/i.test(f.name||''))return;self.localMp3.push({id:U.uid('local'),name:f.name,type:'mp3',url:URL.createObjectURL(f),source:'local',file:f})});this.dataVersion.mp3++;this.render(true);},
+        channelGroupMap:function(pack){var m={};(pack&&Array.isArray(pack.groups)?pack.groups:[]).forEach(function(g){var id=String(g.id||g.group||g.key||'').trim();if(id)m[id]=g});return m},
+        channelUrls:function(obj){var values=[],seen={};function add(v){if(Array.isArray(v)){v.forEach(add);return}if(v&&typeof v==='object'){add(v.url||v.src||v.stream_url||v.m3u8);return}v=String(v||'').trim();if(v&&!seen[v]){seen[v]=1;values.push(v)}}['url','link','stream_url','src','m3u8','hls','playUrl'].forEach(function(k){add(obj&&obj[k])});add(obj&&obj.urls);return values},
+        inferChannelType:function(ch,path,gm){var raw=String(ch.type||ch.category||'').toLowerCase();if(raw.indexOf('radio')>=0)return'radio';if(raw.indexOf('tv')>=0||raw.indexOf('tivi')>=0)return'tv';var g=String(ch.group||ch.group_id||''),group=gm[g]||{},mix=[path,g,group.type,group.name,ch.name].join(' ').toLowerCase();if(mix.indexOf('radio')>=0||mix.indexOf('phát thanh')>=0)return'radio';return'tv'},
+        normalizePack:function(pack){var out={radio:[],tv:[]},seen={},gm=this.channelGroupMap(pack),self=this;function push(obj,path){if(!obj||typeof obj!=='object'||Array.isArray(obj))return;var urls=self.channelUrls(obj);if(!urls.length)return;var type=self.inferChannelType(obj,path,gm),group=String(obj.group||obj.group_id||path.split('/').slice(-1)[0]||'all'),gr=gm[group]||{},name=String(obj.name||obj.title||obj.id||urls[0]),id=String(obj.id||obj.key||name+'_'+urls[0]),key=type+'|'+urls[0]+'|'+name;if(seen[key])return;seen[key]=1;var item={};Object.keys(obj).forEach(function(k){item[k]=obj[k]});item.id=id;item.name=name;item.type=type;item.group=group;item.group_name=String(obj.group_name||gr.name||group);item.url=urls[0];item.sources=urls;out[type].push(item)}function walk(node,path,depth){if(!node||depth>8)return;if(Array.isArray(node)){node.forEach(function(x,i){walk(x,path+'/'+i,depth+1)});return}if(typeof node!=='object')return;push(node,path);Object.keys(node).forEach(function(k){if(k!=='groups')walk(node[k],path+'/'+k,depth+1)})}walk(pack,'root',0);return out},
+        channelCount:function(pack){var n=this.normalizePack(pack);return n.radio.length+n.tv.length},
+        loadChannels:function(force){var self=this;if(this._channelFetch)return this._channelFetch;var previous={radio:(this.channels.radio||[]).slice(),tv:(this.channels.tv||[]).slice()},previousCount=previous.radio.length+previous.tv.length,cached=U.json(this.CHANNEL_CACHE,null),base=cached||this.fallbackPack,normalized=this.normalizePack(base);if(!force&&previousCount>=this.MIN_CHANNELS){this.setStatus('Kho kênh đang dùng · '+previous.radio.length+' Radio · '+previous.tv.length+' Tivi','ok');return Promise.resolve(this.channels)}if(!this.channels.radio.length&&!this.channels.tv.length)this.channels=normalized;if(cached&&!force&&this.channelCount(cached)>=this.MIN_CHANNELS){this.channels=normalized;this.loaded.radio=this.loaded.tv=true;this.dataVersion.radio++;this.dataVersion.tv++;this.setStatus('Kho kênh đã lưu · '+this.channels.radio.length+' Radio · '+this.channels.tv.length+' Tivi','ok');return Promise.resolve(this.channels)}this.busy.channels=true;this.updateToolbar();this.setStatus('Đang tải kho Radio/Tivi gốc…','loading');var stamp=force?'t='+Date.now():'v=10',urls=['./smartbox_channels.json?'+stamp,'https://tunhienhieuchuyen.github.io/smartbox_channels.json?'+stamp,'https://raw.githubusercontent.com/tunhienhieuchuyen/tunhienhieuchuyen.github.io/refs/heads/main/smartbox_channels.json?'+stamp];this._channelFetch=this.trySequential(urls,function(url){return self.fetchJson(url,!!force,7000).then(function(pack){if(self.channelCount(pack)<self.MIN_CHANNELS)throw new Error('Danh sách kênh quá ít');return pack})}).then(function(pack){U.set(self.CHANNEL_CACHE,pack);self.channels=self.normalizePack(pack);self.loaded.radio=self.loaded.tv=true;self.dataVersion.radio++;self.dataVersion.tv++;self.setStatus('Kho kênh gốc · '+self.channels.radio.length+' Radio · '+self.channels.tv.length+' Tivi','ok');return self.channels}).catch(function(err){if(cached&&self.channelCount(cached)>=self.MIN_CHANNELS){self.channels=self.normalizePack(cached);self.setStatus('Đang dùng kho kênh đã lưu','warn');return self.channels}if(previousCount>=self.MIN_CHANNELS){self.channels=previous;self.setStatus('Đang giữ '+previous.radio.length+' Radio · '+previous.tv.length+' Tivi','warn');return self.channels}self.channels=self.normalizePack(self.fallbackPack);self.setStatus('Đang dùng '+(self.channels.radio.length+self.channels.tv.length)+' kênh dự phòng','warn');return self.channels}).finally(function(){self.busy.channels=false;self._channelFetch=null;self.updateToolbar();if(self.active&&(self.currentTab==='radio'||self.currentTab==='tv'))self.render(true)});return this._channelFetch},
+        
+        // ==============================================================
+        // BẮT ĐẦU PATCH YOUTUBE HOÀN CHỈNH TỪ GỐC
+        // ==============================================================
+        ytId: function(item) {
+            var id = String(item.id || '').trim();
+            id = id.replace(/^youtube\|video\|/, '').replace(/^youtube\|playlist\|/, '');
+            if (/^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+            var m = id.match(/(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{11})/);
+            return m ? m[1] : id;
+        },
+
+        ensureYouTube: function() {
+            var self = this;
+            if (window.YT && window.YT.Player) return Promise.resolve(window.YT);
+            if (this.ytPromise) return this.ytPromise;
+            this.ytPromise = new Promise(function(resolve, reject) {
+                var done = false, poll = 0, timer = 0;
+                function finish() {
+                    if (done || !window.YT || !window.YT.Player) return;
+                    done = true; clearInterval(poll); clearTimeout(timer); resolve(window.YT);
+                }
+                var old = window.onYouTubeIframeAPIReady;
+                window.onYouTubeIframeAPIReady = function() {
+                    try { if (typeof old === 'function') old(); } finally { finish(); }
+                };
+                var script = U.by('lifeos-youtube-api');
+                if (!script) {
+                    script = document.createElement('script'); script.id = 'lifeos-youtube-api';
+                    script.src = 'https://www.youtube.com/iframe_api';
+                    script.onerror = function() { if (done) return; done = true; clearInterval(poll); clearTimeout(timer); reject(new Error('Lỗi tải YT API')); };
+                    document.head.appendChild(script);
+                }
+                poll = setInterval(finish, 100);
+                timer = setTimeout(function() { if (done) return; done = true; clearInterval(poll); reject(new Error('YT API Timeout')); }, 12000);
+            }).then(function(v) { return v; }, function(e) { self.ytPromise = null; throw e; });
+            return this.ytPromise;
+        },
+
+        playYouTube: function(item, serial) {
+            var self = this, stage = U.by('player-stage'), type = item.ytType || item.type || 'video', id = this.ytId(item);
+            if (!id) { stage.innerHTML = '<div class="lifeos-player-empty text-red-500">Lỗi ID YouTube</div>'; return; }
+            stage.innerHTML = '';
+            var holder = document.createElement('div');
+            holder.id = 'lifeos-youtube-player-' + serial;
+            holder.style.width = '100%'; holder.style.height = '100%'; // FIX LỖI ĐEN MÀN HÌNH (0x0px)
+            stage.appendChild(holder);
+            Media.youtubeExternal = type === 'playlist' ? 'https://www.youtube.com/playlist?list=' + encodeURIComponent(id) : 'https://www.youtube.com/watch?v=' + encodeURIComponent(id);
+            
+            this.ensureYouTube().then(function(YT) {
+                if (serial !== self.serial) return;
+                var origin = (location.protocol === 'http:' || location.protocol === 'https:') ? location.origin : '*';
+                var vars = { autoplay: 1, playsinline: 1, enablejsapi: 1, rel: 0, origin: origin }; // CHỐNG CHẶN CORS YOUTUBE
+                if (type === 'playlist') { vars.listType = 'playlist'; vars.list = id; vars.index = 0; }
+                var options = {
+                    width: '100%', height: '100%', playerVars: vars,
+                    events: {
+                        onReady: function(ev) {
+                            if (serial !== self.serial) { try { ev.target.destroy(); } catch(e){} return; }
+                            self.ytPlayer = ev.target;
+                            try { Media.iframe = ev.target.getIframe(); } catch(e){}
+                            try { ev.target.playVideo(); } catch(e){}
+                            Media.setStatus('Đang phát YouTube', 'ok');
+                        },
+                        onStateChange: function(ev) {
+                            if (serial !== self.serial) return;
+                            if (ev.data === YT.PlayerState.PLAYING && type === 'playlist') {
+                                try { self.ytPlaylistMaxIndex = Math.max(self.ytPlaylistMaxIndex, ev.target.getPlaylistIndex()); } catch(e){}
+                            }
+                            if (ev.data === YT.PlayerState.ENDED) { // CƠ CHẾ AUTO-NEXT YOUTUBE
+                                if (type !== 'playlist') {
+                                    self.signalEnded(serial, 'youtube-ended');
+                                } else {
+                                    setTimeout(function() {
+                                        if (serial !== self.serial) return;
+                                        var list = [], index = -1;
+                                        try { list = ev.target.getPlaylist() || []; index = ev.target.getPlaylistIndex(); } catch(e){}
+                                        if (!list.length || index >= list.length - 1 || self.ytPlaylistMaxIndex >= list.length - 1) {
+                                            self.signalEnded(serial, 'youtube-playlist-ended');
+                                        }
+                                    }, 600);
+                                }
+                            }
+                        },
+                        onError: function(ev) { if (serial === self.serial) self.createYouTubeFallback(item, serial); }
+                    }
+                };
+                if (type !== 'playlist') options.videoId = id;
+                self.ytPlaylistMaxIndex = -1;
+                self.ytPlayer = new YT.Player(holder.id, options);
+            }).catch(function(err) {
+                if (serial === self.serial) self.createYouTubeFallback(item, serial);
+            });
+        },
+
+        createYouTubeFallback: function(item, serial) {
+            if (serial !== this.serial) return;
+            var stage = U.by('player-stage'), type = item.ytType || item.type || 'video', id = this.ytId(item);
+            stage.innerHTML = '';
+            var origin = (location.protocol === 'http:' || location.protocol === 'https:') ? location.origin : '';
+            var src = type === 'playlist' ? 'https://www.youtube.com/embed/videoseries?list=' + encodeURIComponent(id) + '&autoplay=1&playsinline=1' : 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?autoplay=1&playsinline=1';
+            if (origin) src += '&origin=' + encodeURIComponent(origin);
+            var f = document.createElement('iframe');
+            f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen = true; f.src = src;
+            f.style.width = '100%'; f.style.height = '100%'; f.style.border = 'none';
+            stage.appendChild(f);
+            Media.iframe = f;
+            Media.setStatus('Phát YouTube (Dự phòng)', 'warn');
+            var duration = Number(item.durationSeconds || 240);
+            var self = this;
+            setTimeout(function(){ self.signalEnded(serial, 'youtube-fallback'); }, duration * 1000);
+        },
+        // ==============================================================
+        // KẾT THÚC PATCH YOUTUBE
+        // ==============================================================
+
+        validVideoId:function(id){return/^[A-Za-z0-9_-]{11}$/.test(String(id||''))},
+        validPlaylistId:function(id){return/^[A-Za-z0-9_-]{10,100}$/.test(String(id||''))},
+        normalizeYouTube:function(list){var self=this,out=[],seen={};(Array.isArray(list)?list:[]).forEach(function(raw,i){raw=raw||{};var type=String(raw.type||'').toLowerCase()==='playlist'?'playlist':'video',id=String(raw.id||'').trim(),title=String(raw.title||raw.name||('Mục YT '+(i+1))).trim();if(type==='video'&&!self.validVideoId(id)){var m=id.match(/(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{11})/);id=m?m[1]:id}if((type==='video'&&self.validVideoId(id))||(type==='playlist'&&self.validPlaylistId(id))){var key=type+'|'+id;if(!seen[key]){seen[key]=1;out.push({id:id,name:title,title:title,type:type,ytType:type,source:'danhsach.js'})}}});return out},
+        
+        canonicalUrl:function(url){url=String(url||'').trim().replace(/#.*$/,'');if(/facebook\.com/i.test(url))url=url.replace(/\?.*$/,'').replace(/\/+$/,'');return url},
+        normalizeFacebook:function(list){var self=this,out=[],seen={};(Array.isArray(list)?list:[]).forEach(function(raw,i){raw=raw||{};var url=String(raw.url||raw.link||raw.href||'').trim(),id=String(raw.id||raw.reelId||'').trim(),direct=String(raw.directUrl||raw.videoUrl||'').trim(),m=url.match(/facebook\.com\/(?:reel|reels)\/([0-9]+)/i);if(!id&&m)id=m[1];if(!url&&/^\d+$/.test(id))url='https://www.facebook.com/reel/'+id;if(!url&&!direct)return;var key=self.canonicalUrl(direct||url||id);if(!key||seen[key])return;seen[key]=1;out.push({id:id||key,name:String(raw.title||raw.name||('Facebook Reel '+(i+1))).trim(),type:'facebook_reel',url:url,directUrl:direct,durationSeconds:Number(raw.durationSeconds||0),source:'Facebook Reel'})});return out},
+        loadFacebook:function(force){var self=this;if(this._facebookFetch)return this._facebookFetch;var previous=(this.facebookItems||[]).slice(),fromWindow=this.normalizeFacebook(window.fbStaticPlaylist),cached=this.normalizeFacebook(U.json(this.FB_CACHE,[]));if(!force&&previous.length){this.setStatus('Danh sách Facebook đang dùng · '+previous.length+' Reel','ok');return Promise.resolve(previous)}if(fromWindow.length&&!force){this.facebookItems=fromWindow;U.set(this.FB_CACHE,fromWindow);this.loaded.facebook=true;this.dataVersion.facebook++;this.setStatus('Danh sách Facebook · '+fromWindow.length+' Reel','ok');return Promise.resolve(fromWindow)}if(cached.length){this.facebookItems=cached;this.loaded.facebook=true;this.dataVersion.facebook++;if(this.active&&this.currentTab==='facebook')this.render(false);this.setStatus('Facebook đã lưu · '+cached.length+' Reel','ok')}if(!force&&cached.length)return Promise.resolve(cached);this.busy.facebook=true;this.updateToolbar();this.setStatus('Đang tải facebook_danhsach.js…','loading');var stamp='lifeos_fb='+(force?Date.now():'r4'),urls=['./facebook_danhsach.js?'+stamp,'https://tunhienhieuchuyen.github.io/facebook_danhsach.js?'+stamp,'https://raw.githubusercontent.com/tunhienhieuchuyen/tunhienhieuchuyen.github.io/refs/heads/main/facebook_danhsach.js?'+stamp];this._facebookFetch=this.trySequential(urls,function(url){try{window.fbStaticPlaylist=undefined}catch(e){}return self.loadScript(url,'lifeos-fb-data',10000).then(function(){var items=self.normalizeFacebook(window.fbStaticPlaylist);if(!items.length)throw new Error('facebook_danhsach.js rỗng');return items})}).then(function(items){self.facebookItems=items;U.set(self.FB_CACHE,items);self.loaded.facebook=true;self.dataVersion.facebook++;self.setStatus('Danh sách FB gốc · '+items.length+' Reel','ok');return items}).catch(function(err){var keep=cached.length?cached:previous;if(keep.length){self.facebookItems=keep;self.setStatus('Đang giữ '+keep.length+' Reel hiện có','warn');return keep}self.facebookItems=[];self.setStatus('Lỗi tải facebook_danhsach.js: '+(err&&err.message||err),'error');throw err}).finally(function(){self.busy.facebook=false;self._facebookFetch=null;self.updateToolbar();if(self.active&&self.currentTab==='facebook')self.render(true)});return this._facebookFetch},
+        sourceItems:function(tab){tab=tab||this.currentTab;if(tab==='radio')return this.channels.radio||[];if(tab==='tv')return this.channels.tv||[];if(tab==='youtube')return this.youtubeItems||[];if(tab==='facebook')return this.facebookItems||[];return this.dedupeSongs([].concat(this.localMp3||[],this.archiveMp3||[]))},
+        render:function(reset){var list=U.by('media-list'); if(!list) return; var q=String(U.by('media-search')&&U.by('media-search').value||'').toLowerCase().trim(),all=this.sourceItems(),filtered=all.filter(function(x){return String(x.name||x.title||'').toLowerCase().indexOf(q)>=0}),version=this.dataVersion[this.currentTab]||0,signature=this.currentTab+'|'+q+'|'+version+'|'+filtered.length,keepTop=reset?0:list.scrollTop;this.items=all;this.filtered=filtered;if(!reset&&list.getAttribute('data-signature')===signature){this.paintSelection();return}list.setAttribute('data-signature',signature);list.innerHTML='';this.renderToken++;if(this.renderIdle)U.cancelIdle(this.renderIdle);var token=this.renderToken,self=this,index=0,batch=40;if(!filtered.length){var msg=this.busy[this.currentTab]?'Đang tải kho '+this.tabName(this.currentTab)+'…':'Không có nội dung.';list.innerHTML='<div class="lifeos-player-empty mt-4">'+U.esc(msg)+'</div>';return}function more(){if(token!==self.renderToken)return;var frag=document.createDocumentFragment(),end=Math.min(filtered.length,index+batch);for(;index<end;index++){var item=filtered[index],row=document.createElement('div');row.className='lifeos-item';row.setAttribute('data-index',String(index));row.innerHTML='<div class="lifeos-num">'+(index+1)+'</div><div style="flex:1;min-width:0;"><div class="lifeos-title">'+U.esc(item.name||item.title||('Mục '+(index+1)))+'</div><div class="lifeos-meta">'+U.esc(self.currentTab==='youtube'?(item.ytType==='playlist'?'Playlist':'Video'):(item.group_name||item.artist||self.currentTab.toUpperCase()))+'</div></div>';frag.appendChild(row)}list.appendChild(frag);self.paintSelection();if(index<filtered.length)self.renderIdle=U.requestIdle(more);else list.scrollTop=Math.max(0,keepTop)}more()},
+        paintSelection:function(){var idx=this.selected[this.currentTab]||0,list=U.by('media-list'); if(!list) return; var row=U.q('.lifeos-item[data-index="'+idx+'"]',list),active=this.playing.tab===this.currentTab?U.q('.lifeos-item[data-index="'+this.playing.index+'"]',list):null;if(this._paintRow&&this._paintRow!==row)this._paintRow.classList.remove('active');if(row)row.classList.add('active');this._paintRow=row;if(this._activeRow&&this._activeRow!==active)this._activeRow.classList.remove('active');if(active)active.classList.add('active');this._activeRow=active},
+        ensureVisible:function(idx){var list=U.by('media-list'); if(!list) return; var row=U.q('.lifeos-item[data-index="'+idx+'"]',list);if(!row)return;list.scrollTop=row.offsetTop-(list.clientHeight/2)+(row.offsetHeight/2)},
+        move:function(delta,play){if(!this.filtered.length)return;var len=this.filtered.length,n=((this.selected[this.currentTab]||0)+delta)%len;if(n<0)n+=len;this.selected[this.currentTab]=n;this.paintSelection();this.ensureVisible(n);if(play)this.playSelected()},
+        playSelected:function(){var idx=this.selected[this.currentTab]||0,item=this.filtered[idx];if(!item)return;this.playing={tab:this.currentTab,index:idx};this.stopElements();var t = U.by('player-title'); if(t) t.textContent=item.name||item.title||'Đang phát';this.paintSelection();Social.startItem(this.currentTab,item,'manual')},
+        stopElements:function(){Social.serial++;Social.cleanup();if(this.hls){try{this.hls.destroy()}catch(e){}this.hls=null}if(this.audio){try{this.audio.pause();this.audio.removeAttribute('src');this.audio.load()}catch(e){}this.audio=null}if(this.video){try{this.video.pause();this.video.removeAttribute('src');this.video.load()}catch(e){}this.video=null}if(this.iframe){try{this.iframe.src='about:blank';this.iframe.remove()}catch(e){}this.iframe=null}var ps=U.by('player-stage'); if(ps) ps.innerHTML=''},
+        togglePlay:function(){if((this.currentTab==='youtube'||this.currentTab==='facebook')&&Social.toggle())return;var el=this.audio||this.video;if(el){if(el.paused)el.play().catch(function(){});else el.pause();return}this.playSelected()},
+        stopAll:function(reason){this.stopElements();this.playing={tab:'',index:-1};this.paintSelection();var ps=U.by('player-stage'); if(ps) ps.innerHTML='<div class="lifeos-player-empty"><div class="text-4xl opacity-50 mb-2">♫</div><b>Đã dừng nội dung</b></div>';var pt=U.by('player-title'); if(pt) pt.textContent='Chưa chọn nội dung'},
+        fullscreen:function(){var el=this.video||this.iframe||U.by('player-stage');if(el&&el.requestFullscreen)el.requestFullscreen().catch(function(){})},
+        reloadList:function(){var self=this,tab=this.currentTab;var ml=U.by('media-list'); if(ml) ml.removeAttribute('data-signature');this.setStatus('Đang tải mới kho '+this.tabName(tab)+'…','loading');var p=tab==='mp3'?this.loadMp3(true):(tab==='youtube'?this.loadYouTube(true):(tab==='facebook'?this.loadFacebook(true):this.loadChannels(true)));return Promise.resolve(p).then(function(){self.render(true);toast('Đã tải mới '+self.tabName(tab),'ok')},function(){self.render(true);toast('Tải mới lỗi','error')})},
+        reloadChannels:function(){var self=this;var ml=U.by('media-list'); if(ml) ml.removeAttribute('data-signature');this.setStatus('Đang tải mới toàn bộ Radio/Tivi…','loading');return this.loadChannels(true).then(function(){self.render(true);toast('Đã cập nhật kênh','ok')})}
+    };
+
+    var Social={
+        mode:'sequential',queueTab:'',queue:[],currentKey:'',currentItem:null,randomBag:[],serial:0,advancePending:false,lastAdvance:0,ytPromise:null,ytPlayer:null,ytPlaylistMaxIndex:-1,fbPromise:null,fbSubscribed:false,fbInstance:null,fbHost:null,fbExpectedSerial:0,fbPoll:0,fbFallbackTimer:0,fbFitTimers:[],fbSoundTimers:[],playerState:'idle',
+        keyOf:function(tab,item){item=item||{};if(tab==='youtube')return'youtube|'+U.esc(item.ytType||item.type||'video')+'|'+U.esc(item.id);if(tab==='facebook')return'facebook|'+U.esc(item.directUrl||item.url||item.id||'');return tab+'|'+U.esc(item.id||item.url)},
+        dedupe:function(tab,list){var out=[],seen={};(Array.isArray(list)?list:[]).forEach(function(item){var key=Social.keyOf(tab,item);if(key&&!seen[key]){seen[key]=1;out.push(item)}});return out},
+        rebuildQueue:function(tab,current){this.queueTab=tab;this.queue=this.dedupe(tab,(Media.filtered&&Media.filtered.length)?Media.filtered:(Media.sourceItems(tab)||[]));this.currentKey=this.keyOf(tab,current);this.currentItem=current;this.randomBag=[];var found=this.queue.some(function(x){return Social.keyOf(tab,x)===Social.currentKey});if(current&&!found)this.queue.unshift(current)},
+        refillRandom:function(){var self=this;this.randomBag=this.queue.map(function(x){return self.keyOf(self.queueTab,x)}).filter(function(k){return k&&k!==self.currentKey});for(var i=this.randomBag.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=this.randomBag[i];this.randomBag[i]=this.randomBag[j];this.randomBag[j]=tmp}},
+        nextItem:function(){if(!this.queue.length)return null;if(this.mode==='random'){if(this.queue.length<2)return this.queue[0]||null;if(!this.randomBag.length)this.refillRandom();while(this.randomBag.length){var key=this.randomBag.shift();if(key===this.currentKey)continue;for(var i=0;i<this.queue.length;i++)if(this.keyOf(this.queueTab,this.queue[i])===key)return this.queue[i]}return null}var pos=-1;for(var j=0;j<this.queue.length;j++)if(this.keyOf(this.queueTab,this.queue[j])===this.currentKey){pos=j;break}return this.queue[(pos<0?0:pos+1)%this.queue.length]},
+        filteredIndex:function(tab,item){var key=this.keyOf(tab,item),list=Media.filtered||[];for(var i=0;i<list.length;i++)if(this.keyOf(tab,list[i])===key)return i;return-1},
+        clearTimers:function(){clearInterval(this.fbPoll);clearTimeout(this.fbFallbackTimer);this.fbPoll=0;this.fbFallbackTimer=0;this.fbFitTimers.forEach(clearTimeout);this.fbFitTimers=[];this.fbSoundTimers.forEach(clearTimeout);this.fbSoundTimers=[];this.advancePending=false},
+        cleanup:function(){this.clearTimers();if(this.ytPlayer){try{this.ytPlayer.destroy()}catch(e){}this.ytPlayer=null}if(this.fbInstance){try{if(typeof this.fbInstance.pause==='function')this.fbInstance.pause()}catch(e){}this.fbInstance=null}this.fbHost=null;this.fbExpectedSerial=0;this.ytPlaylistMaxIndex=-1;this.playerState='idle';var stage=U.by('player-stage');if(stage)stage.classList.remove('lifeos-fb-sdk-host')},
+        startItem:function(tab,item,reason){if(!item)return;this.serial++;var serial=this.serial;this.cleanup();if(reason.indexOf('auto:')!==0||this.queueTab!==tab||!this.queue.length)this.rebuildQueue(tab,item);else{this.currentKey=this.keyOf(tab,item);this.currentItem=item}var idx=this.filteredIndex(tab,item);Media.playing={tab:tab,index:idx};if(idx>=0)Media.selected[tab]=idx;if(typeof Media.paintSelection==='function')Media.paintSelection();if(tab==='youtube')this.playYouTube(item,serial);else if(tab==='facebook')this.playFacebook(item,serial);else if(tab==='tv'||tab==='radio')this.playStream(item,tab,serial);else this.playMp3(item,serial)},
+        signalEnded:function(serial,source){var self=this;if(serial!==this.serial||this.advancePending||!Media.active||Media.currentTab!==this.queueTab)return;var now=Date.now();if(now-this.lastAdvance<1200)return;this.advancePending=true;setTimeout(function(){if(serial!==self.serial||!Media.active||Media.currentTab!==self.queueTab){self.advancePending=false;return}self.advancePending=false;self.lastAdvance=Date.now();var next=self.nextItem();if(next)self.startItem(self.queueTab,next,'auto:'+source)},260)},
+        
+        playMp3:function(item,serial){var stage=U.by('player-stage'),a=document.createElement('audio');a.controls=true;a.autoplay=true;a.preload='metadata';a.src=item.url||item.stream_url;stage.appendChild(a);Media.audio=a;var self=this;a.onplaying=function(){Media.setStatus('Đang phát MP3 · '+(item.name||item.title),'ok')};a.onerror=function(){Media.setStatus('MP3 lỗi nguồn','error')};a.onended=function(){self.signalEnded(serial,'mp3-ended')};a.play().catch(function(){})},
+        playStream:function(item,kind,serial){var self=this,stage=U.by('player-stage'),el=kind==='tv'?document.createElement('video'):document.createElement('audio'),queue=[item.url].concat(item.sources||[]).filter(Boolean),pos=0;el.controls=true;el.autoplay=true;el.preload='metadata';if(kind==='tv'){el.playsInline=true;el.setAttribute('playsinline','')}stage.appendChild(el);if(kind==='tv')Media.video=el;else Media.audio=el;function next(reason){if(serial!==self.serial)return;if(pos>=queue.length){Media.setStatus('Kênh lỗi trên thiết bị này','error');return}var url=queue[pos++];try{el.pause();el.removeAttribute('src');el.load()}catch(e){}Media.setStatus('Đang mở '+Media.tabName(kind)+' · nguồn '+pos+'/'+queue.length+'…','loading');el.onerror=function(){if(serial===self.serial)next('error')};el.onplaying=function(){if(serial===self.serial)Media.setStatus('Đang phát '+Media.tabName(kind)+' · '+(item.name||item.title),'ok')};el.src=url;el.play().catch(function(){})}if(!queue.length){Media.setStatus('Không có URL','error');return}next('start')},
+        
+        // VÁ LỖI CÂM VÀ AUTO NEXT CỦA FACEBOOK SDK
+        ensureFacebook:function(){var self=this;if(window.FB&&window.FB.XFBML&&window.FB.Event)return Promise.resolve(window.FB);if(this.fbPromise)return this.fbPromise;this.fbPromise=new Promise(function(resolve,reject){var done=false,poll=0,timer=0;function ready(){if(done||!window.FB||!window.FB.XFBML||!window.FB.Event)return;done=true;clearInterval(poll);clearTimeout(timer);resolve(window.FB)}var old=window.fbAsyncInit;window.fbAsyncInit=function(){try{if(typeof old==='function')old()}finally{ready()}};if(!U.by('fb-root')){var root=document.createElement('div');root.id='fb-root';document.body.insertBefore(root,document.body.firstChild)}var script=U.by('facebook-jssdk');if(!script){script=document.createElement('script');script.id='facebook-jssdk';script.async=true;script.defer=true;script.crossOrigin='anonymous';script.src='https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v19.0&autoLogAppEvents=0';script.onload=ready;script.onerror=function(){if(done)return;done=true;clearInterval(poll);clearTimeout(timer);reject(new Error('Lỗi tải FB SDK'))};document.head.appendChild(script)}poll=setInterval(ready,120);timer=setTimeout(function(){if(done)return;done=true;clearInterval(poll);reject(new Error('FB SDK Timeout'))},15000)}).then(function(v){return v},function(e){self.fbPromise=null;throw e});return this.fbPromise},
+        targetFbSize:function(){var stage=U.by('player-stage'),sw=Math.max(1,(stage?stage.clientWidth:500)-12),sh=Math.max(1,(stage?stage.clientHeight:700)-12),w=Math.floor(sh*9/16);if(w>sw)w=sw;w=Math.max(220,w);var h=Math.floor(w*16/9);if(h>sh){h=sh;w=Math.floor(h*9/16)}return{w:w,h:h}},
+        fitFacebook:function(){var host=this.fbHost;if(!host||!document.documentElement.contains(host))return;var frame=host.querySelector('iframe'),span=host.querySelector('.fb_iframe_widget span')||host.querySelector('span'),size=this.targetFbSize();host.style.setProperty('width',size.w+'px','important');host.style.setProperty('height',size.h+'px','important');if(span){span.style.setProperty('width',size.w+'px','important');span.style.setProperty('height',size.h+'px','important')}if(frame){frame.style.setProperty('width',size.w+'px','important');frame.style.setProperty('height',size.h+'px','important');frame.style.setProperty('min-height','0','important');frame.style.setProperty('max-width','100%','important');frame.style.setProperty('max-height','100%','important');frame.setAttribute('width',String(size.w));frame.setAttribute('height',String(size.h));Media.iframe=frame}},
+        scheduleFbFit:function(){var self=this;[40,250,700,1500].forEach(function(ms){self.fbFitTimers.push(setTimeout(function(){self.fitFacebook()},ms))})},
+        applyFacebookSound:function(instance,serial){if(!instance||serial!==this.serial||this.fbInstance!==instance)return;try{if(typeof instance.unmute==='function')instance.unmute()}catch(e){}try{if(typeof instance.setVolume==='function')instance.setVolume(1)}catch(e){}},
+        forceFacebookSound:function(instance,serial){var self=this;this.fbSoundTimers.forEach(clearTimeout);this.fbSoundTimers=[];function apply(){self.applyFacebookSound(instance,serial)}apply();[120,420,900,1800].forEach(function(ms){self.fbSoundTimers.push(setTimeout(apply,ms))})},
+        playFacebookDirect:function(item,url,serial){var self=this,stage=U.by('player-stage'),video=document.createElement('video');video.controls=true;video.autoplay=true;video.playsInline=true;video.preload='metadata';video.muted=false;video.defaultMuted=false;video.volume=1;video.removeAttribute('muted');video.setAttribute('playsinline','');stage.appendChild(video);Media.video=video;this.playerState='loading';video.addEventListener('playing',function(){if(serial===self.serial)self.playerState='playing'});video.addEventListener('pause',function(){if(serial===self.serial&&!video.ended)self.playerState='paused'});video.addEventListener('ended',function(){self.signalEnded(serial,'facebook-direct-ended')});video.addEventListener('error',function(){self.signalEnded(serial,'facebook-direct-error')});video.src=url;video.play().catch(function(){})},
+        createFacebookFallback:function(item,serial){if(serial!==this.serial)return;var self=this,stage=U.by('player-stage'),size=this.targetFbSize();this.clearTimers();stage.innerHTML='';stage.classList.add('lifeos-fb-sdk-host');var frame=document.createElement('iframe');frame.className='lifeos-fb-fallback-frame';frame.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen'; frame.setAttribute('allowfullscreen', '');frame.allowFullscreen=true;frame.referrerPolicy='strict-origin-when-cross-origin';frame.scrolling='no';frame.style.width=size.w+'px';frame.style.height=size.h+'px';frame.src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(item.url)+'&show_text=false&autoplay=1&mute=0&allowfullscreen=true&width='+size.w;stage.appendChild(frame);Media.iframe=frame;Media.facebookExternal=item.url;this.playerState='playing';var duration=Number(item.durationSeconds||0);if(duration>0){this.fbFallbackTimer=setTimeout(function(){self.signalEnded(serial,'facebook-duration-fallback')},duration*1000+600);Media.setStatus('Facebook iframe · tự chuyển theo durationSeconds','warn')}else Media.setStatus('Facebook iframe không tự nhảy được','warn')},
+        
+        playFacebookSdk:function(item,serial){
+            var self=this,stage=U.by('player-stage');
+            stage.classList.add('lifeos-fb-sdk-host');
+            var size=this.targetFbSize(),host=document.createElement('div'),plugin=document.createElement('div');
+            
+            host.className='lifeos-fb-sdk-host';
+            host.style.position='relative'; // Neo overlay
+            
+            plugin.className='fb-video';
+            plugin.setAttribute('data-href',item.url);
+            plugin.setAttribute('data-width',String(size.w));
+            plugin.setAttribute('data-show-text','false');
+            plugin.setAttribute('data-autoplay','true');
+            plugin.setAttribute('data-allowfullscreen','true');
+            host.appendChild(plugin);
+            
+            // Lớp Overlay Hứng Click đầu tiên để vượt chính sách Autoplay Policy của trình duyệt
+            var soundOverlay = document.createElement('div');
+            soundOverlay.style.cssText = 'position:absolute; inset:0; z-index:99; cursor:pointer; background:rgba(0,0,0,0.01);';
+            soundOverlay.title = 'Chạm để bật tiếng';
+            soundOverlay.onclick = function(e) {
+                e.stopPropagation(); // Ngăn iframe nhận click lỗi
+                if(self.fbInstance) {
+                    self.forceFacebookSound(self.fbInstance, serial);
+                    try { self.fbInstance.play(); } catch(err){}
+                }
+                soundOverlay.remove();
+            };
+            host.appendChild(soundOverlay);
+
+            stage.appendChild(host);
+            this.fbHost=host;
+            this.fbExpectedSerial=serial;
+            Media.facebookExternal=item.url;
+            Media.setStatus('Đang mở Facebook Reel bằng SDK…','loading');
+            
+            this.ensureFacebook().then(function(FB){
+                if(serial!==self.serial||!document.documentElement.contains(host))return;
+                if(!self.fbSubscribed){
+                    self.fbSubscribed=true;
+                    FB.Event.subscribe('xfbml.ready',function(msg){
+                        if(msg&&msg.type==='video'&&msg.instance&&self.fbHost&&document.documentElement.contains(self.fbHost)){
+                            self.fbInstance=msg.instance;
+                            self.playerState='playing';
+                            self.forceFacebookSound(msg.instance,serial);
+                            try{msg.instance.play()}catch(e){}
+                            try{msg.instance.subscribe('finishedPlaying',function(){if(serial===self.serial)self.signalEnded(serial,'facebook-finishedPlaying')})}catch(e){}
+                            
+                            /* Thuật toán Bắt Vòng Lặp (Auto Next) - Đã tăng độ nhạy và bỏ chặn pos < 1 */
+                            var lastPos=0; 
+                            clearInterval(self.fbPoll); 
+                            self.fbPoll=setInterval(function(){
+                                if(serial!==self.serial||self.fbInstance!==msg.instance){
+                                    clearInterval(self.fbPoll);self.fbPoll=0;return;
+                                }
+                                try{
+                                    var pos=Number(msg.instance.getCurrentPosition&&msg.instance.getCurrentPosition()||0);
+                                    if(lastPos > 2 && pos < lastPos - 1.5){
+                                        self.signalEnded(serial,'facebook-loop-detected');
+                                        return;
+                                    }
+                                    lastPos=pos;
+                                }catch(e){}
+                            }, 250); 
+                            Media.setStatus('Facebook đang phát','ok')
+                        }
+                    })
+                }
+                try{FB.XFBML.parse(host,function(){self.scheduleFbFit()})}catch(e){self.createFacebookFallback(item,serial)}
+            },function(){if(serial===self.serial)self.createFacebookFallback(item,serial)})
+        },
+
+        playFacebook:function(item,serial){var direct=safeText(item.directUrl||item.direct_url||item.videoUrl||'').trim();if(direct){this.playFacebookDirect(item,direct,serial);return}var duration=Number(item.durationSeconds||0);if(duration>0){this.createFacebookFallback(item,serial);return}this.playFacebookSdk(item,serial)},
+        toggle:function(){
+            if(Media.currentTab==='youtube'&&this.ytPlayer){try{var state=this.ytPlayer.getPlayerState();if(state===1||state===3)this.ytPlayer.pauseVideo();else this.ytPlayer.playVideo();return true}catch(e){}}
+            if(Media.currentTab==='facebook'&&this.fbInstance){try{if(this.playerState==='playing'){this.fbInstance.pause();this.playerState='paused'}else{this.forceFacebookSound(this.fbInstance,this.serial);this.fbInstance.play();this.playerState='playing'}return true}catch(e){}}
+            return false
+        }
+    };
+    function safeText(v){return String(v==null?'':v)}
+    
+    // MỞ KHÓA ÂM THANH CHUNG (Fallback)
+    if(!document.__lifeosFacebookSoundUnlock){
+        document.__lifeosFacebookSoundUnlock=true;
+        var unlockFacebookSound=function(){
+            if(Social.fbInstance)Social.forceFacebookSound(Social.fbInstance,Social.serial);
+            var v=U.by('player-stage')&&U.by('player-stage').querySelector('video');
+            if(v){try{v.muted=false;v.defaultMuted=false;v.volume=1;v.removeAttribute('muted')}catch(e){}}
+        };
+        document.addEventListener('pointerdown',unlockFacebookSound,true);
+        document.addEventListener('keydown',unlockFacebookSound,true);
+    }
+
+    // Nút "Ngẫu nhiên / Tuần tự"
+    document.addEventListener("DOMContentLoaded", function() {
+        var modeBtn = U.by('social-mode-toggle');
+        if(modeBtn) {
+            modeBtn.classList.remove('hidden');
+            modeBtn.addEventListener('click', function() {
+                Social.mode = Social.mode === 'sequential' ? 'random' : 'sequential';
+                modeBtn.textContent = Social.mode === 'random' ? '🔀 Ngẫu nhiên' : '🔁 Tuần tự';
+            });
+        }
+        window.addEventListener('resize', function(){ if(Media.currentTab==='facebook') Social.scheduleFbFit(); }, {passive:true});
+    });
+
+    window.MediaModule = Media;
+    document.addEventListener('DOMContentLoaded', function(){ Media.init(); });
+    })();
+    </script>
+</body>
+</html>device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Tân Thành Phát - Thiết Bị & Kỹ Thuật Máy Văn Phòng</title>
     
     <!-- TailwindCSS & Icons -->
