@@ -52,7 +52,7 @@
                     <i class="fa-solid fa-store text-4xl"></i>
                 </div>
                 <h2 class="text-2xl font-bold text-slate-800">Kênh Người Bán</h2>
-                <p class="text-slate-500 text-sm mt-1">Hệ thống quản lý MimiFlower</p>
+                <p class="text-slate-500 text-sm mt-1">Hệ thống quản lý</p>
             </div>
             <form onsubmit="handleLogin(event)" class="space-y-5">
                 <div>
@@ -71,7 +71,7 @@
     <!-- 2. SIDEBAR -->
     <div id="sidebar" class="fixed md:static inset-y-0 left-0 w-72 bg-white border-r border-slate-200 flex flex-col z-40 sidebar-transition sidebar-closed md:transform-none shadow-2xl md:shadow-none">
         <div class="p-6 border-b border-slate-100 flex items-center justify-between h-20">
-            <div class="flex items-center gap-3"><div class="w-10 h-10 bg-[#ee4d2d] rounded-lg flex items-center justify-center text-white shadow-md"><i class="fa-solid fa-leaf"></i></div><span class="font-bold text-xl tracking-tight text-slate-800">MimiManager</span></div>
+            <div class="flex items-center gap-3"><div class="w-10 h-10 bg-[#ee4d2d] rounded-lg flex items-center justify-center text-white shadow-md"><i class="fa-solid fa-store"></i></div><span class="font-bold text-xl tracking-tight text-slate-800">Quản Trị</span></div>
             <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-[#ee4d2d] transition"><i class="fa-solid fa-times text-2xl"></i></button>
         </div>
         <nav class="flex-1 py-6 space-y-2 overflow-y-auto px-3">
@@ -218,12 +218,12 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyDT0IEKhjAJZ_ZiMVwVCvO-fuj0ByReoE8",
-            authDomain: "esomar-vnn.firebaseapp.com",
-            projectId: "esomar-vnn",
-            storageBucket: "esomar-vnn.firebasestorage.app",
-            messagingSenderId: "1023271897973",
-            appId: "1:1023271897973:web:c7207b0e8321fc271fe13c"
+            apiKey: "AIzaSyCU0Syo-d6UbsqKrjMP45uECg50HRLQP1k",
+            authDomain: "mvp-tanthanhphat.firebaseapp.com",
+            projectId: "mvp-tanthanhphat",
+            storageBucket: "mvp-tanthanhphat.firebasestorage.app",
+            messagingSenderId: "33726373832",
+            appId: "1:33726373832:web:d8f106016a1f064674aafd"
         };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
