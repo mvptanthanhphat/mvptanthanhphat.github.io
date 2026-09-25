@@ -79,6 +79,32 @@
         .cv-qr { position: absolute; right: 2%; top: 12%; height: 76%; aspect-ratio: 1/1; background: #fff; padding: 0.55cqi; display: flex; align-items: center; justify-content: center; border-radius: 0.45cqi; box-shadow: 0 0 0 0.22cqi #f58226; }
         .cv-qr img { width: 100%; height: 100%; object-fit: contain; }
 
+        .letter-wrap { max-width: 760px; margin: 0 auto; }
+        .letter-sheet { background: linear-gradient(180deg, #fffdfb 0%, #ffffff 18%); border: 1px solid #f3e4d8; border-radius: 16px; box-shadow: 0 16px 40px rgba(22,43,117,0.1); overflow: hidden; }
+        .letter-head { background: linear-gradient(90deg, #12245f 0%, #1a3480 62%, #243e8c 100%); color: #fff7ed; padding: 22px 28px 20px; position: relative; }
+        .letter-head:after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: linear-gradient(90deg, #e4572e, #f58226); }
+        .letter-kicker { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #fdba74; font-weight: 600; }
+        .letter-head h2 { margin: 8px 0 2px; font-size: 28px; font-weight: 800; letter-spacing: 0.18em; color: #fff; }
+        .letter-brand { font-size: 14px; font-weight: 700; color: #fff7ed; }
+        .letter-body { padding: 26px 28px 22px; color: #1e293b; font-size: 15px; line-height: 1.75; }
+        .letter-hello { font-size: 16px; font-weight: 800; color: #162B75; margin-bottom: 14px; }
+        .letter-body p { margin: 0 0 14px; }
+        .letter-body strong { color: #162B75; }
+        .letter-quote { color: #c2410c; font-style: italic; font-weight: 700; }
+        .letter-points { display: grid; gap: 10px; margin: 6px 0 18px; }
+        .letter-points li { list-style: none; display: flex; align-items: flex-start; gap: 10px; background: #fff7f3; border: 1px solid #ffe0d2; border-radius: 12px; padding: 10px 12px; color: #1e3a6e; font-weight: 600; line-height: 1.45; }
+        .letter-points i { color: #e4572e; margin-top: 2px; width: 16px; text-align: center; }
+        .letter-sign { margin-top: 8px; padding-top: 14px; border-top: 1px dashed #f0d5c6; display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+        .letter-sign .who { font-weight: 800; color: #e4572e; margin-top: 2px; }
+        .letter-sign .meta { text-align: right; font-size: 13px; color: #64748b; line-height: 1.45; }
+        .letter-sign a { color: #162B75; font-weight: 800; }
+        @media (max-width: 640px) {
+          .letter-head, .letter-body { padding-left: 16px; padding-right: 16px; }
+          .letter-head h2 { font-size: 22px; letter-spacing: 0.12em; }
+          .letter-sign { flex-direction: column; align-items: flex-start; }
+          .letter-sign .meta { text-align: left; }
+        }
+
         /* ==================================================
            3. BẢN VÁ FULLSCREEN AUDIO ĐỘC LẬP
            ================================================== */
@@ -438,7 +464,7 @@
 .fa,.fa-solid{font-family:"Font Awesome 6 Free";font-weight:900;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
 .fa-spin{animation:fa-spin 2s linear infinite}
 @keyframes fa-spin{to{transform:rotate(1turn)}}
-.fa-address-card:before{content:"\f2bb"}.fa-arrow-left:before{content:"\f060"}.fa-arrow-up-right-from-square:before{content:"\f08e"}.fa-bag-shopping:before{content:"\f290"}.fa-box-open:before{content:"\f49e"}.fa-building:before{content:"\f1ad"}.fa-building-columns:before{content:"\f19c"}.fa-cart-plus:before{content:"\f217"}.fa-cart-shopping:before{content:"\f07a"}.fa-check:before{content:"\f00c"}.fa-chevron-right:before{content:"\f054"}.fa-clock-rotate-left:before{content:"\f1da"}.fa-compact-disc:before{content:"\f51f"}.fa-compress:before{content:"\f066"}.fa-copy:before{content:"\f0c5"}.fa-desktop:before{content:"\f390"}.fa-envelope:before{content:"\f0e0"}.fa-envelope-open-text:before{content:"\f658"}.fa-expand:before{content:"\f065"}.fa-file-invoice-dollar:before{content:"\f571"}.fa-fingerprint:before{content:"\f577"}.fa-laptop-code:before{content:"\f5fc"}.fa-layer-group:before{content:"\f5fd"}.fa-list-ul:before{content:"\f0ca"}.fa-location-dot:before{content:"\f3c5"}.fa-map-location-dot:before{content:"\f5a0"}.fa-microchip:before{content:"\f2db"}.fa-money-bill-wave:before{content:"\f53a"}.fa-music:before{content:"\f001"}.fa-network-wired:before{content:"\f6ff"}.fa-phone:before{content:"\f095"}.fa-phone-volume:before{content:"\f2a0"}.fa-print:before{content:"\f02f"}.fa-radio:before{content:"\f8d7"}.fa-rotate-right:before{content:"\f2f9"}.fa-shield-halved:before{content:"\f3ed"}.fa-spinner:before{content:"\f110"}.fa-store:before{content:"\f54e"}.fa-times:before{content:"\f00d"}.fa-trash:before{content:"\f1f8"}.fa-truck-fast:before{content:"\f48b"}.fa-video:before{content:"\f03d"}.fa-wifi:before{content:"\f1eb"}.fa-xmark:before{content:"\f00d"}
+.fa-address-card:before{content:"\f2bb"}.fa-arrow-left:before{content:"\f060"}.fa-arrow-up-right-from-square:before{content:"\f08e"}.fa-bag-shopping:before{content:"\f290"}.fa-box-open:before{content:"\f49e"}.fa-building:before{content:"\f1ad"}.fa-building-columns:before{content:"\f19c"}.fa-cart-plus:before{content:"\f217"}.fa-cart-shopping:before{content:"\f07a"}.fa-check:before{content:"\f00c"}.fa-chevron-right:before{content:"\f054"}.fa-clock-rotate-left:before{content:"\f1da"}.fa-compact-disc:before{content:"\f51f"}.fa-compress:before{content:"\f066"}.fa-copy:before{content:"\f0c5"}.fa-desktop:before{content:"\f390"}.fa-envelope:before{content:"\f0e0"}.fa-envelope-open-text:before{content:"\f658"}.fa-expand:before{content:"\f065"}.fa-file-invoice-dollar:before{content:"\f571"}.fa-fingerprint:before{content:"\f577"}.fa-laptop-code:before{content:"\f5fc"}.fa-layer-group:before{content:"\f5fd"}.fa-list-ul:before{content:"\f0ca"}.fa-location-dot:before{content:"\f3c5"}.fa-map-location-dot:before{content:"\f5a0"}.fa-microchip:before{content:"\f2db"}.fa-money-bill-wave:before{content:"\f53a"}.fa-music:before{content:"\f001"}.fa-network-wired:before{content:"\f6ff"}.fa-phone:before{content:"\f095"}.fa-phone-volume:before{content:"\f2a0"}.fa-print:before{content:"\f02f"}.fa-radio:before{content:"\f8d7"}.fa-rotate-right:before{content:"\f2f9"}.fa-shield-halved:before{content:"\f3ed"}.fa-spinner:before{content:"\f110"}.fa-store:before{content:"\f54e"}.fa-times:before{content:"\f00d"}.fa-trash:before{content:"\f1f8"}.fa-truck-fast:before{content:"\f48b"}.fa-video:before{content:"\f03d"}.fa-wifi:before{content:"\f1eb"}.fa-bell:before{content:"\f0f3"}.fa-headset:before{content:"\f590"}.fa-xmark:before{content:"\f00d"}
 
 
 
@@ -466,9 +492,13 @@
                 <button onclick="toggleAudioWindow()" class="hover:text-yellow-100 font-bold flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full clickable transition-all border border-white/20 text-yellow-300 outline-none">
                     <i class="fa-solid fa-music"></i><span class="hidden sm:inline">Audio</span>
                 </button>
-                <a href="#" onclick="alert('Tính năng Thông báo đang được bảo trì cập nhật!')" class="hover:text-gray-200 hidden md:inline clickable outline-none">Thông báo</a>
-                <a href="#" onclick="openSupportModal()" class="hover:text-gray-200 hidden md:inline clickable outline-none">Hỗ trợ</a>
+                <a href="#" onclick="openOrderGuide(); return false;" class="hover:text-gray-200 hidden md:inline clickable outline-none">Thông báo</a>
+                <a href="#" onclick="openSupportModal(); return false;" class="hover:text-gray-200 hidden md:inline clickable outline-none">Hỗ trợ</a>
             </div>
+        </div>
+        <div class="md:hidden max-w-6xl mx-auto px-2 pb-1.5 grid grid-cols-2 gap-1.5">
+            <button type="button" onclick="openOrderGuide()" class="flex items-center justify-center gap-1.5 bg-white/15 border border-white/30 rounded-full py-2 text-[13px] font-bold outline-none active:bg-white/25"><i class="fa-solid fa-bell"></i> Thông báo</button>
+            <button type="button" onclick="openSupportModal()" class="flex items-center justify-center gap-1.5 bg-white/15 border border-white/30 rounded-full py-2 text-[13px] font-bold outline-none active:bg-white/25"><i class="fa-solid fa-headset"></i> Hỗ trợ</button>
         </div>
     </div>
 
@@ -635,22 +665,31 @@
         <!-- TAB 3: THƯ NGỎ                             -->
         <!-- ========================================== -->
         <div id="tab-letter" class="tab-content">
-            <div class="max-w-3xl mx-auto dynamic-card p-5 md:p-8 rounded-lg shadow-sm border">
-                <div class="text-center mb-6 border-b pb-4">
-                    <h2 class="text-2xl font-bold dynamic-text uppercase mb-1">Thư Ngỏ</h2>
-                    <p class="text-sm opacity-70">TT Thiết Bị & Kỹ Thuật Máy Văn Phòng Tân Thành Phát</p>
-                </div>
-                <div class="space-y-4 text-sm md:text-base leading-relaxed opacity-90 text-justify">
-                    <p><strong>Kính gửi Quý Khách hàng và Đối tác,</strong></p>
-                    <p>Lời đầu tiên, <strong>Tân Thành Phát</strong> xin gửi lời chào trân trọng, lời chúc sức khỏe và thành công tới Quý vị.</p>
-                    <p>Với định hướng <em>"Luôn đồng hành cùng bạn"</em>, chúng tôi tự hào cung cấp giải pháp toàn diện về hệ thống thiết bị văn phòng, máy tính, mạng và camera an ninh.</p>
-                    <ul class="list-disc pl-5 space-y-1">
-                        <li>Dịch vụ nhanh chóng, khắc phục sự cố tận nơi.</li>
-                        <li>Trang thiết bị, linh kiện thay thế chính hãng.</li>
-                        <li>Bảo hành minh bạch, uy tín.</li>
-                    </ul>
-                    <div class="mt-8 pt-4"><p class="font-bold">Trân trọng,</p><p class="dynamic-text font-bold mt-1">Đại diện Tân Thành Phát</p></div>
-                </div>
+            <div class="letter-wrap">
+                <article class="letter-sheet">
+                    <header class="letter-head">
+                        <p class="letter-kicker">TT Thiết Bị & Kỹ Thuật Máy Văn Phòng</p>
+                        <h2>THƯ NGỎ</h2>
+                        <p class="letter-brand">Tân Thành Phát</p>
+                    </header>
+                    <div class="letter-body">
+                        <p class="letter-hello">Kính gửi Quý Khách hàng và Đối tác,</p>
+                        <p>Lời đầu tiên, <strong>Tân Thành Phát</strong> xin gửi lời chào trân trọng, lời chúc sức khỏe và thành công tới Quý vị.</p>
+                        <p>Với định hướng <span class="letter-quote">"Luôn đồng hành cùng bạn"</span>, chúng tôi tự hào cung cấp giải pháp toàn diện về hệ thống thiết bị văn phòng, máy tính, mạng và camera an ninh.</p>
+                        <ul class="letter-points">
+                            <li><i class="fa-solid fa-truck-fast"></i><span>Dịch vụ nhanh chóng, khắc phục sự cố tận nơi.</span></li>
+                            <li><i class="fa-solid fa-box-open"></i><span>Trang thiết bị, linh kiện thay thế chính hãng.</span></li>
+                            <li><i class="fa-solid fa-shield-halved"></i><span>Bảo hành minh bạch, uy tín.</span></li>
+                        </ul>
+                        <div class="letter-sign">
+                            <div>
+                                <p>Trân trọng,</p>
+                                <p class="who">Đại diện Tân Thành Phát</p>
+                            </div>
+                            <p class="meta">KCN Nội Bài, Hà Nội<br><a href="tel:0913945985">0913.945.985</a></p>
+                        </div>
+                    </div>
+                </article>
             </div>
         </div>
     </main>
@@ -723,6 +762,30 @@
                 <div class="flex items-start gap-4"><div class="bg-white p-2 rounded-xl text-[var(--accent-primary)] text-3xl"><i class="fa-solid fa-microchip"></i></div><div class="flex-1"><h3 class="font-bold text-xl">Cài đặt Tân Thành Phát</h3><p class="text-xs opacity-90">Web App nhẹ & mượt</p></div><button onclick="document.getElementById('pwaModal').classList.add('hidden')" class="text-white outline-none"><i class="fa-solid fa-xmark text-2xl"></i></button></div>
             </div>
             <div class="px-5 py-6 text-center text-sm text-gray-700">Hãy nhấn vào biểu tượng Menu của trình duyệt (3 chấm) và chọn <b>Thêm vào Màn hình chính (Add to Home Screen)</b> để sử dụng như một Ứng dụng độc lập!</div>
+        </div>
+    </div>
+
+    <div id="guideModal" class="fixed inset-0 bg-black/60 z-[100006] items-center justify-center p-4" style="display:none" onclick="if(event.target===this) closeOrderGuide()">
+        <div class="bg-white w-full max-w-md rounded-2xl overflow-hidden shadow-2xl">
+            <div class="px-5 py-4 text-white" style="background:linear-gradient(90deg,#12245f,#1a3480)">
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <p class="text-[11px] font-bold uppercase tracking-widest" style="color:#fdba74">Thông báo</p>
+                        <h3 class="text-xl font-extrabold leading-tight mt-1">Cách đặt hàng tại Tân Thành Phát</h3>
+                    </div>
+                    <button type="button" onclick="closeOrderGuide()" class="w-8 h-8 rounded-full bg-white/15 text-white outline-none"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+            <div class="px-5 py-4 space-y-2.5 text-sm text-[#1e3a6e]">
+                <div class="flex gap-3 items-start"><span class="w-6 h-6 shrink-0 rounded-full text-white text-xs font-bold flex items-center justify-center" style="background:#e4572e">1</span><p>Mở <strong>Gian hàng</strong> và tìm sản phẩm cần mua.</p></div>
+                <div class="flex gap-3 items-start"><span class="w-6 h-6 shrink-0 rounded-full text-white text-xs font-bold flex items-center justify-center" style="background:#e4572e">2</span><p>Bấm vào sản phẩm để xem ảnh, video và <strong>giá bán lẻ</strong>.</p></div>
+                <div class="flex gap-3 items-start"><span class="w-6 h-6 shrink-0 rounded-full text-white text-xs font-bold flex items-center justify-center" style="background:#e4572e">3</span><p>Chọn số lượng, rồi bấm <strong>Thêm giỏ</strong> hoặc <strong>Mua ngay</strong>.</p></div>
+                <div class="flex gap-3 items-start"><span class="w-6 h-6 shrink-0 rounded-full text-white text-xs font-bold flex items-center justify-center" style="background:#e4572e">4</span><p>Điền họ tên, số điện thoại, địa chỉ và bấm <strong>Đặt hàng</strong>.</p></div>
+                <p class="text-xs text-gray-500 pt-1">Giao và lắp đặt tận nơi. Cần gấp gọi <a href="tel:0913945985" class="font-bold" style="color:#e4572e">0913.945.985</a>.</p>
+            </div>
+            <div class="px-5 pb-5">
+                <button type="button" onclick="goShopFromGuide()" class="w-full dynamic-bg py-3 rounded-xl font-bold uppercase text-sm outline-none">Vào gian hàng lựa chọn</button>
+            </div>
         </div>
     </div>
 
@@ -928,6 +991,21 @@
         function changeTheme(t) { document.body.className = 'flex flex-col min-h-screen pb-[env(safe-area-inset-bottom)] relative theme-' + t; if(navigator.vibrate) navigator.vibrate(20); }
         function copyInfo() { navigator.clipboard.writeText("Tân Thành Phát - 0913.945.985").then(()=>alert("Đã copy!")); }
         function openSupportModal() { const m = document.getElementById('supportModal'); m.classList.remove('hidden'); setTimeout(() => { m.classList.remove('opacity-0'); document.getElementById('supportModalContent').classList.remove('scale-95'); }, 10); document.body.style.overflow = 'hidden'; }
+        function openOrderGuide() {
+            var m = document.getElementById('guideModal');
+            if (!m) return;
+            m.style.display = 'flex';
+        }
+        function closeOrderGuide() {
+            var m = document.getElementById('guideModal');
+            if (!m) return;
+            m.style.display = 'none';
+        }
+        function goShopFromGuide() {
+            closeOrderGuide();
+            if (typeof switchTab === 'function') switchTab('tab-shop');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
         function closeSupportModal() { const m = document.getElementById('supportModal'); m.classList.add('opacity-0'); document.getElementById('supportModalContent').classList.add('scale-95'); setTimeout(() => { m.classList.add('hidden'); document.body.style.overflow = ''; }, 300); }
         function openSmartGuide() { document.getElementById('pwaModal').classList.remove('hidden'); }
 
