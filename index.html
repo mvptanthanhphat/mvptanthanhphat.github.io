@@ -7,14 +7,10 @@
     
     <!-- TailwindCSS & Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Oswald:wght@500;700&family=Roboto+Condensed:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
 
     <style>
         /* ==================================================
@@ -126,6 +122,328 @@
             }
         });
     </script>
+<style>
+/* Chỉ icon đang dùng — không tải all.min.css. */
+@font-face{font-family:"Font Awesome 6 Free";font-style:normal;font-weight:900;font-display:swap;src:url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2") format("woff2")}
+.fa,.fa-solid{font-family:"Font Awesome 6 Free";font-weight:900;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
+.fa-spin{animation:fa-spin 2s linear infinite}
+@keyframes fa-spin{to{transform:rotate(1turn)}}
+.fa-address-card:before{content:"\f2bb"}.fa-arrow-left:before{content:"\f060"}.fa-arrow-up-right-from-square:before{content:"\f08e"}.fa-bag-shopping:before{content:"\f290"}.fa-box-open:before{content:"\f49e"}.fa-building:before{content:"\f1ad"}.fa-building-columns:before{content:"\f19c"}.fa-cart-plus:before{content:"\f217"}.fa-cart-shopping:before{content:"\f07a"}.fa-check:before{content:"\f00c"}.fa-chevron-right:before{content:"\f054"}.fa-clock-rotate-left:before{content:"\f1da"}.fa-compact-disc:before{content:"\f51f"}.fa-compress:before{content:"\f066"}.fa-copy:before{content:"\f0c5"}.fa-desktop:before{content:"\f390"}.fa-envelope:before{content:"\f0e0"}.fa-envelope-open-text:before{content:"\f658"}.fa-expand:before{content:"\f065"}.fa-file-invoice-dollar:before{content:"\f571"}.fa-fingerprint:before{content:"\f577"}.fa-laptop-code:before{content:"\f5fc"}.fa-layer-group:before{content:"\f5fd"}.fa-list-ul:before{content:"\f0ca"}.fa-location-dot:before{content:"\f3c5"}.fa-map-location-dot:before{content:"\f5a0"}.fa-microchip:before{content:"\f2db"}.fa-money-bill-wave:before{content:"\f53a"}.fa-music:before{content:"\f001"}.fa-network-wired:before{content:"\f6ff"}.fa-phone:before{content:"\f095"}.fa-phone-volume:before{content:"\f2a0"}.fa-print:before{content:"\f02f"}.fa-radio:before{content:"\f8d7"}.fa-rotate-right:before{content:"\f2f9"}.fa-shield-halved:before{content:"\f3ed"}.fa-spinner:before{content:"\f110"}.fa-store:before{content:"\f54e"}.fa-times:before{content:"\f00d"}.fa-trash:before{content:"\f1f8"}.fa-truck-fast:before{content:"\f48b"}.fa-video:before{content:"\f03d"}.fa-wifi:before{content:"\f1eb"}.fa-xmark:before{content:"\f00d"}
+
+.shop-shell {
+  color: var(--text-main, #222);
+}
+.shop-panel {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border-color, #ececec);
+  border-radius: 8px;
+}
+.shop-search {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid var(--border-color, #e7e5e4);
+  background: var(--bg-body, #fafaf9);
+  padding: 0.6rem 0.75rem 0.6rem 2.25rem;
+  font-size: 0.875rem;
+  outline: none;
+}
+.shop-search:focus {
+  border-color: var(--accent-primary, #ee4d2d);
+}
+.shop-chip {
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1px solid var(--border-color, #e7e5e4);
+  background: var(--card-bg, #fff);
+  color: var(--text-main, #1c1917);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.shop-chip-on {
+  background: var(--accent-primary, #ee4d2d);
+  border-color: var(--accent-primary, #ee4d2d);
+  color: #fff;
+}
+.shop-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--border-color, #e7e5e4);
+}
+.shop-tab {
+  border-bottom: 2px solid transparent;
+  padding: 0.7rem 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #78716c;
+}
+.shop-tab-on {
+  color: var(--accent-primary, #ee4d2d);
+  border-bottom-color: var(--accent-primary, #ee4d2d);
+}
+.shop-card {
+  display: flex;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid var(--border-color, #e7e5e4);
+  background: var(--card-bg, #fff);
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.shop-card:hover {
+  border-color: var(--accent-primary, #ee4d2d);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.07);
+  transform: translateY(-2px);
+}
+.shop-card:active {
+  transform: scale(0.98);
+}
+.shop-card-hit {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  text-align: left;
+}
+.shop-card-media {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-color, #eee);
+  background: color-mix(in srgb, var(--bg-body, #f5f5f4) 65%, #fff);
+}
+.shop-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 10px;
+}
+.shop-card-empty {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #a8a29e;
+}
+.shop-card-ribbon {
+  position: absolute;
+  top: 6px;
+  left: -2px;
+  max-width: 72%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--accent-primary, #ee4d2d);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 3px 7px 3px 8px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.18);
+}
+.shop-card-ribbon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  border-top: 3px solid color-mix(in srgb, var(--accent-primary, #ee4d2d) 68%, #000);
+  border-left: 2px solid transparent;
+}
+.shop-card-video,
+.shop-card-new {
+  position: absolute;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 2px 6px;
+}
+.shop-card-video {
+  right: 6px;
+  bottom: 6px;
+  background: rgba(22, 43, 117, 0.88);
+}
+.shop-card-new {
+  top: 6px;
+  right: 6px;
+  background: #162b75;
+}
+.shop-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 8px 10px;
+}
+.shop-card-name {
+  min-height: 2.7em;
+  overflow: hidden;
+  color: var(--text-main, #1c1917);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.shop-card-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: auto;
+}
+.shop-card-price {
+  color: var(--accent-primary, #ee4d2d);
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.shop-card-stock {
+  flex-shrink: 0;
+  color: #78716c;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.shop-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 12px 10px;
+  scroll-snap-type: x proximity;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
+}
+.shop-chip {
+  scroll-snap-align: start;
+}
+.shop-buybar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+@media (hover: none) {
+  .shop-card:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--border-color, #e7e5e4);
+  }
+}
+
+@media (max-width: 640px) {
+  #siteTabs button {
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+    font-size: 11px;
+    line-height: 1.15;
+  }
+  .shop-shell {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  }
+  .shop-inline-cart,
+  .shop-meta-note,
+  .shop-detail-open .shop-panel,
+  .shop-detail-open .shop-tabs {
+    display: none;
+  }
+  .shop-search {
+    font-size: 16px;
+  }
+  .shop-chip {
+    min-height: 34px;
+  }
+  .shop-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .shop-card-img {
+    padding: 6px;
+  }
+  .shop-card-body {
+    gap: 4px;
+    padding: 6px 6px 8px;
+  }
+  .shop-card-name {
+    font-size: 12px;
+  }
+  .shop-card-price {
+    font-size: 14px;
+  }
+  .shop-card-stock {
+    font-size: 10px;
+  }
+  .shop-card-ribbon {
+    max-width: 68%;
+    padding: 2px 6px 2px 7px;
+    font-size: 9px;
+  }
+  .shop-detail .aspect-square {
+    aspect-ratio: 16 / 9;
+  }
+  .shop-thumbs {
+    display: none;
+  }
+  .shop-buycol {
+    padding: 10px 12px 12px;
+  }
+  .shop-pricebox {
+    padding: 8px 10px;
+  }
+  .shop-pricebox .shop-price {
+    font-size: 1.65rem;
+  }
+  .shop-buybar {
+    position: static;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+}
+.shop-price {
+  color: var(--accent-primary, #ee4d2d);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.shop-btn {
+  background: var(--accent-primary, #ee4d2d);
+  color: #fff;
+}
+.shop-btn:disabled {
+  opacity: 0.6;
+}
+.shop-btn-ghost {
+  border: 1px solid var(--accent-primary, #ee4d2d);
+  color: var(--accent-primary, #ee4d2d);
+  background: color-mix(in srgb, var(--accent-primary, #ee4d2d) 8%, white);
+}
+.shop-soft {
+  background: color-mix(in srgb, var(--accent-primary, #ee4d2d) 8%, white);
+}
+.shop-selected {
+  border-color: var(--accent-primary, #ee4d2d);
+  color: var(--accent-primary, #ee4d2d);
+  background: color-mix(in srgb, var(--accent-primary, #ee4d2d) 8%, white);
+  font-weight: 700;
+}
+
+/* Chỉ icon đang dùng — không tải all.min.css. */
+@font-face{font-family:"Font Awesome 6 Free";font-style:normal;font-weight:900;font-display:swap;src:url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2") format("woff2")}
+.fa,.fa-solid{font-family:"Font Awesome 6 Free";font-weight:900;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
+.fa-spin{animation:fa-spin 2s linear infinite}
+@keyframes fa-spin{to{transform:rotate(1turn)}}
+.fa-address-card:before{content:"\f2bb"}.fa-arrow-left:before{content:"\f060"}.fa-arrow-up-right-from-square:before{content:"\f08e"}.fa-bag-shopping:before{content:"\f290"}.fa-box-open:before{content:"\f49e"}.fa-building:before{content:"\f1ad"}.fa-building-columns:before{content:"\f19c"}.fa-cart-plus:before{content:"\f217"}.fa-cart-shopping:before{content:"\f07a"}.fa-check:before{content:"\f00c"}.fa-chevron-right:before{content:"\f054"}.fa-clock-rotate-left:before{content:"\f1da"}.fa-compact-disc:before{content:"\f51f"}.fa-compress:before{content:"\f066"}.fa-copy:before{content:"\f0c5"}.fa-desktop:before{content:"\f390"}.fa-envelope:before{content:"\f0e0"}.fa-envelope-open-text:before{content:"\f658"}.fa-expand:before{content:"\f065"}.fa-file-invoice-dollar:before{content:"\f571"}.fa-fingerprint:before{content:"\f577"}.fa-laptop-code:before{content:"\f5fc"}.fa-layer-group:before{content:"\f5fd"}.fa-list-ul:before{content:"\f0ca"}.fa-location-dot:before{content:"\f3c5"}.fa-map-location-dot:before{content:"\f5a0"}.fa-microchip:before{content:"\f2db"}.fa-money-bill-wave:before{content:"\f53a"}.fa-music:before{content:"\f001"}.fa-network-wired:before{content:"\f6ff"}.fa-phone:before{content:"\f095"}.fa-phone-volume:before{content:"\f2a0"}.fa-print:before{content:"\f02f"}.fa-radio:before{content:"\f8d7"}.fa-rotate-right:before{content:"\f2f9"}.fa-shield-halved:before{content:"\f3ed"}.fa-spinner:before{content:"\f110"}.fa-store:before{content:"\f54e"}.fa-times:before{content:"\f00d"}.fa-trash:before{content:"\f1f8"}.fa-truck-fast:before{content:"\f48b"}.fa-video:before{content:"\f03d"}.fa-wifi:before{content:"\f1eb"}.fa-xmark:before{content:"\f00d"}
+
+
+
+.fa-magnifying-glass:before{content:"\f002"}
+</style>
 </head>
 <body class="bg-[var(--bg-body)] flex flex-col min-h-screen relative">
     <audio id="xsSilenceAnchor" src="silence_30min.mp3" loop autoplay playsinline style="display:none;"></audio>
@@ -171,20 +489,21 @@
                     <button onclick="changeTheme('lemon')" class="w-6 h-6 rounded-full bg-[#FEFCE8] border border-yellow-300 shadow-sm clickable outline-none"></button>
                     <button onclick="changeTheme('jade')" class="w-6 h-6 rounded-full bg-[#F0FDF4] border border-green-300 shadow-sm clickable outline-none"></button>
                 </div>
-                <div class="relative px-2 cursor-pointer group flex flex-col items-center justify-center clickable outline-none" onclick="openOrderHistory()">
+                <div class="relative px-2 cursor-pointer group flex flex-col items-center justify-center clickable outline-none" onclick="openShop('orders')">
                     <i class="fa-solid fa-file-invoice-dollar text-[18px] md:text-xl text-[var(--text-main)] drop-shadow-sm"></i>
                     <span class="text-[9px] md:text-[10px] text-[var(--text-main)] font-medium mt-0.5 hidden md:block">Đơn mua</span>
                 </div>
                 <!-- VÁ: ĐỔI OPENCHECKOUTMODAL THÀNH OPENCHECKOUT ĐỂ GỌI ĐÚNG HÀM GỐC -->
-                <div class="relative px-2 cursor-pointer group flex flex-col items-center justify-center clickable outline-none" onclick="openCheckout()">
+                <div class="relative px-2 cursor-pointer group flex flex-col items-center justify-center clickable outline-none" onclick="openShop('cart')">
                     <i class="fa-solid fa-cart-shopping text-[20px] md:text-2xl dynamic-text drop-shadow-sm"></i>
                     <span class="text-[9px] md:text-[10px] text-[var(--text-main)] font-medium mt-0.5 hidden md:block">Giỏ hàng</span>
                     <span id="cartCount" class="absolute -top-1 right-0 md:-right-1 dynamic-bg text-white text-[10px] font-bold px-1.5 py-[1px] rounded-full border border-white shadow-sm transition-transform duration-200">0</span>
                 </div>
             </div>
         </div>
-        <nav class="max-w-6xl mx-auto grid grid-cols-3 text-center text-xs md:text-sm font-bold border-t border-black/5 mt-1">
+        <nav id="siteTabs" class="max-w-6xl mx-auto grid grid-cols-4 text-center text-xs md:text-sm font-bold border-t border-black/5 mt-1">
             <button onclick="switchTab('tab-home')" id="btn-tab-home" class="py-2.5 border-b-2 dynamic-text border-[var(--accent-primary)] clickable transition-all outline-none"><i class="fa-solid fa-layer-group"></i> Dịch Vụ</button>
+            <button onclick="switchTab('tab-shop')" id="btn-tab-shop" class="py-2.5 border-b-2 border-transparent opacity-60 hover:opacity-100 clickable transition-all outline-none"><i class="fa-solid fa-store"></i> Gian hàng</button>
             <button onclick="switchTab('tab-card')" id="btn-tab-card" class="py-2.5 border-b-2 border-transparent opacity-60 hover:opacity-100 clickable transition-all outline-none"><i class="fa-solid fa-address-card"></i> Card Visit</button>
             <button onclick="switchTab('tab-letter')" id="btn-tab-letter" class="py-2.5 border-b-2 border-transparent opacity-60 hover:opacity-100 clickable transition-all outline-none"><i class="fa-solid fa-envelope-open-text"></i> Thư Ngỏ</button>
         </nav>
@@ -214,7 +533,7 @@
                         <h3 class="font-bold text-sm leading-snug line-clamp-2">Tư vấn, Lắp đặt hệ thống Máy vi tính, Mạng, Camera</h3>
                         <div class="mt-auto pt-2 flex items-baseline justify-between"><span class="dynamic-text font-bold text-lg"><span class="text-xs underline align-top mr-0.5">đ</span>Thi công</span><span class="dynamic-bg px-3 py-1 rounded text-xs font-bold shadow-sm">Chi tiết <i class="fa-solid fa-chevron-right text-[10px] ml-1"></i></span></div>
                     </article>
-                    <article onclick="openDetailView('san-pham')" class="shopee-card dynamic-card flex flex-col p-3 relative overflow-hidden clickable group">
+                    <article onclick="openShop()" class="shopee-card dynamic-card flex flex-col p-3 relative overflow-hidden clickable group">
                         <div class="shopee-badge-fav"><i class="fa-solid fa-check text-[8px]"></i> Bản quyền 100%</div>
                         <div class="h-32 bg-gray-100 rounded mb-3 flex items-center justify-center group-active:opacity-80 transition-opacity"><i class="fa-solid fa-box-open text-4xl opacity-50"></i></div>
                         <h3 class="font-bold text-sm leading-snug line-clamp-2">Cung cấp máy cũ/mới, Linh kiện, Phụ kiện, Phần mềm</h3>
@@ -233,7 +552,7 @@
                             <tbody class="divide-y divide-gray-100">
                                 <tr class="hover:bg-gray-50"><td class="px-3 py-3.5 font-bold text-[#162B75] align-top"><i class="fa-solid fa-laptop-code mr-1 opacity-70"></i> PC / Laptop</td><td class="px-3 py-3.5 opacity-90">Vệ sinh, tra keo tản nhiệt. Cài đặt HĐH, sửa lỗi.</td><td class="px-3 py-3.5 text-right font-bold dynamic-text align-top">100k - 150k</td></tr>
                                 <tr class="hover:bg-gray-50"><td class="px-3 py-3.5 font-bold text-[#162B75] align-top"><i class="fa-solid fa-print mr-1 opacity-70"></i> Máy In</td><td class="px-3 py-3.5 opacity-90">Xử lý kẹt giấy. Đổ mực, vệ sinh, kiểm tra sấy.</td><td class="px-3 py-3.5 text-right font-bold dynamic-text align-top">80k - 150k</td></tr>
-                                <tr class="bg-blue-50/50"><td class="px-3 py-3.5 font-bold text-blue-700 align-top border-l-2 border-blue-500"><i class="fa-regular fa-building mr-1"></i> Doanh Nghiệp</td><td class="px-3 py-3.5 text-blue-900 font-medium">Bảo dưỡng định kỳ. Hỗ trợ 24/7.</td><td class="px-3 py-3.5 text-right font-bold text-blue-700 align-top">Từ 1 Triệu</td></tr>
+                                <tr class="bg-blue-50/50"><td class="px-3 py-3.5 font-bold text-blue-700 align-top border-l-2 border-blue-500"><i class="fa-solid fa-building mr-1"></i> Doanh Nghiệp</td><td class="px-3 py-3.5 text-blue-900 font-medium">Bảo dưỡng định kỳ. Hỗ trợ 24/7.</td><td class="px-3 py-3.5 text-right font-bold text-blue-700 align-top">Từ 1 Triệu</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -257,17 +576,31 @@
                 </div>
             </div>
 
-            <div id="view-detail-san-pham" class="view-section">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
-                    <button onclick="closeDetailView()" class="text-sm font-bold opacity-70 hover:opacity-100 clickable flex items-center gap-2 outline-none shrink-0"><i class="fa-solid fa-arrow-left"></i> Trở về</button>
-                    <div class="relative w-full md:max-w-md">
-                        <input type="text" id="storeSearchInput" placeholder="Tìm máy tính, máy in, camera..." class="w-full pl-4 pr-10 py-2 border-2 border-[var(--accent-primary)] rounded-full text-gray-800 focus:outline-none shadow-sm text-sm" oninput="searchProducts(this.value)">
-                        <button class="absolute right-0 top-0 bottom-0 dynamic-text px-4 hover:opacity-80 clickable outline-none border-none"><i class="fa-solid fa-search"></i></button>
-                    </div>
-                    <div class="bg-red-50 text-red-600 px-3 py-1.5 rounded-full text-xs font-bold border border-red-200 shrink-0 hidden md:flex items-center"><i class="fa-solid fa-fire mr-1.5"></i> Gian hàng 100% Chính hãng</div>
+        </div>
+
+        <div id="tab-shop" class="tab-content">
+            <div class="shop-panel mb-3">
+                <div class="flex items-center gap-2 px-3 py-2.5">
+                    <label class="relative min-w-0 flex-1">
+                        <i class="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input id="storeSearchInput" type="search" placeholder="Tìm tên sản phẩm, mã SKU..." class="shop-search" oninput="searchProducts(this.value)">
+                    </label>
                 </div>
-                <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3"></div>
+                <div id="shopCategoryBar" class="shop-chips no-scrollbar"></div>
             </div>
+            <div class="shop-meta mb-3 flex items-end justify-between gap-3">
+                <div>
+                    <p id="shopCountLine" class="text-sm font-bold text-[#162B75]">Đang tải sản phẩm</p>
+                    <p class="shop-meta-note text-xs text-gray-500">Giá bán lẻ · Chính hãng · Giao và lắp đặt tận nơi</p>
+                </div>
+                <select id="shopSort" onchange="setShopSort(this.value)" class="rounded-md border border-gray-200 bg-white px-2 py-1.5 text-sm">
+                    <option value="name">Tên A-Z</option>
+                    <option value="asc">Giá thấp đến cao</option>
+                    <option value="desc">Giá cao đến thấp</option>
+                </select>
+            </div>
+            <div id="productGrid" class="shop-grid grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 lg:grid-cols-5"></div>
+
         </div>
 
         <!-- ========================================== -->
@@ -278,7 +611,7 @@
                 <div class="mb-3 flex items-center justify-between"><h2 class="font-bold text-lg border-l-4 dynamic-text border-[var(--accent-primary)] pl-2">Danh Thiếp Online</h2><button onclick="copyInfo()" class="dynamic-bg px-3 py-1.5 rounded-full text-xs font-bold shadow-sm clickable outline-none"><i class="fa-solid fa-copy mr-1"></i>Lưu thông tin</button></div>
                 <div class="card-wrapper"><div class="card-container">
                     <!-- VÁ: Lazy Load Hình ảnh -->
-                    <div class="cv-logo"><img src="logo.png" loading="lazy" decoding="async" alt="Logo Tân Thành Phát" onerror="this.src='https://via.placeholder.com/150'"></div>
+                    <div class="cv-logo"><img src="https://mvptanthanhphat.github.io/logo.png" loading="lazy" decoding="async" alt="Logo Tân Thành Phát" onerror="this.src='https://via.placeholder.com/150'"></div>
                     <div class="cv-title-area"><div class="cv-title-1">TT THIẾT BỊ &amp; KỸ THUẬT MÁY VĂN PHÒNG</div><div class="cv-title-2">TÂN THÀNH PHÁT</div></div>
                     <div class="cv-slogan-box"><div class="cv-slogan-text-1">Dịch vụ chính:</div><div class="cv-slogan-text-2">LUÔN ĐỒNG HÀNH CÙNG BẠN</div></div><div class="cv-swoosh"></div>
                     <div class="cv-services">
@@ -292,7 +625,7 @@
                             <div class="cv-footer-row"><i class="fa-solid fa-location-dot"></i> Đ/c: KCN Nội Bài (SócS, ĐôngA) - Thôn Ninh Bắc - Xã Nội Bài - HNội</div>
                             <div class="cv-footer-row"><i class="fa-solid fa-phone-volume"></i> ĐT / Zalo: 0913.945.985 <span class="cv-footer-divider">|</span> <i class="fa-solid fa-envelope"></i> Email: tbmayvpttp@gmail.com</div>
                         </div>
-                        <div class="cv-qr"><img src="qr.png" loading="lazy" decoding="async" alt="QR Code" onerror="this.src='https://via.placeholder.com/150'"></div>
+                        <div class="cv-qr"><img src="https://mvptanthanhphat.github.io/qr.png" loading="lazy" decoding="async" alt="QR Code" onerror="this.src='https://via.placeholder.com/150'"></div>
                     </div>
                 </div></div>
             </div>
@@ -416,6 +749,7 @@
         </div>
     </div>
 
+    <div id="shopToast" class="hidden fixed bottom-24 left-1/2 -translate-x-1/2 z-[80] bg-[#162B75] text-white text-sm font-semibold px-4 py-2 rounded-full shadow-lg"></div>
     <div id="orderHistoryModal" class="fixed inset-0 bg-gray-100 hidden z-[70] overflow-y-auto transition-transform duration-300 translate-x-full pb-safe pt-[env(safe-area-inset-top)]">
         <div class="bg-white border-b sticky top-0 z-50 shadow-sm"><div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between"><div class="flex items-center gap-3"><i class="fa-solid fa-clock-rotate-left dynamic-text text-xl"></i><div class="text-xl text-gray-700 font-bold">Đơn Hàng Của Tôi</div></div><button onclick="closeOrderHistory()" class="text-gray-500 font-medium outline-none">Đóng</button></div></div>
         <div class="max-w-6xl mx-auto px-4 py-6 pb-20" id="orderHistoryList"></div>
@@ -425,9 +759,9 @@
         <button onclick="closeProductDetail()" class="fixed top-4 right-4 z-[9999] w-10 h-10 bg-white text-black rounded-full flex items-center justify-center hover:bg-gray-200 shadow-2xl outline-none"><i class="fa-solid fa-times text-xl"></i></button>
         <div class="bg-white w-full h-full md:w-[900px] md:h-auto md:max-h-[85vh] md:rounded-lg shadow-2xl flex flex-col md:flex-row relative transform scale-95 transition-transform duration-300">
             <div class="w-full md:w-[55%] flex flex-col shrink-0 bg-white relative border-r border-gray-100">
-                <div class="relative w-full aspect-square bg-gray-50 flex items-center justify-center overflow-hidden border-b border-gray-100"><img id="modalImage" src="" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-contain p-4" alt="Product"></div>
+                <div id="galleryStage" class="relative w-full aspect-square bg-gray-50 overflow-hidden border-b border-gray-100"></div><div id="galleryThumbs" class="shop-thumbs flex gap-2 overflow-x-auto p-2"></div>
                 <div class="px-5 py-4 space-y-4 bg-white mt-auto">
-                    <div class="flex items-center justify-between"><div class="flex items-center gap-2 text-sm"><span class="text-gray-500">Đang chọn:</span><span id="selectedVariantNameDisplay" class="font-bold text-gray-800 border-b-2 border-[var(--accent-primary)]">Mặc định</span></div><div class="text-xs text-gray-400 font-mono">Còn hàng</div></div>
+                    <div class="flex items-center justify-between"><div class="flex items-center gap-2 text-sm"><span class="text-gray-500">Đang chọn:</span><span id="selectedVariantNameDisplay" class="font-bold text-gray-800 border-b-2 border-[var(--accent-primary)]">Mặc định</span></div><div id="modalStock" class="text-xs text-gray-400 font-mono">Đặt trước</div></div>
                     <div class="flex items-center justify-between bg-[var(--accent-primary)]/5 p-3 rounded border border-[var(--accent-primary)]/10">
                         <div id="modalPrice" class="text-2xl font-bold dynamic-text">-- ₫</div>
                         <div class="flex items-center border border-gray-300 rounded shadow-sm bg-white"><button onclick="updateQty(-1)" class="w-9 h-9 font-bold outline-none">-</button><input id="qtyInput" type="number" value="1" class="w-10 h-9 text-center font-bold dynamic-text bg-white outline-none" readonly><button onclick="updateQty(1)" class="w-9 h-9 font-bold outline-none">+</button></div>
@@ -437,10 +771,10 @@
             </div>
             <div class="w-full md:w-[45%] flex flex-col bg-gray-50 border-t md:border-t-0 border-gray-100">
                 <div class="p-5 space-y-4 overflow-y-auto custom-scrollbar flex-1 pb-10">
-                    <div><span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Sản phẩm</span><h2 id="modalTitle" class="text-xl font-bold text-gray-800 leading-snug">...</h2></div>
+                    <div><span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Sản phẩm</span><h2 id="modalTitle" class="text-xl font-bold text-gray-800 leading-snug">...</h2><div id="modalSku" class="text-xs text-gray-400 mt-1"></div></div>
                     <div class="bg-white p-4 rounded border border-gray-200 shadow-sm"><h4 class="text-sm font-bold text-gray-700 mb-2 border-b pb-2"><i class="fa-solid fa-list-ul dynamic-text"></i> Phân loại / Cấu hình:</h4><div id="variantListText" class="flex flex-wrap gap-2"></div></div>
                     <div class="bg-white p-4 rounded border border-gray-200 shadow-sm space-y-2 text-sm text-gray-600"><div class="flex gap-2"><i class="fa-solid fa-truck-fast text-green-500 mt-0.5"></i> Lắp đặt, giao hàng tận nơi.</div><div class="flex gap-2"><i class="fa-solid fa-shield-halved text-blue-500 mt-0.5"></i> Bảo hành chính hãng 12-24 tháng.</div></div>
-                    <div id="modalDesc" class="text-sm text-gray-600 leading-relaxed text-justify opacity-90 border-t border-dashed pt-3"></div>
+                    <div id="modalSpecs" class="text-sm"></div><div id="modalDesc" class="text-sm text-gray-600 leading-relaxed text-justify opacity-90 border-t border-dashed pt-3"></div>
                 </div>
             </div>
         </div>
@@ -588,9 +922,9 @@
         function closeOrderHistory() { document.getElementById('orderHistoryModal').classList.add('translate-x-full'); setTimeout(()=>{document.getElementById('orderHistoryModal').classList.add('hidden'); document.body.style.overflow='';},300); }
 
         // --- Hàm UI Cơ Bản Tân Thành Phát ---
-        function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.getElementById(tabId).classList.add('active'); document.querySelectorAll('nav button').forEach(el => { el.classList.remove('dynamic-text', 'border-[var(--accent-primary)]'); el.classList.add('border-transparent', 'opacity-60'); }); const btn = document.getElementById('btn-' + tabId); btn.classList.remove('border-transparent', 'opacity-60'); btn.classList.add('dynamic-text', 'border-[var(--accent-primary)]'); if (tabId === 'tab-home') closeDetailView(); if(navigator.vibrate) navigator.vibrate(15); }
+        function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.getElementById(tabId).classList.add('active'); document.querySelectorAll('#siteTabs button').forEach(el => { el.classList.remove('dynamic-text', 'border-[var(--accent-primary)]'); el.classList.add('border-transparent', 'opacity-60'); }); const btn = document.getElementById('btn-' + tabId); btn.classList.remove('border-transparent', 'opacity-60'); btn.classList.add('dynamic-text', 'border-[var(--accent-primary)]'); if (tabId === 'tab-home') closeDetailView(); if(navigator.vibrate) navigator.vibrate(15); }
         function openDetailView(sId) { document.querySelectorAll('.view-section').forEach(e=>e.classList.remove('active')); document.getElementById('view-detail-'+sId).classList.add('active'); window.scrollTo({top:0}); }
-        function closeDetailView() { document.querySelectorAll('.view-section').forEach(e=>e.classList.remove('active')); document.getElementById('view-list').classList.add('active'); document.getElementById('storeSearchInput').value=''; renderProducts(); }
+        function closeDetailView() { document.querySelectorAll('.view-section').forEach(e=>e.classList.remove('active')); document.getElementById('view-list').classList.add('active'); var search=document.getElementById('storeSearchInput'); if(search) search.value=''; if(document.getElementById('productGrid')) renderProducts(); }
         function changeTheme(t) { document.body.className = 'flex flex-col min-h-screen pb-[env(safe-area-inset-bottom)] relative theme-' + t; if(navigator.vibrate) navigator.vibrate(20); }
         function copyInfo() { navigator.clipboard.writeText("Tân Thành Phát - 0913.945.985").then(()=>alert("Đã copy!")); }
         function openSupportModal() { const m = document.getElementById('supportModal'); m.classList.remove('hidden'); setTimeout(() => { m.classList.remove('opacity-0'); document.getElementById('supportModalContent').classList.remove('scale-95'); }, 10); document.body.style.overflow = 'hidden'; }
@@ -688,8 +1022,7 @@
         };
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderProducts();
-            loadProductsFromFirebase();
+            /* Gian hàng khởi tạo ở cuối trang, đọc wholesale_products */
             DragManager.init('xsAudioWindowHeader', 'xsAudioWindow', 'xsAudioDragOverlay');
             DragManager.init('radioWindowHeader', 'radioWindow', 'radioDragOverlay');
         });
@@ -1146,5 +1479,500 @@
     document.addEventListener('DOMContentLoaded', function(){ Media.init(); });
     })();
     </script>
+
+    <script>
+        function openShop(panel) {
+            if (typeof switchTab === "function") switchTab("tab-shop");
+            window.dispatchEvent(new CustomEvent("ttp-shop-panel", { detail: panel || "shop" }));
+            window.scrollTo({ top: 0 });
+        }
+        function syncShellCart() {
+            try {
+                var lines = JSON.parse(localStorage.getItem("ttp_cart") || "[]");
+                var n = 0;
+                if (Array.isArray(lines)) lines.forEach(function (l) { n += Number(l && l.qty) || 0; });
+                var b = document.getElementById("cartCount");
+                if (b) b.textContent = String(n);
+            } catch (e) {}
+        }
+        window.addEventListener("storage", syncShellCart);
+        setInterval(syncShellCart, 1000);
+        document.addEventListener("DOMContentLoaded", syncShellCart);
+    </script>
+
+<script>window.TTP_CATALOG = [{"name":"[ Combo 10 ] Bàn phím GGI Led 7 màu mỏng nhẹ mượt mà","price":980000,"wholesale_price":980000,"retail_price":980000,"cost_price":900000,"sku":"SP_51CDD3E4","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mde4hf4dcqzxcc","is_new":false,"isActive":true},{"name":"[ Combo 10 chuột ] Chuột không dây Giga infinity G81 đen , G82 hồng , G20 đen BH 24 tháng","price":329000,"wholesale_price":329000,"retail_price":329000,"cost_price":300000,"sku":"SP_8D697CCD","category":"Linh Phụ Kiện","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-md5jye9rmb3h7d","is_new":false,"isActive":true},{"name":"| Combo 10 | Nguồn 12V 2A tai treo, Adapter Cho Camera , chân 5,5x2,5mm, BH 12 tháng","price":229900,"wholesale_price":229900,"retail_price":229900,"cost_price":229900,"sku":"SP_1536C66A","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":41,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrqwaofns16qdf","is_new":false,"isActive":true},{"name":"BÀN DI LÓT CHUỘT GAMING 80X30","price":29000,"wholesale_price":29000,"retail_price":29000,"cost_price":29000,"sku":"SP_F8E3AB8B","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m6gq56tjcfg8c3","is_new":false,"isActive":true},{"name":"Bàn phím cơ Gaming K550 V4 Blue Switch, LED Rainbow , chống nước","price":309000,"wholesale_price":309000,"retail_price":309000,"cost_price":309000,"sku":"SP_526A7A46","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":63,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfnddgjazkeh49","is_new":false,"isActive":true},{"name":"Bộ Bàn Phím Chuột máy tính Gaming LED 7 Màu Chất Lượng BH đổi mới trong 12 tháng","price":92000,"wholesale_price":92000,"retail_price":92000,"cost_price":92000,"sku":"SP_F382CF45","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrlci5yfl14xc4","is_new":false,"isActive":true},{"name":"Bộ Mainboard H81, H61 Jupi-Star Bảo Hành 24 Tháng ( HÀNG MỚI 100% )","price":529000,"wholesale_price":529000,"retail_price":529000,"cost_price":529000,"sku":"SP_3132399A","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":15,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lu76huqz4idted","is_new":false,"isActive":true},{"name":"Bộ máy tính AIO PC ( I5 4460, Ram 16G ) chuyên game , văn phòng [không kèm màn hình ]","price":2580000,"wholesale_price":2580000,"retail_price":2580000,"cost_price":2580000,"sku":"SP_E5DAC1BC","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":96,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mgq05tae12bx64","is_new":false,"isActive":true},{"name":"Bộ nguồn tổng 12V - 15A dùng cho camera và đèn LED","price":130000,"wholesale_price":130000,"retail_price":130000,"cost_price":130000,"sku":"SP_46DE1112","category":"Camera An Ninh","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-23020-djyocy6qminv2b","is_new":false,"isActive":true},{"name":"Bộ phím chuột không dây | Fuhlen A120G | Giga infinity 8875 | CHÍNH HÃNG - BH 2 năm","price":159000,"wholesale_price":159000,"retail_price":159000,"cost_price":159000,"sku":"SP_BCDB405C","category":"Linh Phụ Kiện","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrtopz4vajgn8f","is_new":false,"isActive":true},{"name":"Bộ Phím Chuột Không Dây GGI 8875 Giảm ồn - Bảo hành 2 năm đổi mới","price":159000,"wholesale_price":159000,"retail_price":159000,"cost_price":159000,"sku":"SP_F53FBF05","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mr8kl26ms26kab","is_new":false,"isActive":true},{"name":"Bộ phím chuột nút tròn giả cơ GGI Led nhiều màu giá rẻ có dây dùng chơi game và văn phòng","price":95000,"wholesale_price":95000,"retail_price":95000,"cost_price":95000,"sku":"SP_105366C2","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mgw09bh3wphqbf","is_new":false,"isActive":true},{"name":"Bộ Phím Chuột Văn Phòng | AULA AK105 & AM104 | + Tặng Bàn Di | Chồng Nước | 104 Phím | Chính Hãng |","price":49000,"wholesale_price":49000,"retail_price":49000,"cost_price":49000,"sku":"SP_266A779E","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqemnyvkgf0i6a","is_new":false,"isActive":true},{"name":"Camera IMOU A32EP | + Thẻ 64GB | 3MP 2K Wifi | Trong Nhà Xoay 360 | Đàm Thoại 2 Chiều","price":429000,"wholesale_price":429000,"retail_price":429000,"cost_price":429000,"sku":"SP_5BF489DB","category":"Camera An Ninh","color":"","weight":"","stock":26,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrkzd3f256vcba","is_new":false,"isActive":true},{"name":"Camera Wifi EZVIZ C6N | + Thẻ nhớ 64G | C6N Pro G1 3MP 5MP 2K | Xoay 360 Đàm Thoại 2 Chiều","price":429000,"wholesale_price":429000,"retail_price":429000,"cost_price":429000,"sku":"SP_B86203F2","category":"Camera An Ninh","color":"","weight":"","stock":40,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrkzvrfkg0sk2f","is_new":false,"isActive":true},{"name":"Cáp truyền tín hiệu camera 18 - 20m có sẵn jack nguồn và jack BNC BH 12 Tháng","price":27000,"wholesale_price":27000,"retail_price":27000,"cost_price":27000,"sku":"SP_B8112983","category":"Camera An Ninh","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mjfau5riq4n751","is_new":false,"isActive":true},{"name":"Chuột chơi Game có dây USB, LED RGB 1200dpi 3 Nút, Phím Tắt , BH 2 năm","price":25000,"wholesale_price":25000,"retail_price":25000,"cost_price":25000,"sku":"SP_AD50C803","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mdk2oyicw2wc83","is_new":false,"isActive":true},{"name":"Chuột có dây/không dây Gaming Bluetooth GGI X36 X37 – Chống ồn, đèn LED, pin sạc BH 24 Tháng","price":75000,"wholesale_price":75000,"retail_price":75000,"cost_price":75000,"sku":"SP_950DE060","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfw30w4tlclk1b","is_new":false,"isActive":true},{"name":"Chuột không dây G81, G82 đen hồng, bảo hành 24 tháng đổi mới","price":32000,"wholesale_price":32000,"retail_price":32000,"cost_price":32000,"sku":"SP_317AD1C4","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-ms2mh294u0w773","is_new":false,"isActive":true},{"name":"Chuột không dây GGI bảo hành đổi mới trong 24 tháng","price":29000,"wholesale_price":29000,"retail_price":29000,"cost_price":29000,"sku":"SP_BBC38495","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrpsxsqi1fraf5","is_new":false,"isActive":true},{"name":"Chuột không dây GGI bảo hành đổi mới trong 24 tháng","price":34000,"wholesale_price":34000,"retail_price":34000,"cost_price":34000,"sku":"624957731","category":"Linh Phụ Kiện","color":"","weight":"","stock":0,"description":"Mua Chuột không dây GGI bảo hành đổi mới trong 24 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!","image_url":"https://down-vn.img.susercontent.com/file/592ebece62a3bb321d923fcb9032a3f5","is_new":true,"isActive":true},{"name":"Chuột không dây silent Giga G20 hồng BH 24 tháng đổi mới","price":29000,"wholesale_price":29000,"retail_price":29000,"cost_price":29000,"sku":"SP_B748B439","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m307ku4nqvhsdb","is_new":false,"isActive":true},{"name":"Chuột máy tính có dây GGI G02 bảo hành đổi mới trong 24 tháng","price":17000,"wholesale_price":17000,"retail_price":17000,"cost_price":17000,"sku":"SP_DE0CD959","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mr1ck2us02dj42","is_new":false,"isActive":true},{"name":"Chuột máy tính có dây GGI G02 bảo hành đổi mới trong 24 tháng","price":22000,"wholesale_price":22000,"retail_price":22000,"cost_price":22000,"sku":"625739289","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"Mua Chuột máy tính có dây GGI G02 bảo hành đổi mới trong 24 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!","image_url":"https://down-vn.img.susercontent.com/file/24e8a5890845695ce3bc3eaabf843692","is_new":true,"isActive":true},{"name":"Dây cáp mạng Đồng Nguyên chất CAT6/CAT5","price":2080000,"wholesale_price":2080000,"retail_price":2080000,"cost_price":2080000,"sku":"SP_C7594799","category":"Thiết Bị Mạng","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mjffludjaps6bf","is_new":false,"isActive":true},{"name":"Dây cáp mạng Lõi Nhôm Mạ Đồng LB-LINK CAT6/CAT5E UTP - Cuộn 305M - Màu Trắng/Xanh","price":520000,"wholesale_price":520000,"retail_price":520000,"cost_price":520000,"sku":"SP_52AC73AF","category":"Thiết Bị Mạng","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mjfej4vuin7la0","is_new":false,"isActive":true},{"name":"Dây cáp mạng ngoài trời lõi đồng nguyên chất, có gia cường trợ lực 500m","price":2080000,"wholesale_price":2080000,"retail_price":2080000,"cost_price":2080000,"sku":"SP_AFE7368E","category":"Thiết Bị Mạng","color":"","weight":"","stock":2,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgoxok4i5fqr6e","is_new":false,"isActive":true},{"name":"Kệ Máy Tính Cổng USB, Kệ Gỗ Để màn Hình Máy Tính Laptop Có Cổng Sạc USB cực tiện lợi gọn gàng","price":127510,"wholesale_price":127510,"retail_price":127510,"cost_price":127510,"sku":"SP_791E19C9","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqzldc1xx79i6f","is_new":false,"isActive":true},{"name":"Mainboard ITX | H61 H81 H110 | Bo Mạch Chủ Máy Tính Mini PC | Main All In One | Nguồn 19V DDR3","price":779000,"wholesale_price":779000,"retail_price":779000,"cost_price":779000,"sku":"SP_AE6826BB","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":20,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrkyw8hss3d494","is_new":false,"isActive":true},{"name":"Màn hình máy tính NPC MF2475-IPS 24\" Full HD (75Hz IPS 1920x1080P) Chính Hãng BH 36 Tháng","price":1730000,"wholesale_price":1730000,"retail_price":1730000,"cost_price":1730000,"sku":"SP_21D69004","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mioex5wm1lac57","is_new":false,"isActive":true},{"name":"Máy tính All in One 22\" giá rẻ 3 triệu | hỗ trợ CPU i5 | Gọn Nhẹ – Bảo Hành 12 Tháng","price":4100030,"wholesale_price":4100030,"retail_price":4100030,"cost_price":4100030,"sku":"SP_0731BCBE","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":40,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mdocwdniv38vd1","is_new":false,"isActive":true},{"name":"Máy tính All In One 24 inch | hỗ trợ i5 i7 Gen3 | RAM 16GB SSD 512GB | Máy Tính Văn Phòng, Học Sinh","price":4294030,"wholesale_price":4294030,"retail_price":4294030,"cost_price":4294030,"sku":"SP_3C8DF25F","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mr8aemmpeiv830","is_new":false,"isActive":true},{"name":"Máy Tính All In One 24\" | Hỗ trợ i5 i7 Gen4 | RAM 16GB SSD 512GB | Máy Tính Văn Phòng, Học Tập | NEW","price":6280000,"wholesale_price":6280000,"retail_price":6280000,"cost_price":6280000,"sku":"SP_FC921721","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":18,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mf970f4y07ikff","is_new":false,"isActive":true},{"name":"Máy Tính All In One 24\" Cực Mạnh | Hỗ trợ i5 i7 Gen 7 | RAM 16GB - 512GB | Máy Tính Đồ Họa Nhẹ, NEW","price":5653000,"wholesale_price":5653000,"retail_price":5653000,"cost_price":5653000,"sku":"SP_F20D0FED","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":57,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-msffakapto21b8","is_new":false,"isActive":true},{"name":"Máy tính All In One 24\" Cực Mạnh | i5 i7 Gen13 | VGA 8G | Ram 16G -512G | Máy tính văn phòng,đồ họa","price":9135300,"wholesale_price":9135300,"retail_price":9135300,"cost_price":9135300,"sku":"SP_28667FC4","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":80,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mspiifjuyhone2","is_new":false,"isActive":true},{"name":"Máy Tính Mini PC | CPU i5/i7 Gen 13 | RAM 16GB DDR4 | SSD 512GB |Vỏ Nhôm | Mini Desktop PC BH 2 năm","price":6623000,"wholesale_price":6623000,"retail_price":6623000,"cost_price":6623000,"sku":"SP_A1BEF0BB","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":55,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mpulvsn9o2ku18","is_new":false,"isActive":true},{"name":"Máy Tính Mini PC Trong Suốt hỗ tợ i5 / i7 Gen 6 | RAM 16GB SSD 512GB | NEW - BH 12 tháng.","price":3180000,"wholesale_price":3180000,"retail_price":3180000,"cost_price":3180000,"sku":"SP_D25E39A2","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":79,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mpuix6mx6cy763","is_new":false,"isActive":true},{"name":"Mini PC hỗ trợ i5 i7 Gen 6 (16GB/512GB) - Máy Tính Mini Nhỏ Gọn Cho Văn Phòng, Học Tập | NEW BH 12T","price":3082500,"wholesale_price":3082500,"retail_price":3082500,"cost_price":3082500,"sku":"SP_B182B75E","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":66,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mpub19j8l3bf8b","is_new":false,"isActive":true},{"name":"Nguồn 12V 2A có móc treo, Adapter Cho Camera (Zac 5.5x2.5mm)","price":17000,"wholesale_price":17000,"retail_price":17000,"cost_price":17000,"sku":"SP_BFFA3599","category":"Camera An Ninh","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrqwarv8z1tw05","is_new":false,"isActive":true},{"name":"Nguồn 12V 33A (400W) ngoài trời chống nước có quạt bảo hành 12 tháng","price":165000,"wholesale_price":165000,"retail_price":165000,"cost_price":165000,"sku":"SP_2034D9F1","category":"Camera An Ninh","color":"","weight":"","stock":18,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mdljlaalq04v0c","is_new":false,"isActive":true},{"name":"Nguồn Adapter Cao Cấp 19V 6.32A (120W) Công Suất Thực – Dòng Chuẩn Cho Máy Tính ,Camera, thiết bịsố","price":179000,"wholesale_price":179000,"retail_price":179000,"cost_price":179000,"sku":"SP_04CB660D","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":99,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mpw1bse6qcjz93","is_new":false,"isActive":true},{"name":"Nguồn Adapter loại xịn 12V 2A zin mới bóc máy chính hãng mới 100%","price":17000,"wholesale_price":17000,"retail_price":17000,"cost_price":17000,"sku":"SP_5F48B449","category":"Camera An Ninh","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mdlhulzfk59tc0","is_new":false,"isActive":true},{"name":"Nguồn Tổ Ong - Nguồn Xung 12V 30a hàng chuyên dụng cho camera","price":155000,"wholesale_price":155000,"retail_price":155000,"cost_price":155000,"sku":"SP_D16C46F8","category":"Camera An Ninh","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-ms2m13e7pjwie1","is_new":false,"isActive":true},{"name":"Nguồn tổ ong 12V 24V | Nguồn tổng 24V 12V | 5A, 10A, 20A, 30A | Nguồn điện camera | Nguồn đèn LED |","price":59000,"wholesale_price":59000,"retail_price":59000,"cost_price":59000,"sku":"SP_94282DF2","category":"Camera An Ninh","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mr1jdcyj7egxbc","is_new":false,"isActive":true},{"name":"Nguồn tổ ong 12V 24V | Nguồn tổng 24V 12V | 5A, 10A, 20A, 30A | Nguồn điện camera | Nguồn đèn LED |","price":64000,"wholesale_price":64000,"retail_price":64000,"cost_price":64000,"sku":"28700904640","category":"Camera An Ninh","color":"","weight":"","stock":0,"description":"Mua Nguồn tổ ong 12V 24V | Nguồn tổng 24V 12V | 5A, 10A, 20A, 30A | Nguồn điện camera | Nguồn đèn LED | giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!","image_url":"https://down-vn.img.susercontent.com/file/vn-11110105-7r98o-lvpjj7laoc5u75","is_new":true,"isActive":true},{"name":"Nguồn tổ ong 12V 5A chuyên dùng cho camera và đèn","price":59000,"wholesale_price":59000,"retail_price":59000,"cost_price":59000,"sku":"SP_62630DE1","category":"Camera An Ninh","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/sg-11134201-22100-ua24a5km5livb8","is_new":false,"isActive":true},{"name":"Nguồn Tổ Ong 48v 10a Bảo Hành 12 tháng","price":289000,"wholesale_price":289000,"retail_price":289000,"cost_price":289000,"sku":"SP_F46500CE","category":"Camera An Ninh","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mdli66fy4ey990","is_new":false,"isActive":true},{"name":"Nguồn tổ ong tổng 12V 10A (DC) đa năng phù hợp với camera và đèn led quảng cáo","price":119000,"wholesale_price":119000,"retail_price":119000,"cost_price":119000,"sku":"SP_58EB83D8","category":"Camera An Ninh","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mdwpfns8rvgl4a","is_new":false,"isActive":true},{"name":"Nguồn Tổ Ong, Nguồn Tổng Thanh Lý 24v 5A, 10A, 15A cho Led, Động Cơ, thiết bị Điện 24V BH 12 tháng","price":105000,"wholesale_price":105000,"retail_price":105000,"cost_price":105000,"sku":"SP_28DDB911","category":"Camera An Ninh","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mr1gniufyf4299","is_new":false,"isActive":true},{"name":"Nguồn tổng 12V-20A cho Camera và đèn LED quảng cáo","price":149000,"wholesale_price":149000,"retail_price":149000,"cost_price":149000,"sku":"SP_CC1A49BC","category":"Camera An Ninh","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mdwximzdj01v80","is_new":false,"isActive":true},{"name":"Ổ Cứng SSD 128G 256G | 2.5 Inch SATA 3 Chính Hãng Tốc Độ Cao, New Fullbox [Bảo Hành 3 Năm]","price":480000,"wholesale_price":480000,"retail_price":480000,"cost_price":480000,"sku":"SP_223D9F0C","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":25,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-ms2m9ab4270l06","is_new":false,"isActive":true},{"name":"PAD LED Khổ Lớn Lót Chuột LED Khổ Lớn PAD LED RGB Lót Chuột LED RGB Size 90x40 cm","price":59000,"wholesale_price":59000,"retail_price":59000,"cost_price":59000,"sku":"SP_5C37107C","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":14,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mi9yu2gjo64hd3","is_new":false,"isActive":true},{"name":"Tai nghe chụp tai Gaming | Tai nghe chữ E Led RGB | Jack cắm USB âm thanh 7.1 | BH 12 tháng","price":164000,"wholesale_price":164000,"retail_price":164000,"cost_price":164000,"sku":"SP_C6756C7C","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":10,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m1cj328jxsuw3d","is_new":false,"isActive":true},{"name":"Thẻ nhớ 64G 128G Class 10 U3 cho camera hành trình – quay 4K mượt – BH 36 tháng","price":239000,"wholesale_price":239000,"retail_price":239000,"cost_price":239000,"sku":"SP_7CD883CE","category":"Camera An Ninh","color":"","weight":"","stock":45,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mnxpqw43qsy055","is_new":false,"isActive":true},{"name":"Vỏ Máy Tính MiniPC | TX03 M10 | Chất Liệu Nhôm Thép Cao Cấp | Case Mini ITX | Tản Nhiệt Tốt","price":429000,"wholesale_price":429000,"retail_price":429000,"cost_price":429000,"sku":"SP_163229B9","category":"Máy Tính Bàn & laptop","color":"","weight":"","stock":0,"description":"","image_url":"https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mrk0o4djn4zs59","is_new":false,"isActive":true}];</script>
+<script>
+        // Gian hàng: đọc wholesale_products + categories giống admin.html.
+        // Khách chỉ thấy giá bán lẻ (retail_price). Không hiện giá sỉ / giá nhập.
+        (function () {
+        let activeProducts = [];
+        let managedCategoryNames = [];
+        let shopCategory = "all";
+        let shopSort = "name";
+        let shopQuery = "";
+        let cartItems = [];
+        let orderHistory = [];
+        let currentProduct = null;
+        let selectedVariantIndex = 0;
+        let gallerySlides = [];
+        let galleryIndex = 0;
+        try { cartItems = JSON.parse(localStorage.getItem("ttp_cart") || "[]") || []; } catch (e) { cartItems = []; }
+        try { orderHistory = JSON.parse(localStorage.getItem("ttp_orders") || "[]") || []; } catch (e) { orderHistory = []; }
+
+        function formatMoney(n) {
+            var rounded = Math.max(0, Math.round(Number(n) || 0));
+            return String(rounded).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+        function formatVnd(n) { return formatMoney(n) + "đ"; }
+        function escHtml(s) {
+            return String(s ?? "").replace(/[&<>"\']/g, function (c) {
+                if (c === "&") return "\u0026amp;";
+                if (c === "<") return "\u003c";
+                if (c === ">") return "\u003e";
+                if (c === "\"") return "\u0026quot;";
+                return "\u0026#39;";
+            });
+        }
+        function num(v) {
+            if (typeof v === "number" && isFinite(v)) return Math.max(0, Math.round(v));
+            if (typeof v === "string" && v.trim()) { var n = Number(String(v).replace(/[^\d]/g, "")); return isFinite(n) ? n : 0; }
+            return 0;
+        }
+        function pushUrl(list, v) {
+            var s = String(v || "").trim();
+            if (!s || !/^https?:\/\//i.test(s) || /placeholder|blob:|data:image/i.test(s)) return;
+            if (list.indexOf(s) < 0) list.push(s);
+        }
+        function normalizeStoreProduct(id, raw) {
+            raw = raw || {};
+            var images = [], videos = [];
+            if (Array.isArray(raw.images)) raw.images.forEach(function(u){ pushUrl(images, u); });
+            else if (typeof raw.images === "string") raw.images.split(/[,\n]/).forEach(function(u){ pushUrl(images, u); });
+            var media = raw.media || {};
+            if (Array.isArray(media.images)) media.images.forEach(function(u){ pushUrl(images, u); });
+            if (Array.isArray(media.videos)) media.videos.forEach(function(u){ pushUrl(videos, u); });
+            if (Array.isArray(raw.videos)) raw.videos.forEach(function(u){ pushUrl(videos, u); });
+            pushUrl(images, raw.image_url); pushUrl(images, raw.image); pushUrl(images, raw.img);
+            var variants = [];
+            if (Array.isArray(raw.variants)) {
+                raw.variants.forEach(function(v){
+                    if (!v) return;
+                    var name = String(v.name || "").trim();
+                    if (!name && v.options) name = Object.keys(v.options).map(function(k){ return v.options[k]; }).filter(Boolean).join(" · ");
+                    if (!name || /tố cáo|chia sẻ|đánh giá|mua ngay/i.test(name)) return;
+                    var image = v.originalImage || v.image || v.image_url || "";
+                    pushUrl(images, image);
+                    variants.push({ name: name, stock: num(v.stock), image: image, retailPrice: num(v.retail_price) || num(v.price) });
+                });
+            }
+            var specs = [];
+            var specRaw = raw.specifications;
+            if (Array.isArray(specRaw)) specRaw.forEach(function(s){ if (s && s.key && s.value) specs.push({ key: String(s.key), value: String(s.value) }); });
+            else if (specRaw && typeof specRaw === "object") Object.keys(specRaw).forEach(function(k){ if (specRaw[k]) specs.push({ key: k, value: String(specRaw[k]) }); });
+            if (raw.color) specs.push({ key: "Màu sắc", value: String(raw.color) });
+            if (raw.weight) specs.push({ key: "Trọng lượng", value: String(raw.weight) });
+            var seller = raw.seller || {};
+            return {
+                id: id,
+                name: raw.name || "Sản phẩm",
+                sku: raw.sku || seller.sku || "",
+                category: (raw.category || "").trim() || "Chưa phân loại",
+                retailPrice: num(raw.retail_price) || num(raw.price),
+                stock: num(raw.stock),
+                images: images,
+                videos: videos,
+                variants: variants,
+                description: raw.description || "",
+                descriptionHtml: raw.descriptionHtml || "",
+                specs: specs.slice(0, 30),
+                isNew: raw.is_new === true,
+                active: raw.isActive !== false,
+                sold: seller.sold || raw.soldText || ""
+            };
+        }
+        function customerPrice(p, variant) {
+            if (variant && variant.retailPrice > 0) return variant.retailPrice;
+            return p ? p.retailPrice : 0;
+        }
+        function stockText(stock) { return stock > 0 ? ("Còn " + stock) : "Đặt trước"; }
+        function showShopToast(msg) {
+            var el = document.getElementById("shopToast");
+            if (!el) return;
+            el.textContent = msg;
+            el.classList.remove("hidden");
+            clearTimeout(showShopToast._t);
+            showShopToast._t = setTimeout(function(){ el.classList.add("hidden"); }, 2200);
+        }
+
+        function visibleProducts() {
+            var q = shopQuery.trim().toLowerCase();
+            var list = activeProducts.filter(function(p){
+                if (!p.active) return false;
+                if (shopCategory !== "all" && p.category !== shopCategory) return false;
+                if (!q) return true;
+                return (p.name || "").toLowerCase().indexOf(q) >= 0 || (p.sku || "").toLowerCase().indexOf(q) >= 0 || (p.category || "").toLowerCase().indexOf(q) >= 0;
+            });
+            if (shopSort === "asc") list.sort(function(a,b){ return a.retailPrice - b.retailPrice; });
+            else if (shopSort === "desc") list.sort(function(a,b){ return b.retailPrice - a.retailPrice; });
+            else list.sort(function(a,b){ return (a.name || "").localeCompare(b.name || "", "vi"); });
+            return list;
+        }
+
+        function renderCategoryBar() {
+            var bar = document.getElementById("shopCategoryBar");
+            if (!bar) return;
+            var names = {};
+            managedCategoryNames.forEach(function(n){ if (n) names[n] = true; });
+            activeProducts.forEach(function(p){ if (p.active && p.category && p.category !== "Chưa phân loại") names[p.category] = true; });
+            var list = Object.keys(names).sort(function(a,b){ return a.localeCompare(b, "vi"); });
+            var html = '<button type="button" onclick="setShopCategory(\'all\')" class="shrink-0 px-3 py-1.5 rounded-full text-xs font-bold border ' + (shopCategory==="all" ? "bg-[#ee4d2d] text-white border-[#ee4d2d]" : "bg-white border-gray-200") + '">Tất cả</button>';
+            list.forEach(function(name){
+                var on = shopCategory === name;
+                html += '<button type="button" data-cat="' + escHtml(name) + '" onclick="setShopCategory(this.getAttribute(\'data-cat\'))" class="shrink-0 px-3 py-1.5 rounded-full text-xs font-bold border ' + (on ? "bg-[#ee4d2d] text-white border-[#ee4d2d]" : "bg-white border-gray-200") + '">' + escHtml(name) + '</button>';
+            });
+            bar.innerHTML = html;
+        }
+        function setShopCategory(name) { shopCategory = name; renderProducts(); }
+        function setShopSort(value) { shopSort = value || "name"; renderProducts(); }
+        function searchProducts(q) { shopQuery = q || ""; renderProducts(); }
+        function openShop(panel) {
+            if (typeof switchTab === "function") switchTab("tab-shop");
+            window.scrollTo({ top: 0 });
+            if (panel === "cart") { openCheckout(); return; }
+            if (panel === "orders") { openOrderHistory(); return; }
+        }
+
+        function renderProducts() {
+            try {
+                renderCategoryBar();
+                var grid = document.getElementById("productGrid");
+                if (!grid) return;
+                var list = visibleProducts();
+                var line = document.getElementById("shopCountLine");
+                if (line) line.textContent = formatMoney(list.length) + " sản phẩm · giá bán lẻ";
+                if (!list.length) { grid.innerHTML = '<div class="col-span-full py-10 text-center text-gray-500 text-sm">Không tìm thấy sản phẩm.</div>'; updateCartBadge(); return; }
+                grid.innerHTML = list.map(function(p){
+                    var img = p.images[0] ? '<img src="' + escHtml(p.images[0]) + '" alt="" class="shop-card-img" loading="lazy" referrerpolicy="no-referrer">' : '<span class="shop-card-empty"><i class="fa-solid fa-box"></i></span>';
+                    return '<article class="shop-card"><button type="button" class="shop-card-hit" onclick="openProductDetail(\'' + escHtml(p.id) + '\')">' +
+                        '<div class="shop-card-media">' + img +
+                        '<span class="shop-card-ribbon">' + escHtml(p.category) + '</span>' +
+                        (p.isNew ? '<span class="shop-card-new">Mới</span>' : '') +
+                        (p.videos.length ? '<span class="shop-card-video">Video</span>' : '') +
+                        '</div><div class="shop-card-body"><h2 class="shop-card-name">' + escHtml(p.name) + '</h2>' +
+                        '<div class="shop-card-row"><p class="shop-card-price">' + formatVnd(p.retailPrice) + '</p><span class="shop-card-stock">' + escHtml(stockText(p.stock)) + '</span></div></div></button></article>';
+                }).join("");
+                updateCartBadge();
+            } catch (e) { console.error("Lỗi Render:", e); }
+        }
+
+        function loadProductsFromFirebase() {
+            try {
+                if (typeof db === "undefined") return;
+                db.collection("categories").onSnapshot(function(snap){
+                    managedCategoryNames = [];
+                    snap.forEach(function(doc){ var n = ((doc.data() || {}).name || "").trim(); if (n) managedCategoryNames.push(n); });
+                    renderProducts();
+                }, function(){});
+                db.collection("wholesale_products").onSnapshot(function(snap){
+                    if (snap.empty) return;
+                    activeProducts = snap.docs.map(function(doc){ return normalizeStoreProduct(doc.id, Object.assign({ id: doc.id }, doc.data())); }).filter(function(p){ return p.active; });
+                    var input = document.getElementById("storeSearchInput");
+                    if (input && input.value) shopQuery = input.value;
+                    renderProducts();
+                }, function(error){ console.error("Lỗi tải gian hàng:", error); });
+            } catch (e) { console.error(e); }
+        }
+
+        function buildSlides(p, variant) {
+            var images = p.images.slice();
+            if (variant && variant.image) {
+                var at = images.indexOf(variant.image);
+                if (at >= 0) images.splice(at, 1);
+                images.unshift(variant.image);
+            }
+            var slides = [];
+            p.videos.forEach(function(src){ slides.push({ type: "video", src: src }); });
+            images.forEach(function(src){ slides.push({ type: "image", src: src }); });
+            return slides;
+        }
+        function renderGallery() {
+            var stage = document.getElementById("galleryStage");
+            var thumbs = document.getElementById("galleryThumbs");
+            if (!stage || !thumbs) return;
+            if (!gallerySlides.length) {
+                stage.innerHTML = '<div class="w-full h-full flex items-center justify-center text-gray-300"><i class="fa-solid fa-image text-4xl"></i></div>';
+                thumbs.innerHTML = "";
+                return;
+            }
+            var item = gallerySlides[galleryIndex] || gallerySlides[0];
+            var media = item.type === "video"
+                ? '<video src="' + escHtml(item.src) + '" class="w-full h-full object-contain" controls playsinline></video>'
+                : '<img src="' + escHtml(item.src) + '" alt="" class="w-full h-full object-contain" referrerpolicy="no-referrer">';
+            stage.innerHTML = media +
+                (gallerySlides.length > 1 ? '<button type="button" onclick="shiftGallery(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white shadow"><i class="fa-solid fa-chevron-left"></i></button><button type="button" onclick="shiftGallery(1)" class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white shadow"><i class="fa-solid fa-chevron-right"></i></button>' : "");
+            thumbs.innerHTML = gallerySlides.map(function(s, i){
+                var inner = s.type === "video" ? '<span class="w-full h-full flex items-center justify-center bg-[#162B75] text-white text-[10px] font-bold">VIDEO</span>' : '<img src="' + escHtml(s.src) + '" class="w-full h-full object-cover" alt="" referrerpolicy="no-referrer">';
+                return '<button type="button" onclick="setGalleryIndex(' + i + ')" class="w-14 h-14 shrink-0 rounded overflow-hidden border-2 ' + (i === galleryIndex ? "border-[#ee4d2d]" : "border-gray-200") + '">' + inner + "</button>";
+            }).join("");
+        }
+        function setGalleryIndex(i) { galleryIndex = i; renderGallery(); }
+        function shiftGallery(dir) { if (!gallerySlides.length) return; galleryIndex = (galleryIndex + dir + gallerySlides.length) % gallerySlides.length; renderGallery(); }
+
+        function paintDetailPrice() {
+            if (!currentProduct) return;
+            var variant = currentProduct.variants[selectedVariantIndex] || null;
+            document.getElementById("modalPrice").textContent = formatVnd(customerPrice(currentProduct, variant));
+            var nameEl = document.getElementById("selectedVariantNameDisplay");
+            if (nameEl) nameEl.textContent = variant ? variant.name : "Mặc định";
+            var stock = variant && variant.stock ? variant.stock : currentProduct.stock;
+            var stockEl = document.getElementById("modalStock");
+            if (stockEl) stockEl.textContent = stockText(stock);
+        }
+        function openProductDetail(id) {
+            currentProduct = activeProducts.find(function(p){ return p.id === id; });
+            if (!currentProduct) return;
+            selectedVariantIndex = 0;
+            document.getElementById("qtyInput").value = "1";
+            document.getElementById("modalTitle").textContent = currentProduct.name;
+            var skuEl = document.getElementById("modalSku");
+            if (skuEl) skuEl.textContent = "SKU " + (currentProduct.sku || "—") + (currentProduct.sold ? " · " + currentProduct.sold : "");
+            var catEl = document.getElementById("modalCat");
+            if (catEl) catEl.textContent = currentProduct.category;
+            var varDiv = document.getElementById("variantListText");
+            varDiv.innerHTML = "";
+            if (currentProduct.variants.length) {
+                currentProduct.variants.forEach(function(v, i){
+                    var b = document.createElement("button");
+                    b.type = "button";
+                    b.className = i === 0 ? "px-3 py-2 border border-[#ee4d2d] bg-orange-50 text-[#ee4d2d] rounded text-xs font-bold" : "px-3 py-2 border border-gray-200 bg-white text-gray-600 rounded text-xs";
+                    b.textContent = v.name;
+                    b.onclick = function(){
+                        selectedVariantIndex = i;
+                        Array.from(varDiv.children).forEach(function(c, idx){
+                            c.className = idx === i ? "px-3 py-2 border border-[#ee4d2d] bg-orange-50 text-[#ee4d2d] rounded text-xs font-bold" : "px-3 py-2 border border-gray-200 bg-white text-gray-600 rounded text-xs";
+                        });
+                        gallerySlides = buildSlides(currentProduct, currentProduct.variants[i]);
+                        galleryIndex = 0;
+                        renderGallery();
+                        paintDetailPrice();
+                    };
+                    varDiv.appendChild(b);
+                });
+            } else {
+                varDiv.innerHTML = '<span class="text-xs text-gray-400">Một phân loại</span>';
+            }
+            gallerySlides = buildSlides(currentProduct, currentProduct.variants[0] || null);
+            galleryIndex = 0;
+            renderGallery();
+            paintDetailPrice();
+            var specs = document.getElementById("modalSpecs");
+            if (specs) {
+                specs.innerHTML = currentProduct.specs.map(function(s){
+                    return '<div class="grid grid-cols-2 gap-2 py-1.5 text-sm border-b border-gray-100"><div class="text-gray-500">' + escHtml(s.key) + '</div><div>' + escHtml(s.value) + '</div></div>';
+                }).join("");
+            }
+            var desc = document.getElementById("modalDesc");
+            if (desc) {
+                if (currentProduct.descriptionHtml && currentProduct.descriptionHtml.length > 40) {
+                    var box = document.createElement("div");
+                    box.innerHTML = currentProduct.descriptionHtml;
+                    box.querySelectorAll("script,iframe,object,embed,style").forEach(function(n){ n.remove(); });
+                    box.querySelectorAll("*").forEach(function(el){
+                        Array.from(el.attributes).forEach(function(a){
+                            if (/^on/i.test(a.name) || (a.name === "href" && /^\s*javascript:/i.test(a.value))) el.removeAttribute(a.name);
+                        });
+                    });
+                    desc.innerHTML = box.innerHTML;
+                } else desc.textContent = currentProduct.description || "";
+            }
+            var modal = document.getElementById("detailModal");
+            modal.classList.remove("hidden");
+            setTimeout(function(){ modal.classList.remove("opacity-0"); }, 10);
+            document.body.style.overflow = "hidden";
+        }
+        function closeProductDetail() {
+            var modal = document.getElementById("detailModal");
+            modal.classList.add("opacity-0");
+            setTimeout(function(){ modal.classList.add("hidden"); document.body.style.overflow = ""; }, 200);
+        }
+        function updateQty(c) { var i = document.getElementById("qtyInput"); var v = parseInt(i.value, 10) + c; if (v < 1) v = 1; i.value = v; }
+        function addToCart(openAfter) {
+            if (!currentProduct) return;
+            var variant = currentProduct.variants[selectedVariantIndex] || null;
+            var vName = variant ? variant.name : "Mặc định";
+            var price = customerPrice(currentProduct, variant);
+            var qty = parseInt(document.getElementById("qtyInput").value, 10) || 1;
+            var img = (variant && variant.image) || currentProduct.images[0] || "";
+            var ex = cartItems.find(function(i){ return i.id === currentProduct.id && i.variant === vName; });
+            if (ex) ex.qty += qty;
+            else cartItems.push({ id: currentProduct.id, name: currentProduct.name, price: price, qty: qty, variant: vName, img: img });
+            localStorage.setItem("ttp_cart", JSON.stringify(cartItems));
+            updateCartBadge();
+            closeProductDetail();
+            showShopToast("Đã thêm vào giỏ hàng");
+            if (openAfter) setTimeout(openCheckout, 250);
+        }
+        function buyNow() { addToCart(true); }
+        function updateCartBadge() {
+            var b = document.getElementById("cartCount");
+            if (!b) return;
+            var count = cartItems.reduce(function(s, i){ return s + (i.qty || 0); }, 0);
+            b.innerText = String(count);
+        }
+        function openCheckout() {
+            if (!cartItems.length) { showShopToast("Giỏ hàng trống"); return; }
+            renderCartList(); updateQRCode();
+            var modal = document.getElementById("checkoutModal");
+            modal.classList.remove("hidden");
+            setTimeout(function(){ modal.classList.remove("translate-y-full"); }, 10);
+            document.body.style.overflow = "hidden";
+        }
+        function closeCheckout() {
+            var modal = document.getElementById("checkoutModal");
+            modal.classList.add("translate-y-full");
+            setTimeout(function(){ modal.classList.add("hidden"); document.body.style.overflow = ""; }, 300);
+        }
+        function renderCartList() {
+            var c = document.getElementById("checkoutCartItems");
+            if (!c) return;
+            var total = 0;
+            c.innerHTML = cartItems.map(function(i, idx){
+                total += i.price * i.qty;
+                var img = i.img ? '<img src="' + escHtml(i.img) + '" referrerpolicy="no-referrer" class="w-16 h-16 object-contain bg-white rounded border">' : '<div class="w-16 h-16 bg-gray-100 rounded"></div>';
+                return '<div class="flex gap-3 bg-gray-50 p-2 rounded border border-gray-100">' + img +
+                    '<div class="flex-1"><div class="text-sm font-bold text-gray-800 line-clamp-2">' + escHtml(i.name) + '</div>' +
+                    '<div class="text-[10px] text-gray-500 mt-1">' + escHtml(i.variant || "Mặc định") + '</div>' +
+                    '<div class="flex justify-between items-end mt-1"><span class="text-[#ee4d2d] font-bold text-sm">' + formatVnd(i.price) + '</span>' +
+                    '<span class="text-xs"><button type="button" onclick="changeCartQty(' + idx + ',-1)" class="px-2">−</button>' + i.qty + '<button type="button" onclick="changeCartQty(' + idx + ',1)" class="px-2">+</button></span></div></div>' +
+                    '<button type="button" onclick="askDelete(' + idx + ')" class="text-gray-400 px-2"><i class="fa-solid fa-trash"></i></button></div>';
+            }).join("");
+            document.getElementById("cartTotalItems").innerText = cartItems.reduce(function(s,i){ return s + i.qty; }, 0) + " sp";
+            document.getElementById("finalTotalDisplay").innerText = formatVnd(total);
+        }
+        function changeCartQty(idx, delta) {
+            if (!cartItems[idx]) return;
+            cartItems[idx].qty += delta;
+            if (cartItems[idx].qty < 1) cartItems.splice(idx, 1);
+            localStorage.setItem("ttp_cart", JSON.stringify(cartItems));
+            renderCartList(); updateCartBadge(); updateQRCode();
+            if (!cartItems.length) closeCheckout();
+        }
+        function askDelete(idx) {
+            cartItems.splice(idx, 1);
+            localStorage.setItem("ttp_cart", JSON.stringify(cartItems));
+            renderCartList(); updateCartBadge(); updateQRCode();
+            if (!cartItems.length) closeCheckout();
+        }
+        function togglePaymentMethod() {
+            var m = document.querySelector('input[name="payment"]:checked').value;
+            var b = document.getElementById("bankingInfo");
+            if (m === "banking") { b.classList.remove("hidden"); updateQRCode(); } else b.classList.add("hidden");
+        }
+        function updateQRCode() {
+            var phoneEl = document.getElementById("cusPhone");
+            var p = (phoneEl && phoneEl.value) || "KHACH";
+            var t = cartItems.reduce(function(s, i){ return s + (i.price * i.qty); }, 0);
+            var content = "TTP " + p;
+            var bank = document.getElementById("bankContent");
+            if (bank) bank.innerText = content;
+            var img = document.getElementById("qrCodeImg");
+            if (img) img.src = "https://img.vietqr.io/image/TCB-19037189711011-compact2.png?amount=" + t + "&addInfo=" + encodeURIComponent(content);
+        }
+        function submitOrder() {
+            var n = document.getElementById("cusName").value.trim();
+            var p = document.getElementById("cusPhone").value.trim();
+            var a = document.getElementById("cusAddress").value.trim();
+            if (!n || !p || !a) { showShopToast("Vui lòng điền đủ thông tin"); return; }
+            if (!cartItems.length) return;
+            var btn = document.getElementById("btnOrder");
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG GỬI...';
+            btn.disabled = true;
+            var total = cartItems.reduce(function(s, i){ return s + i.price * i.qty; }, 0);
+            var payment = document.querySelector('input[name="payment"]:checked').value;
+            var items = cartItems.map(function(i){ return { id: i.id, name: i.name, price: i.price, qty: i.qty, variant: i.variant, img: i.img }; });
+            var localOrder = { id: "TTP" + String(Date.now()).slice(-6), date: new Date().toLocaleString("vi-VN"), total: formatVnd(total), totalNumber: total, items: items, customer: n, phone: p, status: "new" };
+            var finish = function(ok){
+                orderHistory.unshift(localOrder);
+                localStorage.setItem("ttp_orders", JSON.stringify(orderHistory));
+                cartItems = [];
+                localStorage.setItem("ttp_cart", "[]");
+                updateCartBadge();
+                document.getElementById("checkoutForm").reset();
+                closeCheckout();
+                btn.innerHTML = "ĐẶT HÀNG";
+                btn.disabled = false;
+                showShopToast(ok ? "Đơn đã gửi tới quản trị" : "Đã lưu đơn trên máy này");
+            };
+            var payload = {
+                status: "new",
+                total: total,
+                shippingFee: 0,
+                paymentMethod: payment,
+                customer: { name: n, phone: p, address: a, fullAddress: a, note: "" },
+                items: items,
+                source: "gian-hang",
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            var write = function(uid){
+                if (uid) payload.uid = uid;
+                db.collection("orders").add(payload).then(function(){ finish(true); }).catch(function(){ finish(false); });
+            };
+            if (typeof auth !== "undefined" && auth.currentUser) write(auth.currentUser.uid);
+            else if (typeof auth !== "undefined") auth.signInAnonymously().then(function(cred){ write(cred.user.uid); }).catch(function(){ write(""); });
+            else finish(false);
+        }
+        function openOrderHistory() {
+            var list = document.getElementById("orderHistoryList");
+            list.innerHTML = "";
+            if (!orderHistory.length) list.innerHTML = '<div class="text-center text-gray-500 py-10 font-medium">Bạn chưa có đơn hàng nào.</div>';
+            else orderHistory.forEach(function(o){
+                var rows = (o.items || []).map(function(i){ return '<div class="text-sm text-gray-600">' + i.qty + "× " + escHtml(i.name) + "</div>"; }).join("");
+                list.innerHTML += '<div class="bg-white p-4 rounded shadow-sm border border-gray-100 mb-3"><div class="flex justify-between border-b pb-2 mb-3"><span class="font-bold">#' + escHtml(o.id) + '</span><span class="text-xs text-gray-500">' + escHtml(o.date) + '</span></div>' + rows + '<div class="border-t pt-3 mt-2 font-bold text-[#ee4d2d]">' + escHtml(o.total) + "</div></div>";
+            });
+            document.getElementById("orderHistoryModal").classList.remove("hidden");
+            setTimeout(function(){ document.getElementById("orderHistoryModal").classList.remove("translate-x-full"); }, 10);
+            document.body.style.overflow = "hidden";
+        }
+        function closeOrderHistory() {
+            document.getElementById("orderHistoryModal").classList.add("translate-x-full");
+            setTimeout(function(){ document.getElementById("orderHistoryModal").classList.add("hidden"); document.body.style.overflow = ""; }, 300);
+        }
+        function bootShop() {
+            if (Array.isArray(window.TTP_CATALOG) && window.TTP_CATALOG.length) {
+                activeProducts = window.TTP_CATALOG.map(function(p, i){
+                    return normalizeStoreProduct(p.sku || ("local-" + i), p);
+                }).filter(function(p){ return p.active; });
+                renderProducts();
+            }
+            loadProductsFromFirebase();
+            updateCartBadge();
+        }
+        if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bootShop);
+        else bootShop();
+        window.openShop = openShop;
+        window.searchProducts = searchProducts;
+        window.setShopCategory = setShopCategory;
+        window.setShopSort = setShopSort;
+        window.renderProducts = renderProducts;
+        window.openProductDetail = openProductDetail;
+        window.closeProductDetail = closeProductDetail;
+        window.shiftGallery = shiftGallery;
+        window.setGalleryIndex = setGalleryIndex;
+        window.updateQty = updateQty;
+        window.addToCart = addToCart;
+        window.buyNow = buyNow;
+        window.openCheckout = openCheckout;
+        window.closeCheckout = closeCheckout;
+        window.changeCartQty = changeCartQty;
+        window.askDelete = askDelete;
+        window.togglePaymentMethod = togglePaymentMethod;
+        window.updateQRCode = updateQRCode;
+        window.submitOrder = submitOrder;
+        window.openOrderHistory = openOrderHistory;
+        window.closeOrderHistory = closeOrderHistory;
+        window.formatMoney = formatMoney;
+        })();
+
+</script>
 </body>
 </html>
