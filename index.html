@@ -1590,8 +1590,7 @@
                 sold: seller.sold || raw.soldText || ""
             };
         }
-        function customerPrice(p, variant) {
-            if (variant && variant.retailPrice > 0) return variant.retailPrice;
+        function customerPrice(p) {
             return p ? p.retailPrice : 0;
         }
         function stockText(stock) { return stock > 0 ? ("Còn " + stock) : "Đặt trước"; }
@@ -1678,7 +1677,13 @@
                     activeProducts = snap.docs.map(function(doc){ return normalizeStoreProduct(doc.id, Object.assign({ id: doc.id }, doc.data())); }).filter(function(p){ return p.active; });
                     var input = document.getElementById("storeSearchInput");
                     if (input && input.value) shopQuery = input.value;
+                    if (currentProduct) {
+                        var fresh = activeProducts.find(function(p){ return p.id === currentProduct.id; });
+                        if (fresh) currentProduct = fresh;
+                    }
                     renderProducts();
+                    var modal = document.getElementById("detailModal");
+                    if (currentProduct && modal && !modal.classList.contains("hidden")) paintDetailPrice();
                 }, function(error){ console.error("Lỗi tải gian hàng:", error); });
             } catch (e) { console.error(e); }
         }
@@ -1721,7 +1726,7 @@
         function paintDetailPrice() {
             if (!currentProduct) return;
             var variant = currentProduct.variants[selectedVariantIndex] || null;
-            document.getElementById("modalPrice").textContent = formatVnd(customerPrice(currentProduct, variant));
+            document.getElementById("modalPrice").textContent = formatVnd(customerPrice(currentProduct));
             var nameEl = document.getElementById("selectedVariantNameDisplay");
             if (nameEl) nameEl.textContent = variant ? variant.name : "Mặc định";
             var stock = variant && variant.stock ? variant.stock : currentProduct.stock;
@@ -1800,7 +1805,7 @@
             if (!currentProduct) return;
             var variant = currentProduct.variants[selectedVariantIndex] || null;
             var vName = variant ? variant.name : "Mặc định";
-            var price = customerPrice(currentProduct, variant);
+            var price = customerPrice(currentProduct);
             var qty = parseInt(document.getElementById("qtyInput").value, 10) || 1;
             var img = (variant && variant.image) || currentProduct.images[0] || "";
             var ex = cartItems.find(function(i){ return i.id === currentProduct.id && i.variant === vName; });
