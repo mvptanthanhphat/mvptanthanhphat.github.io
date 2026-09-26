@@ -488,20 +488,20 @@
                 const vStock = vars.reduce((sum, v) => sum + (Number(v.stock) || 0), 0);
                 const varPreview = vars.slice(0, 3).map(v => {
                     const pr = Number(v.retail_price ?? v.price ?? 0);
-                    return `<div class="text-[10px] leading-4 text-slate-500 truncate max-w-[280px]">${escHtml(v.name || '')} · <b class="text-blue-600">${formatMoney(pr)}</b> · kho ${Number(v.stock) || 0}</div>`;
+                    return `<div class="text-[10px] leading-4 text-slate-500 truncate max-w-[280px]">${escHtml(v.name || '')} · <b class="text-blue-600">${formatMoney(pr)}</b> · ${Number(v.stock) > 0 ? ('kho ' + Number(v.stock)) : '<b class="text-red-500">Hết hàng</b>'}</div>`;
                 }).join('') + (vars.length > 3 ? `<div class="text-[10px] text-[#ee4d2d] font-bold">+ ${vars.length - 3} loại nữa · bấm tên để sửa</div>` : '');
                 const retailCell = vars.length
                     ? `<div class="text-xs font-bold text-blue-600 leading-4">${vMin === vMax ? formatMoney(vMin) : formatMoney(vMin) + '<br>' + formatMoney(vMax)}</div><div class="text-[10px] text-slate-400">giá từng loại</div>`
                     : `<input type="number" value="${retail}" class="quick-input text-blue-600" onblur="quickUpdateProduct('${p._id}','retail_price',this.value)">`;
                 const stockCell = vars.length
-                    ? `<div class="text-xs font-bold ${vStock <= 0 ? 'text-red-500' : 'text-slate-700'}">${vStock}</div><div class="text-[10px] text-slate-400">tổng loại</div>`
-                    : `<input type="number" value="${stock}" class="quick-input ${stock<=0?'text-red-500 bg-red-50':'text-slate-700'}" onblur="quickUpdateProduct('${p._id}','stock',this.value)">`;
+                    ? `<div class="text-xs font-bold ${vStock <= 0 ? 'text-red-500' : 'text-slate-700'}">${vStock <= 0 ? 'Hết hàng' : vStock}</div><div class="text-[10px] text-slate-400">${vStock <= 0 ? 'các loại đều hết' : 'tổng loại'}</div>`
+                    : `<input type="number" value="${stock}" class="quick-input ${stock<=0?'text-red-500 bg-red-50':'text-slate-700'}" onblur="quickUpdateProduct('${p._id}','stock',this.value)">${stock<=0?'<div class="text-[10px] font-bold text-red-500">Hết hàng</div>':''}`;
                 html += `
                 <tr class="hover:bg-slate-50 transition border-b border-slate-100 animate-fade" style="animation-delay:${Math.min(idx*0.015,0.4)}s">
                     <td class="px-3 py-2 text-center"><img src="${getMainImage(p)}" class="w-10 h-10 object-cover rounded-lg border border-slate-200 bg-white inline-block" loading="lazy"></td>
                     <td class="px-3 py-2">
                         <div class="font-bold text-slate-800 text-sm line-clamp-1 cursor-pointer hover:text-[#ee4d2d] max-w-[280px]" onclick="toggleProductVariants('${p._id}')">${escHtml(p.name || '(Chưa đặt tên)')}</div>
-                        <div class="text-[11px] font-mono text-slate-400 mt-0.5">${escHtml(getSku(p))}${vars.length ? ' · ' + vars.length + ' biến thể' : ''}</div>
+                        <div class="text-[11px] font-mono text-slate-400 mt-0.5">${escHtml(getSku(p))}${vars.length ? ' · ' + vars.length + ' biến thể' : ''}${getSold(p) ? ' · ' + escHtml(getSold(p)) : ''}</div>
                         ${varPreview}
                     </td>
                     <td class="px-3 py-2"><select class="cat-select" onchange="quickUpdateProduct('${p._id}','category',this.value)">${categoryOptionsHtml(cat)}</select></td>

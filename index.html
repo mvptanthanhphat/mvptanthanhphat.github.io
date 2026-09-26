@@ -330,11 +330,26 @@
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
 }
-.shop-card-stock {
-  flex-shrink: 0;
+.shop-card-stock.is-oos {
+  color: #ee4d2d;
+  font-weight: 800;
+}
+.shop-card-sold {
   color: #78716c;
   font-size: 11px;
-  white-space: nowrap;
+  line-height: 1.3;
+}
+.shop-card-oos {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  background: #1c1917;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+  padding: 3px 6px;
+  border-radius: 4px;
 }
 .shop-chips {
   display: flex;
@@ -1682,7 +1697,11 @@
             var max = Math.max.apply(null, prices);
             return (min !== max ? "Từ " : "") + formatVnd(min);
         }
-        function stockText(stock) { return stock > 0 ? ("Còn " + stock) : "Đặt trước"; }
+        function stockText(stock) { return stock > 0 ? ("Còn " + stock) : "Hết hàng"; }
+        function displayStock(p) {
+            if (p && p.variants && p.variants.length) return p.variants.reduce(function(sum, v){ return sum + (Number(v.stock) || 0); }, 0);
+            return p ? p.stock : 0;
+        }
         function showShopToast(msg) {
             var el = document.getElementById("shopToast");
             if (!el) return;
@@ -1741,13 +1760,16 @@
                 if (!list.length) { grid.innerHTML = '<div class="col-span-full py-10 text-center text-gray-500 text-sm">Không tìm thấy sản phẩm.</div>'; updateCartBadge(); return; }
                 grid.innerHTML = list.map(function(p){
                     var img = p.images[0] ? '<img src="' + escHtml(p.images[0]) + '" alt="" class="shop-card-img" loading="lazy" referrerpolicy="no-referrer">' : '<span class="shop-card-empty"><i class="fa-solid fa-box"></i></span>';
+                    var oos = !(displayStock(p) > 0);
                     return '<article class="shop-card"><button type="button" class="shop-card-hit" onclick="openProductDetail(\'' + escHtml(p.id) + '\')">' +
                         '<div class="shop-card-media">' + img +
                         '<span class="shop-card-ribbon">' + escHtml(p.category) + '</span>' +
                         (p.isNew ? '<span class="shop-card-new">Mới</span>' : '') +
                         (p.videos.length ? '<span class="shop-card-video">Video</span>' : '') +
+                        (oos ? '<span class="shop-card-oos">Hết hàng</span>' : '') +
                         '</div><div class="shop-card-body"><h2 class="shop-card-name">' + escHtml(p.name) + '</h2>' +
-                        '<div class="shop-card-row"><p class="shop-card-price">' + cardPriceText(p) + '</p><span class="shop-card-stock">' + escHtml(stockText(p.stock)) + '</span></div></div></button></article>';
+                        (p.sold ? '<p class="shop-card-sold">' + escHtml(p.sold) + '</p>' : '') +
+                        '<div class="shop-card-row"><p class="shop-card-price">' + cardPriceText(p) + '</p><span class="shop-card-stock' + (oos ? ' is-oos' : '') + '">' + escHtml(stockText(displayStock(p))) + '</span></div></div></button></article>';
                 }).join("");
                 updateCartBadge();
             } catch (e) { console.error("Lỗi Render:", e); }
@@ -1818,9 +1840,12 @@
             document.getElementById("modalPrice").textContent = formatVnd(priceNow);
             var nameEl = document.getElementById("selectedVariantNameDisplay");
             if (nameEl) nameEl.textContent = variant ? variant.name : "Mặc định";
-            var stock = variant && variant.stock ? variant.stock : currentProduct.stock;
+            var stock = variant ? Number(variant.stock) || 0 : currentProduct.stock;
             var stockEl = document.getElementById("modalStock");
-            if (stockEl) stockEl.textContent = stockText(stock);
+            if (stockEl) {
+                stockEl.textContent = stockText(stock);
+                stockEl.className = stock > 0 ? "text-sm font-bold text-slate-700" : "text-sm font-bold text-[#ee4d2d]";
+            }
             var specs = document.getElementById("modalSpecs");
             if (specs) {
                 Array.from(specs.children).forEach(function(row){
@@ -1846,7 +1871,7 @@
                     var b = document.createElement("button");
                     b.type = "button";
                     b.className = i === 0 ? "px-3 py-2 border border-[#ee4d2d] bg-orange-50 text-[#ee4d2d] rounded text-xs font-bold" : "px-3 py-2 border border-gray-200 bg-white text-gray-600 rounded text-xs";
-                    b.textContent = v.name + " · " + formatVnd(v.retailPrice || v.price || 0);
+                    b.textContent = v.name + " · " + formatVnd(v.retailPrice || v.price || 0) + (v.stock > 0 ? "" : " · Hết hàng");
                     b.onclick = function(){
                         selectedVariantIndex = i;
                         Array.from(varDiv.children).forEach(function(c, idx){
