@@ -335,6 +335,12 @@
         function escHtml(s) { const d = document.createElement('div'); d.textContent = (s === null || s === undefined) ? '' : String(s); return d.innerHTML; }
         function escJs(s) { return String(s === null || s === undefined ? '' : s).replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
         function getSku(p) { return (p.sku || (p.seller && p.seller.sku) || ''); }
+        function soldLabel(raw) {
+            const s = String(raw || '').trim();
+            const n = s.replace(/[^\d]/g, '');
+            if (!n || Number(n) <= 0) return '';
+            return 'Đã bán ' + n;
+        }
         function getSold(p) { return ((p.seller && p.seller.sold) || p.sold || ''); }
         function getMainImage(p) { return p.image_url || p.image || (p.images && p.images[0]) || 'https://via.placeholder.com/60'; }
         function generateSKU() { const now = Date.now().toString(); const rand = Math.floor(Math.random()*100).toString().padStart(2,'0'); return 'SP' + now.slice(-6) + rand; }
@@ -501,7 +507,8 @@
                     <td class="px-3 py-2 text-center"><img src="${getMainImage(p)}" class="w-10 h-10 object-cover rounded-lg border border-slate-200 bg-white inline-block" loading="lazy"></td>
                     <td class="px-3 py-2">
                         <div class="font-bold text-slate-800 text-sm line-clamp-1 cursor-pointer hover:text-[#ee4d2d] max-w-[280px]" onclick="toggleProductVariants('${p._id}')">${escHtml(p.name || '(Chưa đặt tên)')}</div>
-                        <div class="text-[11px] font-mono text-slate-400 mt-0.5">${escHtml(getSku(p))}${vars.length ? ' · ' + vars.length + ' biến thể' : ''}${getSold(p) ? ' · ' + escHtml(getSold(p)) : ''}</div>
+                        <div class="text-[11px] font-mono text-slate-400 mt-0.5">${escHtml(getSku(p))}${vars.length ? ' · ' + vars.length + ' biến thể' : ''}</div>
+                        ${soldLabel(getSold(p)) ? `<div class="text-[11px] font-bold text-[#ee4d2d] mt-0.5">${escHtml(soldLabel(getSold(p)))}</div>` : ''}
                         ${varPreview}
                     </td>
                     <td class="px-3 py-2"><select class="cat-select" onchange="quickUpdateProduct('${p._id}','category',this.value)">${categoryOptionsHtml(cat)}</select></td>
