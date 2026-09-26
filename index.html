@@ -1636,6 +1636,7 @@
         function pushUrl(list, v) {
             var s = String(v || "").trim();
             if (!s || !/^https?:\/\//i.test(s) || /placeholder|blob:|data:image/i.test(s)) return;
+            if (/mtgfvukn5ssq7e/i.test(s)) return;
             if (list.indexOf(s) < 0) list.push(s);
         }
         function normalizeStoreProduct(id, raw) {
@@ -1836,7 +1837,7 @@
                         for (var i = 0; i < d.length; i += 4) {
                             if (d[i] > 245 && d[i + 1] > 245 && d[i + 2] > 245) white++;
                         }
-                        finish(white / 256 > 0.92);
+                        finish(white / 256 > 0.88);
                     } catch (e) { finish(false); }
                 };
                 img.onerror = function() { finish(false); };
