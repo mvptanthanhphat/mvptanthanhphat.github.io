@@ -485,8 +485,8 @@
                 <tr class="hover:bg-slate-50 transition border-b border-slate-100 animate-fade" style="animation-delay:${Math.min(idx*0.015,0.4)}s">
                     <td class="px-3 py-2 text-center"><img src="${getMainImage(p)}" class="w-10 h-10 object-cover rounded-lg border border-slate-200 bg-white inline-block" loading="lazy"></td>
                     <td class="px-3 py-2">
-                        <div class="font-bold text-slate-800 text-sm line-clamp-1 cursor-pointer hover:text-[#ee4d2d] max-w-[280px]" onclick="editProduct('${p._id}')">${escHtml(p.name || '(Chưa đặt tên)')}</div>
-                        <div class="text-[11px] font-mono text-slate-400 mt-0.5">${escHtml(getSku(p))}</div>
+                        <div class="font-bold text-slate-800 text-sm line-clamp-1 cursor-pointer hover:text-[#ee4d2d] max-w-[280px]" onclick="toggleProductVariants('${p._id}')">${escHtml(p.name || '(Chưa đặt tên)')}</div>
+                        <div class="text-[11px] font-mono text-slate-400 mt-0.5">${escHtml(getSku(p))}${Array.isArray(p.variants) && p.variants.length ? ' · ' + p.variants.length + ' biến thể' : ''}</div>
                     </td>
                     <td class="px-3 py-2"><select class="cat-select" onchange="quickUpdateProduct('${p._id}','category',this.value)">${categoryOptionsHtml(cat)}</select></td>
                     <td class="px-3 py-2 text-center"><span class="toggle-wrap"><input type="checkbox" id="new_${p._id}" class="toggle-checkbox" ${isNew?'checked':''} onchange="quickUpdateProduct('${p._id}','is_new',this.checked)"><label for="new_${p._id}" class="toggle-label"></label></span></td>
@@ -499,9 +499,98 @@
                         <button onclick="editProduct('${p._id}')" class="text-slate-400 hover:text-blue-600 bg-white border border-slate-200 w-8 h-8 rounded-lg shadow-sm hover:shadow transition mr-1" title="Sửa chi tiết"><i class="fa-solid fa-pen text-xs"></i></button>
                         <button onclick="deleteProduct('${p._id}')" class="text-slate-400 hover:text-red-600 bg-white border border-slate-200 w-8 h-8 rounded-lg shadow-sm hover:shadow transition" title="Xóa"><i class="fa-solid fa-trash-can text-xs"></i></button>
                     </td>
+                </tr>
+                <tr id="varrow_${p._id}" class="${openVariantId === p._id ? '' : 'hidden'} bg-orange-50/50">
+                    <td colspan="10" class="px-4 py-3 border-b border-orange-100" id="varbox_${p._id}"></td>
                 </tr>`;
             });
             tbody.innerHTML = html;
+            if (openVariantId) renderVariantPanel(openVariantId);
+        }
+
+        let openVariantId = '';
+
+        function toggleProductVariants(id) {
+            openVariantId = openVariantId === id ? '' : id;
+            applyProductFilter();
+        }
+
+        function renderVariantPanel(id) {
+            const box = document.getElementById('varbox_' + id);
+            const p = allProducts.find(x => x._id === id);
+            if (!box || !p) return;
+            const variants = Array.isArray(p.variants) ? p.variants : [];
+            const rows = variants.map((v, i) => `
+                <div class="grid grid-cols-12 gap-2 items-center bg-white border border-slate-200 rounded-lg p-2" data-old="${i}">
+                    <input data-f="name" value="${escHtml(v.name || '')}" class="col-span-12 md:col-span-4 border border-slate-200 rounded px-2 py-1.5 text-sm font-medium" placeholder="Tên biến thể">
+                    <input data-f="retail" type="number" value="${Number(v.retail_price ?? v.price ?? 0)}" class="col-span-4 md:col-span-2 border border-slate-200 rounded px-2 py-1.5 text-sm text-right text-blue-600 font-bold" title="Giá lẻ">
+                    <input data-f="stock" type="number" value="${Number(v.stock ?? 0)}" class="col-span-3 md:col-span-1 border border-slate-200 rounded px-2 py-1.5 text-sm text-right" title="Kho">
+                    <input data-f="image" value="${escHtml(v.originalImage || v.image || v.image_url || '')}" class="col-span-12 md:col-span-4 border border-slate-200 rounded px-2 py-1.5 text-xs" placeholder="Link ảnh của biến thể">
+                    <button type="button" onclick="removeVariantRow(this)" class="col-span-1 text-slate-400 hover:text-red-600" title="Xóa biến thể"><i class="fa-solid fa-trash text-xs"></i></button>
+                </div>`).join('');
+            box.innerHTML = `
+                <div class="text-xs font-bold text-slate-600 mb-2">Biến thể · bấm Lưu để khách thấy đúng tên, giá lẻ, ảnh và kho</div>
+                <div id="varlist_${id}" class="space-y-2">${rows || '<div class="text-xs text-slate-400 empty-var">Chưa có biến thể.</div>'}</div>
+                <div class="flex gap-2 mt-3">
+                    <button type="button" onclick="addVariantRow('${id}')" class="px-3 py-1.5 text-xs font-bold border border-slate-300 rounded-lg bg-white">+ Thêm biến thể</button>
+                    <button type="button" onclick="saveVariants('${id}')" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#ee4d2d] text-white">Lưu biến thể</button>
+                </div>`;
+        }
+
+        function addVariantRow(id) {
+            const list = document.getElementById('varlist_' + id);
+            if (!list) return;
+            const empty = list.querySelector('.empty-var');
+            if (empty) empty.remove();
+            const row = document.createElement('div');
+            row.className = 'grid grid-cols-12 gap-2 items-center bg-white border border-dashed border-orange-300 rounded-lg p-2';
+            row.innerHTML = `
+                <input data-f="name" value="" class="col-span-12 md:col-span-4 border border-slate-200 rounded px-2 py-1.5 text-sm font-medium" placeholder="Tên biến thể mới">
+                <input data-f="retail" type="number" value="0" class="col-span-4 md:col-span-2 border border-slate-200 rounded px-2 py-1.5 text-sm text-right text-blue-600 font-bold">
+                <input data-f="stock" type="number" value="0" class="col-span-3 md:col-span-1 border border-slate-200 rounded px-2 py-1.5 text-sm text-right">
+                <input data-f="image" value="" class="col-span-12 md:col-span-4 border border-slate-200 rounded px-2 py-1.5 text-xs" placeholder="Link ảnh của biến thể">
+                <button type="button" onclick="removeVariantRow(this)" class="col-span-1 text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash text-xs"></i></button>`;
+            list.appendChild(row);
+        }
+
+        function removeVariantRow(btn) {
+            const row = btn.closest('[data-old], .grid');
+            if (row) row.remove();
+        }
+
+        function saveVariants(id) {
+            const list = document.getElementById('varlist_' + id);
+            const p = allProducts.find(x => x._id === id);
+            if (!list || !p) return;
+            const old = Array.isArray(p.variants) ? p.variants : [];
+            const next = [];
+            list.querySelectorAll('[data-f="name"]').forEach(function(nameInput) {
+                const row = nameInput.parentElement;
+                const name = nameInput.value.trim();
+                if (!name) return;
+                const retail = parseInt(row.querySelector('[data-f="retail"]').value, 10) || 0;
+                const stock = parseInt(row.querySelector('[data-f="stock"]').value, 10) || 0;
+                const image = row.querySelector('[data-f="image"]').value.trim();
+                const oldIndex = row.getAttribute('data-old');
+                const prev = oldIndex !== null && old[oldIndex] ? old[oldIndex] : {};
+                const item = Object.assign({}, prev, {
+                    name: name,
+                    price: retail,
+                    retail_price: retail,
+                    stock: stock,
+                    stockText: stock > 0 ? (stock + ' sản phẩm có sẵn') : '',
+                    status: stock > 0 ? 'IN_STOCK' : 'OUT_OF_STOCK',
+                    originalImage: image
+                });
+                if (image) item.image = image;
+                next.push(item);
+            });
+            db.collection('wholesale_products').doc(id).set({
+                variants: next,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true })
+                .then(function() { showToast('Đã lưu ' + next.length + ' biến thể'); })
+                .catch(function(err) { alert('Lỗi lưu biến thể: ' + err.message); });
         }
 
         function quickUpdateProduct(docId, field, value) {
