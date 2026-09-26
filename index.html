@@ -20,6 +20,8 @@
             --bg-body: #FAFAF9; --text-main: #1C1917; --accent-primary: #EE4D2D; --card-bg: #FFFFFF; --border-color: #E7E5E4;
             --safe-bottom: env(safe-area-inset-bottom, 20px); --safe-top: env(safe-area-inset-top, 0px);
         }
+        @keyframes ttpShipBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+        .ship-changed { color: #991b1b; font-weight: 800; animation: ttpShipBlink 1s steps(1) infinite; }
         body.theme-lemon { --bg-body: #FEFCE8; --text-main: #422006; --accent-primary: #EAB308; --card-bg: #FEF9C3; --border-color: #FEF08A; }
         body.theme-jade { --bg-body: #F0FDF4; --text-main: #064E3B; --accent-primary: #10B981; --card-bg: #ECFDF5; --border-color: #A7F3D0; }
         body { background-color: var(--bg-body); color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease; }
@@ -507,12 +509,12 @@
                 <button onclick="toggleAudioWindow()" class="hover:text-yellow-100 font-bold flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full clickable transition-all border border-white/20 text-yellow-300 outline-none">
                     <i class="fa-solid fa-music"></i><span class="hidden sm:inline">Audio</span>
                 </button>
-                <a href="#" onclick="openOrderGuide(); return false;" class="hover:text-gray-200 hidden md:inline clickable outline-none">Thông báo</a>
+                <a href="#" onclick="openOrderGuide(); return false;" class="hover:text-gray-200 hidden md:inline clickable outline-none relative">Thông báo <span id="noticeDotDesk" class="hidden absolute -top-1 -right-2 w-2 h-2 rounded-full bg-yellow-300"></span></a>
                 <a href="#" onclick="openSupportModal(); return false;" class="hover:text-gray-200 hidden md:inline clickable outline-none">Hỗ trợ</a>
             </div>
         </div>
         <div class="md:hidden max-w-6xl mx-auto px-2 pb-1.5 grid grid-cols-2 gap-1.5">
-            <button type="button" onclick="openOrderGuide()" class="flex items-center justify-center gap-1.5 bg-white/15 border border-white/30 rounded-full py-2 text-[13px] font-bold outline-none active:bg-white/25"><i class="fa-solid fa-bell"></i> Thông báo</button>
+            <button type="button" onclick="openOrderGuide()" class="relative flex items-center justify-center gap-1.5 bg-white/15 border border-white/30 rounded-full py-2 text-[13px] font-bold outline-none active:bg-white/25"><i class="fa-solid fa-bell"></i> Thông báo <span id="noticeDotMob" class="hidden absolute top-1 right-3 w-2 h-2 rounded-full bg-yellow-300"></span></button>
             <button type="button" onclick="openSupportModal()" class="flex items-center justify-center gap-1.5 bg-white/15 border border-white/30 rounded-full py-2 text-[13px] font-bold outline-none active:bg-white/25"><i class="fa-solid fa-headset"></i> Hỗ trợ</button>
         </div>
     </div>
@@ -780,26 +782,36 @@
         </div>
     </div>
 
-    <div id="guideModal" class="fixed inset-0 bg-black/60 z-[100006] items-center justify-center p-4" style="display:none" onclick="if(event.target===this) closeOrderGuide()">
-        <div class="bg-white w-full max-w-md rounded-2xl overflow-hidden shadow-2xl">
-            <div class="px-5 py-4 text-white" style="background:linear-gradient(90deg,#12245f,#1a3480)">
+    <div id="guideModal" class="fixed inset-0 bg-black/60 z-[100006] items-end md:items-center justify-center p-0 md:p-4" style="display:none" onclick="if(event.target===this) closeOrderGuide()">
+        <div class="bg-white w-full max-w-md rounded-t-2xl md:rounded-2xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col">
+            <div class="px-5 py-4 text-white shrink-0" style="background:linear-gradient(90deg,#12245f,#1a3480)">
                 <div class="flex items-start justify-between gap-3">
                     <div>
                         <p class="text-[11px] font-bold uppercase tracking-widest" style="color:#fdba74">Thông báo</p>
-                        <h3 class="text-xl font-extrabold leading-tight mt-1">Cách đặt hàng tại Tân Thành Phát</h3>
+                        <h3 class="text-xl font-extrabold leading-tight mt-1">Đặt hàng và theo dõi đơn</h3>
                     </div>
                     <button type="button" onclick="closeOrderGuide()" class="w-8 h-8 rounded-full bg-white/15 text-white outline-none"><i class="fa-solid fa-xmark"></i></button>
                 </div>
             </div>
-            <div class="px-5 py-4 space-y-2.5 text-sm text-[#1e3a6e]">
-                <div class="flex gap-3 items-start"><span class="w-6 h-6 shrink-0 rounded-full text-white text-xs font-bold flex items-center justify-center" style="background:#e4572e">1</span><p>Mở <strong>Gian hàng</strong> và tìm sản phẩm cần mua.</p></div>
-                <div class="flex gap-3 items-start"><span class="w-6 h-6 shrink-0 rounded-full text-white text-xs font-bold flex items-center justify-center" style="background:#e4572e">2</span><p>Bấm vào sản phẩm để xem ảnh, video và <strong>giá bán lẻ</strong>.</p></div>
-                <div class="flex gap-3 items-start"><span class="w-6 h-6 shrink-0 rounded-full text-white text-xs font-bold flex items-center justify-center" style="background:#e4572e">3</span><p>Chọn số lượng, rồi bấm <strong>Thêm giỏ</strong> hoặc <strong>Mua ngay</strong>.</p></div>
-                <div class="flex gap-3 items-start"><span class="w-6 h-6 shrink-0 rounded-full text-white text-xs font-bold flex items-center justify-center" style="background:#e4572e">4</span><p>Điền họ tên, số điện thoại, địa chỉ và bấm <strong>Đặt hàng</strong>.</p></div>
-                <p class="text-xs text-gray-500 pt-1">Giao và lắp đặt tận nơi. Cần gấp gọi <a href="tel:0913945985" class="font-bold" style="color:#e4572e">0913.945.985</a>.</p>
+            <div class="px-5 py-4 space-y-3 text-sm text-[#1e3a6e] overflow-y-auto">
+                <div id="guideLive" class="space-y-2"></div>
+                <div class="rounded-xl border border-orange-100 bg-orange-50/60 p-3 space-y-2">
+                    <p class="text-[11px] font-bold uppercase tracking-wide text-[#e4572e]">Cách đặt</p>
+                    <p>Vào <strong>Gian hàng</strong>, chọn phân loại, ảnh và giá bán lẻ. Thêm giỏ rồi điền tên, điện thoại, địa chỉ.</p>
+                    <p>Phí ship là mức shop đặt sẵn. Khách chọn cách nhận, <strong>không sửa được số tiền</strong>.</p>
+                </div>
+                <div class="rounded-xl border border-blue-100 bg-blue-50/50 p-3 space-y-2">
+                    <p class="text-[11px] font-bold uppercase tracking-wide text-[#162B75]">Theo dõi trên máy này</p>
+                    <p><strong>Chờ shop xác nhận</strong> — đơn vừa gửi, shop đang xem.</p>
+                    <p><strong class="ship-changed">Dòng ship nhấp đỏ</strong> — shop đã đổi phí. Đọc số mới và tổng tiền rồi gọi <a href="tel:0913945985" class="font-bold" style="color:#e4572e">0913.945.985</a> nếu chưa đồng ý.</p>
+                    <p><strong>Đang giao hàng</strong> — có dòng Thời gian. Shop gõ giờ giao, hoặc dùng mức sẵn: xe shop 2–4 giờ, xe ôm 1–2 giờ, nhà xe 1–3 ngày.</p>
+                    <p><strong>Đã giao xong</strong> hoặc <strong>Đã hủy</strong> — đơn kết thúc.</p>
+                    <p class="text-xs text-gray-500">Xem lại ở <strong>Đơn hàng của tôi</strong>, cùng điện thoại hoặc trình duyệt đã đặt. COD thu tiền hàng cộng phí ship khi nhận.</p>
+                </div>
             </div>
-            <div class="px-5 pb-5">
-                <button type="button" onclick="goShopFromGuide()" class="w-full dynamic-bg py-3 rounded-xl font-bold uppercase text-sm outline-none">Vào gian hàng lựa chọn</button>
+            <div class="px-5 pb-5 pt-2 grid grid-cols-2 gap-2 shrink-0">
+                <button type="button" onclick="goOrdersFromGuide()" class="py-3 rounded-xl font-bold text-sm outline-none border border-[#162B75] text-[#162B75]">Xem đơn đã đặt</button>
+                <button type="button" onclick="goShopFromGuide()" class="dynamic-bg py-3 rounded-xl font-bold text-sm outline-none text-white">Vào gian hàng</button>
             </div>
         </div>
     </div>
@@ -881,7 +893,7 @@
                                         <option>GHN</option><option>Viettel Post</option><option>J&T</option><option>GHTK</option><option>Nhà xe</option>
                                     </select>
                                 </div>
-                                <div><label class="block text-sm text-gray-600 mb-1">Phí ship (đ)</label><input type="number" id="shipFee" min="0" step="1000" value="0" class="w-full border p-2 rounded outline-none" oninput="renderCartList(); updateQRCode();"><p class="text-[11px] text-gray-500 mt-1">Phí cộng vào tổng. COD thì người giao thu cả tiền hàng và phí ship. Shop có thể sửa phí trước khi giao.</p></div>
+                                <div><div class="text-sm text-gray-600 mb-1">Phí ship dự kiến</div><div id="shipFeeLabel" class="font-bold text-[#162B75]">0đ</div><p class="text-[11px] text-gray-500 mt-1">Mức này do shop đặt, khách không sửa được. Shop đổi phí thì dòng ship trên đơn sẽ nhấp đỏ.</p></div>
                             </div>
                             <div><label class="block text-sm text-gray-600 mb-1">Ghi chú cho người giao</label><input type="text" id="cusNote" class="w-full border p-2 rounded outline-none" placeholder="Giờ nhận, gọi trước, để xe..."></div>
                         </form>
@@ -932,6 +944,11 @@
             var m = document.getElementById('guideModal');
             if (!m) return;
             m.style.display = 'flex';
+            if (typeof window.refreshGuideOrders === 'function') window.refreshGuideOrders();
+        }
+        function goOrdersFromGuide() {
+            closeOrderGuide();
+            if (typeof openOrderHistory === 'function') openOrderHistory();
         }
         function closeOrderGuide() {
             var m = document.getElementById('guideModal');
@@ -2001,13 +2018,22 @@
             modal.classList.add("translate-y-full");
             setTimeout(function(){ modal.classList.add("hidden"); document.body.style.overflow = ""; }, 300);
         }
+        function defaultShipFee(method) {
+            if (method === "shop" || method === "carrier") return 30000;
+            if (method === "xe") return 25000;
+            return 0;
+        }
+        function defaultEta(method) {
+            if (method === "pickup") return "Mời đến lấy trong giờ làm việc";
+            if (method === "xe") return "Dự kiến xe lấy hàng trong 1–2 giờ";
+            if (method === "carrier") return "Dự kiến 1–3 ngày";
+            return "Dự kiến giao trong 2–4 giờ";
+        }
         function shipChoice() {
             var methodEl = document.getElementById("shipMethod");
             var method = methodEl ? methodEl.value : "pickup";
-            var fee = 0;
-            if (method !== "pickup") fee = Math.max(0, Math.round(Number((document.getElementById("shipFee") || {}).value) || 0));
             var carrierEl = document.getElementById("shipCarrier");
-            return { method: method, fee: fee, carrier: method === "carrier" && carrierEl ? carrierEl.value : "" };
+            return { method: method, fee: defaultShipFee(method), carrier: method === "carrier" && carrierEl ? carrierEl.value : "" };
         }
         function shipMethodText(method, carrier) {
             var map = { pickup: "Tự đến lấy", shop: "Xe shop giao tận nơi", xe: "Gửi xe ôm", carrier: "Nhà vận chuyển" };
@@ -2024,12 +2050,10 @@
             var method = (document.getElementById("shipMethod") || {}).value || "pickup";
             var extra = document.getElementById("shipExtra");
             var carrierWrap = document.getElementById("shipCarrierWrap");
-            var feeEl = document.getElementById("shipFee");
+            var feeEl = document.getElementById("shipFeeLabel");
             if (extra) extra.classList.toggle("hidden", method === "pickup");
             if (carrierWrap) carrierWrap.classList.toggle("hidden", method !== "carrier");
-            if (feeEl && method !== "pickup" && !Number(feeEl.value)) {
-                feeEl.value = method === "xe" ? "25000" : "30000";
-            }
+            if (feeEl) feeEl.textContent = formatVnd(defaultShipFee(method));
             renderCartList();
             updateQRCode();
         }
@@ -2100,7 +2124,7 @@
             var payment = document.querySelector('input[name="payment"]:checked').value;
             var note = (document.getElementById("cusNote").value || "").trim();
             var items = cartItems.map(function(i){ return { id: i.id, name: i.name, price: i.price, qty: i.qty, variant: i.variant, img: i.img, image: i.img }; });
-            var localOrder = { id: "TTP" + String(Date.now()).slice(-6), date: new Date().toLocaleString("vi-VN"), total: formatVnd(total), totalNumber: total, shippingFee: ship.fee, shippingMethod: ship.method, shippingCarrier: ship.carrier, paymentMethod: payment, items: items, customer: n, phone: p, status: "new" };
+            var localOrder = { id: "TTP" + String(Date.now()).slice(-6), date: new Date().toLocaleString("vi-VN"), total: formatVnd(total), totalNumber: total, shippingFee: ship.fee, shippingFeeQuoted: ship.fee, shippingMethod: ship.method, shippingCarrier: ship.carrier, paymentMethod: payment, items: items, customer: n, phone: p, status: "new" };
             var finish = function(ok){
                 orderHistory.unshift(localOrder);
                 localStorage.setItem("ttp_orders", JSON.stringify(orderHistory));
@@ -2119,6 +2143,8 @@
                 total: total,
                 goodsTotal: goods,
                 shippingFee: ship.fee,
+                shippingFeeQuoted: ship.fee,
+                shippingFeeChanged: false,
                 shippingMethod: ship.method,
                 shippingCarrier: ship.carrier,
                 paymentMethod: payment,
@@ -2145,6 +2171,9 @@
                 ts: created ? created.getTime() : 0,
                 total: formatVnd(d.total || 0),
                 shippingFee: Number(d.shippingFee) || 0,
+                shippingFeeQuoted: Number(d.shippingFeeQuoted) || 0,
+                shippingFeeChanged: d.shippingFeeChanged === true,
+                eta: d.eta || "",
                 shippingMethod: d.shippingMethod || "",
                 shippingCarrier: d.shippingCarrier || "",
                 paymentMethod: d.paymentMethod || "",
@@ -2164,7 +2193,30 @@
                 }
                 var modal = document.getElementById("orderHistoryModal");
                 if (modal && !modal.classList.contains("hidden")) paintOrderHistory();
+                refreshGuideOrders();
             }, function(){});
+        }
+        function refreshGuideOrders() {
+            var box = document.getElementById("guideLive");
+            var active = (orderHistory || []).filter(function(o){ return o.status !== "done" && o.status !== "cancel"; });
+            ["noticeDotDesk", "noticeDotMob"].forEach(function(id){
+                var dot = document.getElementById(id);
+                if (dot) dot.classList.toggle("hidden", !active.length);
+            });
+            if (!box) return;
+            if (!active.length) {
+                box.innerHTML = '<div class="rounded-xl border border-gray-200 bg-gray-50 p-3 text-xs text-gray-500">Chưa có đơn đang xử lý. Sau khi đặt, trạng thái và phí ship hiện ngay ở đây.</div>';
+                return;
+            }
+            box.innerHTML = '<p class="text-[11px] font-bold uppercase tracking-wide text-[#e4572e]">Đơn cần để ý</p>' + active.slice(0, 3).map(function(o){
+                var st = orderStatusView(o.status);
+                var quoted = o.shippingFeeQuoted || defaultShipFee(o.shippingMethod);
+                var changed = o.shippingMethod && o.shippingMethod !== "pickup" && Number(o.shippingFee) !== Number(quoted);
+                var eta = o.status === "shipping" ? (o.eta || defaultEta(o.shippingMethod)) : "";
+                var line = shipMethodText(o.shippingMethod, o.shippingCarrier) + " · ship " + formatVnd(o.shippingFee || 0);
+                if (changed) line += " · đã đổi, trước " + formatVnd(quoted);
+                return '<button type="button" onclick="goOrdersFromGuide()" class="w-full text-left rounded-xl border border-orange-200 bg-white p-3"><div class="flex justify-between gap-2"><span class="font-bold">#' + escHtml(o.id) + '</span><span class="text-[11px] font-bold px-2 py-0.5 rounded ' + st.cls + '">' + st.text + '</span></div><div class="mt-1 ' + (changed ? "ship-changed text-sm" : "text-xs text-gray-500") + '">' + escHtml(line) + '</div>' + (eta ? '<div class="text-xs font-bold text-[#162B75] mt-1">' + escHtml(eta) + '</div>' : '') + '<div class="text-sm font-bold text-[#ee4d2d] mt-1">' + escHtml(o.total || "") + '</div></button>';
+            }).join("");
         }
         function paintOrderHistory() {
             var list = document.getElementById("orderHistoryList");
@@ -2175,7 +2227,13 @@
                 var rows = (o.items || []).map(function(i){ return '<div class="text-sm text-gray-600">' + i.qty + "× " + escHtml(i.name) + "</div>"; }).join("");
                 var ship = shipMethodText(o.shippingMethod, o.shippingCarrier);
                 var pay = o.paymentMethod === "banking" ? "Chuyển khoản" : "COD";
-                return '<div class="bg-white p-4 rounded shadow-sm border border-gray-100 mb-3"><div class="flex justify-between items-start gap-3 border-b pb-2 mb-3"><span class="font-bold">#' + escHtml(o.id) + '</span><span class="text-[11px] font-bold px-2 py-1 rounded ' + st.cls + '">' + st.text + '</span></div>' + rows + '<div class="text-xs text-gray-500 mt-2">' + escHtml(ship) + (o.shippingFee ? " · ship " + formatVnd(o.shippingFee) : "") + " · " + pay + '</div><div class="flex justify-between items-center border-t pt-3 mt-2"><span class="text-xs text-gray-400">' + escHtml(o.date) + '</span><span class="font-bold text-[#ee4d2d]">' + escHtml(o.total) + "</span></div></div>";
+                var quoted = o.shippingFeeQuoted || defaultShipFee(o.shippingMethod);
+                var changed = o.shippingMethod && o.shippingMethod !== "pickup" && Number(o.shippingFee) !== Number(quoted);
+                var shipLine = escHtml(ship) + " · ship " + formatVnd(o.shippingFee) + " · " + pay;
+                if (changed) shipLine += " · shop đã đổi, trước là " + formatVnd(quoted);
+                var eta = "";
+                if (o.status === "shipping") eta = o.eta || defaultEta(o.shippingMethod);
+                return '<div class="bg-white p-4 rounded shadow-sm border border-gray-100 mb-3"><div class="flex justify-between items-start gap-3 border-b pb-2 mb-3"><span class="font-bold">#' + escHtml(o.id) + '</span><span class="text-[11px] font-bold px-2 py-1 rounded ' + st.cls + '">' + st.text + '</span></div>' + rows + '<div class="text-sm mt-2 ' + (changed ? "ship-changed" : "text-gray-500 text-xs") + '">' + shipLine + '</div>' + (eta ? '<div class="text-sm font-bold text-[#162B75] mt-1">Thời gian: ' + escHtml(eta) + '</div>' : '') + '<div class="flex justify-between items-center border-t pt-3 mt-2"><span class="text-xs text-gray-400">' + escHtml(o.date) + '</span><span class="font-bold text-[#ee4d2d]">' + escHtml(o.total) + "</span></div></div>";
             }).join("");
         }
         function openOrderHistory() {
@@ -2198,6 +2256,7 @@
             loadProductsFromFirebase();
             updateCartBadge();
             ensureCartAuth();
+            refreshGuideOrders();
         }
         if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bootShop);
         else bootShop();
@@ -2222,6 +2281,7 @@
         window.onShipChange = onShipChange;
         window.submitOrder = submitOrder;
         window.openOrderHistory = openOrderHistory;
+        window.refreshGuideOrders = refreshGuideOrders;
         window.closeOrderHistory = closeOrderHistory;
         window.formatMoney = formatMoney;
         })();
