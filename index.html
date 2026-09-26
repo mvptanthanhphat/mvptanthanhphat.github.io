@@ -1609,6 +1609,8 @@
         let selectedVariantIndex = 0;
         let gallerySlides = [];
         let galleryIndex = 0;
+        let galleryToken = 0;
+        var blankCache = {};
         try { cartItems = JSON.parse(localStorage.getItem("ttp_cart") || "[]") || []; } catch (e) { cartItems = []; }
         try { orderHistory = JSON.parse(localStorage.getItem("ttp_orders") || "[]") || []; } catch (e) { orderHistory = []; }
 
@@ -1816,6 +1818,53 @@
             images.forEach(function(src){ slides.push({ type: "image", src: src }); });
             return slides;
         }
+        function probeBlank(src) {
+            if (Object.prototype.hasOwnProperty.call(blankCache, src)) return Promise.resolve(blankCache[src]);
+            return new Promise(function(resolve) {
+                var img = new Image();
+                img.crossOrigin = "anonymous";
+                img.referrerPolicy = "no-referrer";
+                var finish = function(blank) { blankCache[src] = blank; resolve(blank); };
+                img.onload = function() {
+                    try {
+                        var c = document.createElement("canvas");
+                        c.width = 16; c.height = 16;
+                        var g = c.getContext("2d", { willReadFrequently: true });
+                        g.drawImage(img, 0, 0, 16, 16);
+                        var d = g.getImageData(0, 0, 16, 16).data;
+                        var white = 0;
+                        for (var i = 0; i < d.length; i += 4) {
+                            if (d[i] > 245 && d[i + 1] > 245 && d[i + 2] > 245) white++;
+                        }
+                        finish(white / 256 > 0.92);
+                    } catch (e) { finish(false); }
+                };
+                img.onerror = function() { finish(false); };
+                img.src = src;
+            });
+        }
+        function showGallery(p, variant) {
+            var token = ++galleryToken;
+            var slides = buildSlides(p, variant);
+            gallerySlides = slides.filter(function(s) { return s.type !== "image" || blankCache[s.src] === false; });
+            if (!gallerySlides.length) {
+                var first = slides.find(function(s) { return blankCache[s.src] !== true; }) || slides[0];
+                gallerySlides = first ? [first] : [];
+            }
+            galleryIndex = 0;
+            renderGallery();
+            Promise.all(slides.map(function(s) {
+                if (s.type !== "image") return Promise.resolve(s);
+                return probeBlank(s.src).then(function(blank) { return blank ? null : s; });
+            })).then(function(rows) {
+                if (token !== galleryToken || !currentProduct || currentProduct.id !== p.id) return;
+                var next = rows.filter(Boolean);
+                gallerySlides = next.length ? next : gallerySlides;
+                if (galleryIndex >= gallerySlides.length) galleryIndex = 0;
+                renderGallery();
+                if (p.images) p.images = p.images.filter(function(src) { return blankCache[src] !== true; });
+            });
+        }
         function renderGallery() {
             var stage = document.getElementById("galleryStage");
             var thumbs = document.getElementById("galleryThumbs");
@@ -1885,9 +1934,7 @@
                         Array.from(varDiv.children).forEach(function(c, idx){
                             c.className = idx === i ? "px-3 py-2 border border-[#ee4d2d] bg-orange-50 text-[#ee4d2d] rounded text-xs font-bold" : "px-3 py-2 border border-gray-200 bg-white text-gray-600 rounded text-xs";
                         });
-                        gallerySlides = buildSlides(currentProduct, currentProduct.variants[i]);
-                        galleryIndex = 0;
-                        renderGallery();
+                        showGallery(currentProduct, currentProduct.variants[i]);
                         paintDetailPrice();
                     };
                     varDiv.appendChild(b);
@@ -1895,9 +1942,7 @@
             } else {
                 varDiv.innerHTML = '<span class="text-xs text-gray-400">Một phân loại</span>';
             }
-            gallerySlides = buildSlides(currentProduct, currentProduct.variants[0] || null);
-            galleryIndex = 0;
-            renderGallery();
+            showGallery(currentProduct, currentProduct.variants[0] || null);
             paintDetailPrice();
             var specs = document.getElementById("modalSpecs");
             if (specs) {
