@@ -1680,7 +1680,7 @@
                 specs: specs.slice(0, 30),
                 isNew: raw.is_new === true,
                 active: raw.isActive !== false,
-                sold: seller.sold || raw.soldText || ""
+                sold: seller.sold || raw.sold || raw.soldText || ""
             };
         }
         function customerPrice(p) {
