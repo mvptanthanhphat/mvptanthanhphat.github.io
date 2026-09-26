@@ -481,20 +481,36 @@
                 const cost = p.cost_price ?? wholesale;
                 const stock = p.stock ?? 0;
                 const cat = (p.category || '').trim();
+                const vars = Array.isArray(p.variants) ? p.variants : [];
+                const vPrices = vars.map(v => Number(v.retail_price ?? v.price ?? 0)).filter(n => n > 0);
+                const vMin = vPrices.length ? Math.min.apply(null, vPrices) : 0;
+                const vMax = vPrices.length ? Math.max.apply(null, vPrices) : 0;
+                const vStock = vars.reduce((sum, v) => sum + (Number(v.stock) || 0), 0);
+                const varPreview = vars.slice(0, 3).map(v => {
+                    const pr = Number(v.retail_price ?? v.price ?? 0);
+                    return `<div class="text-[10px] leading-4 text-slate-500 truncate max-w-[280px]">${escHtml(v.name || '')} · <b class="text-blue-600">${formatMoney(pr)}</b> · kho ${Number(v.stock) || 0}</div>`;
+                }).join('') + (vars.length > 3 ? `<div class="text-[10px] text-[#ee4d2d] font-bold">+ ${vars.length - 3} loại nữa · bấm tên để sửa</div>` : '');
+                const retailCell = vars.length
+                    ? `<div class="text-xs font-bold text-blue-600 leading-4">${vMin === vMax ? formatMoney(vMin) : formatMoney(vMin) + '<br>' + formatMoney(vMax)}</div><div class="text-[10px] text-slate-400">giá từng loại</div>`
+                    : `<input type="number" value="${retail}" class="quick-input text-blue-600" onblur="quickUpdateProduct('${p._id}','retail_price',this.value)">`;
+                const stockCell = vars.length
+                    ? `<div class="text-xs font-bold ${vStock <= 0 ? 'text-red-500' : 'text-slate-700'}">${vStock}</div><div class="text-[10px] text-slate-400">tổng loại</div>`
+                    : `<input type="number" value="${stock}" class="quick-input ${stock<=0?'text-red-500 bg-red-50':'text-slate-700'}" onblur="quickUpdateProduct('${p._id}','stock',this.value)">`;
                 html += `
                 <tr class="hover:bg-slate-50 transition border-b border-slate-100 animate-fade" style="animation-delay:${Math.min(idx*0.015,0.4)}s">
                     <td class="px-3 py-2 text-center"><img src="${getMainImage(p)}" class="w-10 h-10 object-cover rounded-lg border border-slate-200 bg-white inline-block" loading="lazy"></td>
                     <td class="px-3 py-2">
                         <div class="font-bold text-slate-800 text-sm line-clamp-1 cursor-pointer hover:text-[#ee4d2d] max-w-[280px]" onclick="toggleProductVariants('${p._id}')">${escHtml(p.name || '(Chưa đặt tên)')}</div>
-                        <div class="text-[11px] font-mono text-slate-400 mt-0.5">${escHtml(getSku(p))}${Array.isArray(p.variants) && p.variants.length ? ' · ' + p.variants.length + ' biến thể' : ''}</div>
+                        <div class="text-[11px] font-mono text-slate-400 mt-0.5">${escHtml(getSku(p))}${vars.length ? ' · ' + vars.length + ' biến thể' : ''}</div>
+                        ${varPreview}
                     </td>
                     <td class="px-3 py-2"><select class="cat-select" onchange="quickUpdateProduct('${p._id}','category',this.value)">${categoryOptionsHtml(cat)}</select></td>
                     <td class="px-3 py-2 text-center"><span class="toggle-wrap"><input type="checkbox" id="new_${p._id}" class="toggle-checkbox" ${isNew?'checked':''} onchange="quickUpdateProduct('${p._id}','is_new',this.checked)"><label for="new_${p._id}" class="toggle-label"></label></span></td>
                     <td class="px-3 py-2 text-center"><span class="toggle-wrap"><input type="checkbox" id="act_${p._id}" class="toggle-checkbox toggle-green" ${active?'checked':''} onchange="quickUpdateProduct('${p._id}','isActive',this.checked)"><label for="act_${p._id}" class="toggle-label"></label></span></td>
                     <td class="px-3 py-2 text-center"><input type="number" value="${cost}" class="quick-input text-slate-600" onblur="quickUpdateProduct('${p._id}','cost_price',this.value)"></td>
                     <td class="px-3 py-2 text-center"><input type="number" value="${wholesale}" class="quick-input text-[#ee4d2d]" onblur="quickUpdateProduct('${p._id}','price',this.value)"></td>
-                    <td class="px-3 py-2 text-center"><input type="number" value="${retail}" class="quick-input text-blue-600" onblur="quickUpdateProduct('${p._id}','retail_price',this.value)"></td>
-                    <td class="px-3 py-2 text-center"><input type="number" value="${stock}" class="quick-input ${stock<=0?'text-red-500 bg-red-50':'text-slate-700'}" onblur="quickUpdateProduct('${p._id}','stock',this.value)"></td>
+                    <td class="px-3 py-2 text-center">${retailCell}</td>
+                    <td class="px-3 py-2 text-center">${stockCell}</td>
                     <td class="px-3 py-2 text-right">
                         <button onclick="editProduct('${p._id}')" class="text-slate-400 hover:text-blue-600 bg-white border border-slate-200 w-8 h-8 rounded-lg shadow-sm hover:shadow transition mr-1" title="Sửa chi tiết"><i class="fa-solid fa-pen text-xs"></i></button>
                         <button onclick="deleteProduct('${p._id}')" class="text-slate-400 hover:text-red-600 bg-white border border-slate-200 w-8 h-8 rounded-lg shadow-sm hover:shadow transition" title="Xóa"><i class="fa-solid fa-trash-can text-xs"></i></button>
@@ -789,14 +805,17 @@
 
         // ===== XUẤT JSON =====
         function exportProductsJson() {
-            showToast('Đang gom dữ liệu để xuất...');
-            const exportData = allProducts.map(p => ({
-                name: p.name || '', price: p.wholesale_price ?? p.price ?? 0, wholesale_price: p.wholesale_price ?? p.price ?? 0,
-                retail_price: p.retail_price ?? (p.wholesale_price ?? p.price ?? 0), cost_price: p.cost_price ?? (p.wholesale_price ?? p.price ?? 0),
-                sku: getSku(p) || p._id, category: (p.category || '').trim() || 'Chưa phân loại', color: p.color || '', weight: p.weight || '',
-                stock: p.stock ?? 0, description: p.description || '', image_url: getMainImage(p), is_new: p.is_new === true, isActive: p.isActive !== false
-            }));
-            const jsonStr = JSON.stringify(exportData, null, 4);
+            showToast('Đang gom đủ dữ liệu để xuất...');
+            const exportData = allProducts.map(p => {
+                const copy = { id: p.id || p._id };
+                Object.keys(p).forEach(k => {
+                    if (k === '_id') return;
+                    const v = p[k];
+                    copy[k] = (v && typeof v.toDate === 'function') ? v.toDate().toISOString() : v;
+                });
+                return copy;
+            });
+            const jsonStr = JSON.stringify(exportData, null, 2);
             const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url;
