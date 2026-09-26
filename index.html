@@ -1671,6 +1671,17 @@
         function customerPrice(p) {
             return p ? p.retailPrice : 0;
         }
+        function variantRetail(p, variant) {
+            if (variant && variant.retailPrice) return variant.retailPrice;
+            return p ? p.retailPrice : 0;
+        }
+        function cardPriceText(p) {
+            var prices = (p.variants || []).map(function(v){ return v.retailPrice; }).filter(function(n){ return n > 0; });
+            if (!prices.length) return formatVnd(p.retailPrice);
+            var min = Math.min.apply(null, prices);
+            var max = Math.max.apply(null, prices);
+            return (min !== max ? "Từ " : "") + formatVnd(min);
+        }
         function stockText(stock) { return stock > 0 ? ("Còn " + stock) : "Đặt trước"; }
         function showShopToast(msg) {
             var el = document.getElementById("shopToast");
@@ -1726,7 +1737,7 @@
                 if (!grid) return;
                 var list = visibleProducts();
                 var line = document.getElementById("shopCountLine");
-                if (line) line.textContent = formatMoney(list.length) + " sản phẩm · giá bán lẻ";
+                if (line) line.textContent = formatMoney(list.length) + " sản phẩm · giá theo từng loại";
                 if (!list.length) { grid.innerHTML = '<div class="col-span-full py-10 text-center text-gray-500 text-sm">Không tìm thấy sản phẩm.</div>'; updateCartBadge(); return; }
                 grid.innerHTML = list.map(function(p){
                     var img = p.images[0] ? '<img src="' + escHtml(p.images[0]) + '" alt="" class="shop-card-img" loading="lazy" referrerpolicy="no-referrer">' : '<span class="shop-card-empty"><i class="fa-solid fa-box"></i></span>';
@@ -1736,7 +1747,7 @@
                         (p.isNew ? '<span class="shop-card-new">Mới</span>' : '') +
                         (p.videos.length ? '<span class="shop-card-video">Video</span>' : '') +
                         '</div><div class="shop-card-body"><h2 class="shop-card-name">' + escHtml(p.name) + '</h2>' +
-                        '<div class="shop-card-row"><p class="shop-card-price">' + formatVnd(p.retailPrice) + '</p><span class="shop-card-stock">' + escHtml(stockText(p.stock)) + '</span></div></div></button></article>';
+                        '<div class="shop-card-row"><p class="shop-card-price">' + cardPriceText(p) + '</p><span class="shop-card-stock">' + escHtml(stockText(p.stock)) + '</span></div></div></button></article>';
                 }).join("");
                 updateCartBadge();
             } catch (e) { console.error("Lỗi Render:", e); }
@@ -1767,14 +1778,13 @@
         }
 
         function buildSlides(p, variant) {
-            var images = p.images.slice();
-            if (variant && variant.image) {
-                var at = images.indexOf(variant.image);
-                if (at >= 0) images.splice(at, 1);
-                images.unshift(variant.image);
-            }
+            var images = (p.images || []).slice();
             var slides = [];
-            p.videos.forEach(function(src){ slides.push({ type: "video", src: src }); });
+            if (variant && variant.image) {
+                slides.push({ type: "image", src: variant.image });
+                images = images.filter(function(src){ return src !== variant.image; });
+            }
+            (p.videos || []).forEach(function(src){ slides.push({ type: "video", src: src }); });
             images.forEach(function(src){ slides.push({ type: "image", src: src }); });
             return slides;
         }
@@ -1804,12 +1814,20 @@
         function paintDetailPrice() {
             if (!currentProduct) return;
             var variant = currentProduct.variants[selectedVariantIndex] || null;
-            document.getElementById("modalPrice").textContent = formatVnd(customerPrice(currentProduct));
+            var priceNow = (variant && (variant.retailPrice || variant.price)) || currentProduct.retailPrice || currentProduct.price || 0;
+            document.getElementById("modalPrice").textContent = formatVnd(priceNow);
             var nameEl = document.getElementById("selectedVariantNameDisplay");
             if (nameEl) nameEl.textContent = variant ? variant.name : "Mặc định";
             var stock = variant && variant.stock ? variant.stock : currentProduct.stock;
             var stockEl = document.getElementById("modalStock");
             if (stockEl) stockEl.textContent = stockText(stock);
+            var specs = document.getElementById("modalSpecs");
+            if (specs) {
+                Array.from(specs.children).forEach(function(row){
+                    var key = row.firstElementChild && row.firstElementChild.textContent;
+                    if (key === "Kho" && row.lastElementChild) row.lastElementChild.textContent = stockText(stock);
+                });
+            }
         }
         function openProductDetail(id) {
             currentProduct = activeProducts.find(function(p){ return p.id === id; });
@@ -1828,7 +1846,7 @@
                     var b = document.createElement("button");
                     b.type = "button";
                     b.className = i === 0 ? "px-3 py-2 border border-[#ee4d2d] bg-orange-50 text-[#ee4d2d] rounded text-xs font-bold" : "px-3 py-2 border border-gray-200 bg-white text-gray-600 rounded text-xs";
-                    b.textContent = v.name;
+                    b.textContent = v.name + " · " + formatVnd(v.retailPrice || v.price || 0);
                     b.onclick = function(){
                         selectedVariantIndex = i;
                         Array.from(varDiv.children).forEach(function(c, idx){
@@ -1883,7 +1901,7 @@
             if (!currentProduct) return;
             var variant = currentProduct.variants[selectedVariantIndex] || null;
             var vName = variant ? variant.name : "Mặc định";
-            var price = customerPrice(currentProduct);
+            var price = variantRetail(currentProduct, variant);
             var qty = parseInt(document.getElementById("qtyInput").value, 10) || 1;
             var img = (variant && variant.image) || currentProduct.images[0] || "";
             var ex = cartItems.find(function(i){ return i.id === currentProduct.id && i.variant === vName; });
