@@ -673,7 +673,7 @@
             const costRaw = document.getElementById('pCost').value;
             const costNum = costRaw === '' ? wholesaleNum : (parseInt(costRaw) || 0);
             const sku = document.getElementById('pSku').value.trim() || generateSKU();
-            const sold = document.getElementById('pSold').value;
+            const sold = soldLabel(document.getElementById('pSold').value);
             const baseData = {
                 name: document.getElementById('pName').value,
                 category: document.getElementById('pCategory').value,
@@ -702,14 +702,18 @@
             const restore = () => { if (btn) { btn.disabled = false; btn.innerHTML = oldBtnHtml; } };
             if (id) {
                 // update(): dùng dot-notation để chỉ ghi đè field con trong seller, không đụng field khác (nếu có) trong đó
-                const updateData = Object.assign({}, baseData, { "seller.sku": sku, "seller.sold": sold });
+                const updateData = Object.assign({}, baseData, {
+                    "seller.sku": sku,
+                    "seller.sold": sold,
+                    sold: sold || firebase.firestore.FieldValue.delete()
+                });
                 db.collection("wholesale_products").doc(id).update(updateData)
                     .then(() => { showToast('Đã lưu sản phẩm!'); closeModal('productModal'); })
                     .catch(err => alert('Lỗi lưu: ' + err.message))
                     .finally(restore);
             } else {
                 // add(): phải truyền seller như object lồng thật sự — dot-notation không có tác dụng khi tạo mới document
-                const newData = Object.assign({}, baseData, { seller: { sku: sku, sold: sold }, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                const newData = Object.assign({}, baseData, { seller: { sku: sku, sold: sold }, sold: sold, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
                 db.collection("wholesale_products").add(newData)
                     .then(ref => ref.update({ id: ref.id }))
                     .then(() => { showToast('Đã thêm sản phẩm mới!'); closeModal('productModal'); })
@@ -811,17 +815,35 @@
         }
 
         // ===== XUẤT JSON =====
-        function exportProductsJson() {
-            showToast('Đang gom đủ dữ liệu để xuất...');
-            const exportData = allProducts.map(p => {
-                const copy = { id: p.id || p._id };
-                Object.keys(p).forEach(k => {
-                    if (k === '_id') return;
-                    const v = p[k];
-                    copy[k] = (v && typeof v.toDate === 'function') ? v.toDate().toISOString() : v;
-                });
-                return copy;
+        function cleanExportProduct(p) {
+            const copy = {};
+            Object.keys(p).forEach(k => {
+                if (k === '_id' || k.indexOf('.') >= 0 || k === 'soldSynced' || k === 'variantsConfirmed') return;
+                const v = p[k];
+                copy[k] = (v && typeof v.toDate === 'function') ? v.toDate().toISOString() : v;
             });
+            const sold = soldLabel((p.seller && p.seller.sold) || p.sold || p['seller.sold']);
+            const seller = {};
+            if (copy.seller && typeof copy.seller === 'object') Object.keys(copy.seller).forEach(k => { if (k !== 'sold' && copy.seller[k]) seller[k] = copy.seller[k]; });
+            const sku = getSku(p);
+            if (sku) seller.sku = sku;
+            if (sold) seller.sold = sold;
+            if (Object.keys(seller).length) copy.seller = seller;
+            else delete copy.seller;
+            if (sold) copy.sold = sold;
+            else delete copy.sold;
+            if (Array.isArray(copy.variants)) {
+                copy.variants = copy.variants.map(v => {
+                    const row = Object.assign({}, v);
+                    delete row.clickVerified;
+                    return row;
+                });
+            }
+            return copy;
+        }
+        function exportProductsJson() {
+            showToast('Đang gom dữ liệu có ích để xuất...');
+            const exportData = allProducts.map(cleanExportProduct);
             const jsonStr = JSON.stringify(exportData, null, 2);
             const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' });
             const url = URL.createObjectURL(blob);
