@@ -822,6 +822,24 @@
                 const v = p[k];
                 copy[k] = (v && typeof v.toDate === 'function') ? v.toDate().toISOString() : v;
             });
+            copy.id = p.id || p._id || '';
+            if (!copy.id && p.originalLink) {
+                const m = String(p.originalLink).match(/-i\.(\d+)\.(\d+)/i);
+                if (m) copy.id = m[1] + '_' + m[2];
+            }
+            if (!(Number(copy.retail_price) > 0) && Array.isArray(copy.variants)) {
+                const lows = copy.variants.map(v => Number(v.retail_price || v.price) || 0).filter(n => n > 0);
+                if (lows.length) {
+                    const low = Math.min.apply(null, lows);
+                    copy.price = copy.wholesale_price = copy.retail_price = copy.cost_price = low;
+                    copy.priceFormatted = formatMoney(low);
+                }
+            }
+            if ((copy.stock === undefined || copy.stock === null || copy.stock === '') && Array.isArray(copy.variants) && copy.variants.length) {
+                copy.stock = copy.variants.reduce((sum, v) => sum + (Number(v.stock) || 0), 0);
+            }
+            if (!String(copy.color || '').trim()) delete copy.color;
+            if (!String(copy.weight || '').trim()) delete copy.weight;
             const sold = soldLabel((p.seller && p.seller.sold) || p.sold || p['seller.sold']);
             const seller = {};
             if (copy.seller && typeof copy.seller === 'object') Object.keys(copy.seller).forEach(k => { if (k !== 'sold' && copy.seller[k]) seller[k] = copy.seller[k]; });
