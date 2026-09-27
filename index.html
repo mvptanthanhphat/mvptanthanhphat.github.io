@@ -531,6 +531,10 @@
                 </div>
             </a>
             <div class="flex items-center gap-3 shrink-0 ml-auto">
+                <div class="text-right leading-tight shrink-0 pr-1" title="Lượt truy cập">
+                    <div class="text-[12px] md:text-sm font-black dynamic-text"><i class="fa-solid fa-fire text-[10px]"></i> <span id="visitToday">–</span></div>
+                    <div class="text-[9px] opacity-60 whitespace-nowrap">hôm nay · tổng <span id="visitTotal">–</span></div>
+                </div>
                 <div class="flex gap-1.5 border-r pr-3 border-gray-300 hidden sm:flex">
                     <button onclick="changeTheme('warm')" class="w-6 h-6 rounded-full bg-[#FAFAF9] border border-gray-300 shadow-sm clickable outline-none"></button>
                     <button onclick="changeTheme('lemon')" class="w-6 h-6 rounded-full bg-[#FEFCE8] border border-yellow-300 shadow-sm clickable outline-none"></button>
@@ -926,6 +930,34 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        (function countVisits() {
+            function vnDay() {
+                try { return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()); }
+                catch (e) { var d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+            }
+            function fmtCount(n) { return String(Math.max(0, n)).replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
+            function sumShards(snap) { var n = 0; snap.forEach(function (doc) { n += Number((doc.data() || {}).n) || 0; }); return n; }
+            var day = vnDay();
+            db.collection("visit_days").doc(day).collection("shards").onSnapshot(function (snap) {
+                var el = document.getElementById("visitToday");
+                if (el) el.textContent = fmtCount(sumShards(snap));
+            }, function () {});
+            db.collection("visit_total").onSnapshot(function (snap) {
+                var el = document.getElementById("visitTotal");
+                if (el) el.textContent = fmtCount(sumShards(snap));
+            }, function () {});
+            db.collection("visit_config").doc("mode").get().then(function (doc) {
+                var mode = (doc.exists && doc.data() && doc.data().mode) || "hit";
+                var seenKey = "ttp_seen_" + day;
+                if (mode === "unique" && localStorage.getItem(seenKey)) return;
+                var shard = String(Math.floor(Math.random() * 10));
+                var inc = firebase.firestore.FieldValue.increment(1);
+                var batch = db.batch();
+                batch.set(db.collection("visit_days").doc(day).collection("shards").doc(shard), { n: inc }, { merge: true });
+                batch.set(db.collection("visit_total").doc(shard), { n: inc }, { merge: true });
+                return batch.commit().then(function () { if (mode === "unique") localStorage.setItem(seenKey, "1"); });
+            }).catch(function () {});
+        })();
     </script>
 
     <!-- TÂN THÀNH PHÁT JAVASCRIPT (TÁCH BIỆT LUỒNG DỮ LIỆU) -->
