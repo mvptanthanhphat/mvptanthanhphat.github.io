@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:#101410; --surface:#1a221c; --raised:#24302a; --fg:#e7f0ea;
-    --muted:#93a399; --line:#314036; --accent:#3ee0c5; --ink:#062117; --warn:#e4b15a;
+    --bg:#f5f5f5; --surface:#fff; --raised:#fff4f1; --fg:#222;
+    --muted:#757575; --line:#e8e8e8; --accent:#ee4d2d; --ink:#fff; --warn:#9a3412; --navy:#162b75;
     --sans:"Be Vietnam Pro","Segoe UI",sans-serif;
     --mono:"IBM Plex Mono",ui-monospace,monospace;
   }
@@ -19,80 +19,99 @@
   html, body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--sans); }
   button, a { font-family:inherit; }
   button { cursor:pointer; }
-  body { min-height:100vh; }
-  header { border-bottom:1px solid var(--line); background:var(--surface); }
+  .shop-top { background:linear-gradient(90deg,#ee4d2d,#ff7337); color:#fff; }
+  .topbar { max-width:72rem; margin:0 auto; padding:.5rem 1rem; display:flex; align-items:center; justify-content:space-between; gap:.75rem; }
+  .topbar a { color:#fff; text-decoration:none; font-size:.9rem; }
+  .home { display:inline-flex; min-height:2.75rem; align-items:center; border-radius:999px; background:rgba(255,255,255,.2); padding:0 1rem; font-weight:700; }
+  header { position:sticky; top:0; z-index:10; background:#fff; border-bottom:1px solid var(--line); }
+  .stripe { height:4px; background-image:repeating-linear-gradient(45deg,#6fa6d6 0 33px,transparent 33px 41px,#f18d9b 41px 74px,transparent 74px 82px); background-size:116px 4px; }
+  .head { max-width:72rem; margin:0 auto; padding:.75rem 1rem; display:flex; align-items:center; justify-content:space-between; gap:.75rem; }
+  .brand { display:flex; align-items:center; gap:.75rem; min-width:0; color:inherit; text-decoration:none; }
+  .mark { width:2.75rem; height:2.75rem; border-radius:2px; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; flex:none; }
+  .name { margin:0; font-size:1.05rem; font-weight:800; letter-spacing:-.02em; text-transform:uppercase; color:var(--navy); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .tag { margin:0; font-size:.75rem; color:var(--muted); }
+  .dl { display:inline-flex; min-height:2.75rem; align-items:center; border-radius:2px; background:var(--accent); color:#fff; font-weight:800; text-decoration:none; padding:0 1rem; flex:none; }
   .wrap { max-width:72rem; margin:0 auto; padding:1rem; }
-  .head { display:flex; gap:1rem; justify-content:space-between; align-items:center; flex-wrap:wrap; }
-  .brand { display:flex; gap:.75rem; align-items:flex-start; }
-  .mark { width:2.75rem; height:2.75rem; border-radius:.75rem; background:var(--ink); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none; }
-  .kicker { font-family:var(--mono); font-size:.75rem; letter-spacing:.12em; color:var(--accent); margin:0; }
-  h1 { font-size:1.25rem; line-height:1.25; margin:.1rem 0; }
-  .sub { color:var(--muted); font-size:.9rem; margin:0; max-width:36rem; }
-  .dl { display:inline-flex; min-height:2.75rem; align-items:center; gap:.5rem; background:var(--accent); color:var(--ink); font-weight:700; text-decoration:none; border-radius:.75rem; padding:0 1rem; }
-  main { display:grid; gap:1rem; }
-  @media (min-width:960px) { main { grid-template-columns:20rem minmax(0,1fr); align-items:start; } .side { position:sticky; top:1rem; } }
+  .hero { background:#fff; border:1px solid var(--line); border-radius:2px; padding:1rem; margin-bottom:.75rem; }
+  .eyebrow { margin:0; font-size:.75rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); }
+  h1 { margin:.2rem 0 0; font-size:1.6rem; color:var(--navy); }
+  .sub { margin:.35rem 0 0; color:var(--muted); font-size:.9rem; max-width:40rem; }
+  main { display:grid; gap:.75rem; }
+  @media (min-width:960px) { main { grid-template-columns:19rem minmax(0,1fr); align-items:start; } .side { position:sticky; top:5.5rem; } }
+  .side, article { background:#fff; border:1px solid var(--line); border-radius:2px; }
+  .side { padding:.75rem; }
   label.seek { position:relative; display:block; }
   .seek svg { position:absolute; left:.75rem; top:.85rem; }
-  input[type="search"] { width:100%; min-height:2.75rem; border-radius:.75rem; border:1px solid var(--line); background:var(--bg); color:var(--fg); padding:0 .75rem 0 2.4rem; font-size:.9rem; }
+  input[type="search"] { width:100%; min-height:2.75rem; border-radius:2px; border:1px solid var(--line); background:#fff; color:var(--fg); padding:0 .75rem 0 2.4rem; font-size:.9rem; }
   input:focus { outline:none; border-color:var(--accent); }
-  .chips { display:flex; gap:.5rem; overflow:auto; margin-top:.75rem; padding-bottom:.25rem; }
-  .chip, .item, .step, .copy { border:1px solid var(--line); background:var(--surface); color:var(--fg); }
-  .chip { border-radius:999px; padding:.45rem .75rem; flex:none; font-size:.9rem; color:var(--muted); }
-  .chip.on { background:var(--accent); color:var(--ink); border-color:var(--accent); }
-  ul.list { list-style:none; margin:.75rem 0 0; padding:0; max-height:100vh; overflow:auto; }
-  .item { width:100%; min-height:2.75rem; display:flex; gap:.75rem; text-align:left; border-radius:.75rem; padding:.45rem .7rem; margin-bottom:.25rem; border-color:transparent; }
-  .item.on { border-color:var(--accent); background:var(--raised); }
-  .code { font-family:var(--mono); font-size:.75rem; color:var(--accent); width:6.2rem; flex:none; }
-  .item b { display:block; font-weight:600; }
+  .chips { display:flex; flex-wrap:wrap; margin-top:.5rem; border-bottom:1px solid var(--line); }
+  .chip { border:0; border-bottom:2px solid transparent; background:transparent; color:var(--muted); border-radius:0; padding:.55rem .7rem; font-size:.9rem; font-weight:700; flex:none; }
+  .chip.on { background:transparent; color:var(--accent); border-bottom-color:var(--accent); }
+  ul.list { list-style:none; margin:.5rem 0 0; padding:0; max-height:100vh; overflow:auto; }
+  .item { width:100%; min-height:2.75rem; display:flex; gap:.75rem; text-align:left; background:transparent; color:var(--fg); border:0; border-left:4px solid transparent; border-radius:0; padding:.4rem .6rem; }
+  .item.on { border-left-color:var(--accent); background:var(--raised); }
+  .code { font-family:var(--mono); font-size:.75rem; color:var(--accent); width:5.5rem; flex:none; font-weight:600; }
+  .item b { display:block; font-size:.9rem; }
   .item small { color:var(--muted); }
-  article { background:var(--surface); border:1px solid var(--line); border-radius:1rem; padding:1rem 1.1rem 1.25rem; min-width:0; }
-  .meta { font-family:var(--mono); font-size:.75rem; color:var(--accent); margin:0; }
-  h2 { margin:.2rem 0 0; font-size:1.5rem; }
-  .lead { color:var(--muted); }
-  .grid { display:grid; gap:.75rem; margin-top:1rem; }
+  article { padding:1rem 1.1rem 1.25rem; min-width:0; }
+  .meta { margin:0; font-size:.75rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); }
+  h2 { margin:.2rem 0 0; font-size:1.5rem; color:var(--navy); }
+  .lead { color:var(--muted); font-size:.9rem; }
+  .grid { display:grid; gap:.5rem; margin-top:1rem; }
   @media (min-width:640px) { .grid { grid-template-columns:1fr 1fr; } }
-  .card { background:var(--bg); border-radius:.75rem; padding:.75rem; }
-  .card dt { font-size:.75rem; color:var(--muted); }
+  .card { background:var(--bg); border-radius:2px; padding:.75rem; }
+  .card dt { font-size:.75rem; font-weight:700; color:var(--muted); }
   .card dd { margin:.25rem 0 0; font-size:.9rem; }
-  .warn { display:flex; gap:.5rem; border:1px solid rgba(228,177,90,.45); color:var(--warn); background:var(--bg); border-radius:.75rem; padding:.75rem; font-size:.9rem; }
-  h3 { font-size:.95rem; margin:1.25rem 0 .4rem; }
-  ol { list-style:none; margin:0; padding:0; }
-  .step { width:100%; display:flex; gap:.7rem; text-align:left; background:var(--bg); border:0; border-radius:.75rem; min-height:2.75rem; padding:.5rem .7rem; margin-bottom:.4rem; }
-  .box { width:1.15rem; height:1.15rem; border:1px solid var(--line); border-radius:.35rem; flex:none; margin-top:.15rem; display:flex; align-items:center; justify-content:center; color:transparent; font-size:.75rem; }
-  .step.on .box { background:var(--accent); border-color:var(--accent); color:var(--ink); }
+  .warn { border:1px solid rgba(238,77,45,.35); color:var(--warn); background:var(--raised); border-radius:2px; padding:.75rem; font-size:.9rem; }
+  h3 { font-size:.9rem; margin:1.1rem 0 .35rem; color:var(--navy); }
+  ol { list-style:none; margin:0; padding:0; border-top:1px solid var(--line); }
+  .step { width:100%; display:flex; gap:.7rem; text-align:left; background:transparent; border:0; border-bottom:1px solid var(--line); border-radius:0; min-height:2.75rem; padding:.55rem 0; color:var(--fg); }
+  .box { width:1.15rem; height:1.15rem; border:1px solid var(--line); border-radius:2px; flex:none; margin-top:.15rem; display:flex; align-items:center; justify-content:center; color:transparent; font-size:.75rem; }
+  .step.on .box { background:var(--accent); border-color:var(--accent); color:#fff; }
   .step.on span { color:var(--muted); text-decoration:line-through; }
   .row { display:flex; justify-content:space-between; align-items:center; gap:.5rem; flex-wrap:wrap; }
-  .copy { min-height:2.75rem; border-radius:.75rem; background:var(--raised); padding:0 .8rem; }
-  pre { background:var(--bg); border-radius:.75rem; padding:.8rem; overflow:auto; font-family:var(--mono); font-size:.75rem; line-height:1.55; }
+  .copy { min-height:2.75rem; border-radius:2px; border:1px solid var(--accent); background:#fff; color:var(--accent); font-weight:700; padding:0 .8rem; }
+  pre { background:var(--bg); border:1px solid var(--line); border-radius:2px; padding:.8rem; overflow:auto; font-family:var(--mono); font-size:.75rem; line-height:1.55; }
   table { width:100%; border-collapse:collapse; font-size:.9rem; }
-  th { text-align:left; font-family:var(--mono); font-size:.75rem; color:var(--muted); font-weight:500; }
+  th { text-align:left; font-size:.75rem; color:var(--muted); font-weight:600; }
   td { border-top:1px solid var(--line); padding:.45rem .4rem .45rem 0; }
   td.mono { font-family:var(--mono); color:var(--accent); }
-  .empty { border:1px solid var(--line); border-radius:.75rem; padding:1rem; color:var(--muted); }
+  .empty { padding:1rem; color:var(--muted); }
   .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
 </style>
 </head>
 <body>
+<div class="shop-top">
+  <div class="topbar">
+    <a href="tel:0913945985">Hotline 0913 945 985</a>
+    <a class="home" href="https://mvptanthanhphat.github.io">Về trang chủ</a>
+  </div>
+</div>
 <header>
-  <div class="wrap head">
-    <div class="brand">
+  <div class="stripe"></div>
+  <div class="head">
+    <a class="brand" href="https://mvptanthanhphat.github.io">
       <div class="mark" aria-hidden="true">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V4h12v5"/><rect x="4" y="9" width="16" height="8" rx="1"/><path d="M8 17v3h8v-3"/></svg>
       </div>
       <div>
-        <p class="kicker">PHUOCIT · LAN & USB</p>
-        <h1>Sửa lỗi máy in</h1>
-        <p class="sub">Spooler không lên vì file mất. Bộ này mang sẵn 3 file và tự trả lại nếu bản mới không chạy.</p>
+        <p class="name">Tân Thành Phát</p>
+        <p class="tag">Thiết bị & kỹ thuật máy văn phòng</p>
       </div>
-    </div>
+    </a>
     <a class="dl" href="SuaLoiMayIn-Full.zip" download>Tải bộ sửa</a>
   </div>
 </header>
-<div class="wrap" style="padding-top:1rem;padding-bottom:2rem">
+<div class="wrap">
+  <section class="hero">
+    <p class="eyebrow">Sửa lỗi in · LAN và USB</p>
+    <h1>Sửa lỗi máy in</h1>
+    <p class="sub">Spooler không lên vì file mất. Bộ này mang sẵn 3 file và tự trả lại nếu bản mới không chạy.</p>
+  </section>
   <main>
     <section class="side">
       <label class="seek"><span class="sr">Tìm mã lỗi</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#93a399" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ee4d2d" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/></svg>
         <input id="q" type="search" placeholder="Tìm 0x11b, Error 2, Canon…">
       </label>
       <div class="chips" id="chips"></div>
