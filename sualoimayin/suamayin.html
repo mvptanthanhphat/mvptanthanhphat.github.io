@@ -1,1 +1,177 @@
-a
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sửa lỗi máy in</title>
+<meta name="description" content="Bộ sửa Print Spooler cho Windows: thay spoolsv, localspl, win32spl, Error 2, lỗi RPC và máy in LAN/USB.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#101410; --surface:#1a221c; --raised:#24302a; --fg:#e7f0ea;
+    --muted:#93a399; --line:#314036; --accent:#3ee0c5; --ink:#062117; --warn:#e4b15a;
+    --sans:"Be Vietnam Pro","Segoe UI",sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--sans); }
+  button, a { font-family:inherit; }
+  button { cursor:pointer; }
+  body { min-height:100vh; }
+  header { border-bottom:1px solid var(--line); background:var(--surface); }
+  .wrap { max-width:72rem; margin:0 auto; padding:1rem; }
+  .head { display:flex; gap:1rem; justify-content:space-between; align-items:center; flex-wrap:wrap; }
+  .brand { display:flex; gap:.75rem; align-items:flex-start; }
+  .mark { width:2.75rem; height:2.75rem; border-radius:.75rem; background:var(--ink); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none; }
+  .kicker { font-family:var(--mono); font-size:.75rem; letter-spacing:.12em; color:var(--accent); margin:0; }
+  h1 { font-size:1.25rem; line-height:1.25; margin:.1rem 0; }
+  .sub { color:var(--muted); font-size:.9rem; margin:0; max-width:36rem; }
+  .dl { display:inline-flex; min-height:2.75rem; align-items:center; gap:.5rem; background:var(--accent); color:var(--ink); font-weight:700; text-decoration:none; border-radius:.75rem; padding:0 1rem; }
+  main { display:grid; gap:1rem; }
+  @media (min-width:960px) { main { grid-template-columns:20rem minmax(0,1fr); align-items:start; } .side { position:sticky; top:1rem; } }
+  label.seek { position:relative; display:block; }
+  .seek svg { position:absolute; left:.75rem; top:.85rem; }
+  input[type="search"] { width:100%; min-height:2.75rem; border-radius:.75rem; border:1px solid var(--line); background:var(--bg); color:var(--fg); padding:0 .75rem 0 2.4rem; font-size:.9rem; }
+  input:focus { outline:none; border-color:var(--accent); }
+  .chips { display:flex; gap:.5rem; overflow:auto; margin-top:.75rem; padding-bottom:.25rem; }
+  .chip, .item, .step, .copy { border:1px solid var(--line); background:var(--surface); color:var(--fg); }
+  .chip { border-radius:999px; padding:.45rem .75rem; flex:none; font-size:.9rem; color:var(--muted); }
+  .chip.on { background:var(--accent); color:var(--ink); border-color:var(--accent); }
+  ul.list { list-style:none; margin:.75rem 0 0; padding:0; max-height:100vh; overflow:auto; }
+  .item { width:100%; min-height:2.75rem; display:flex; gap:.75rem; text-align:left; border-radius:.75rem; padding:.45rem .7rem; margin-bottom:.25rem; border-color:transparent; }
+  .item.on { border-color:var(--accent); background:var(--raised); }
+  .code { font-family:var(--mono); font-size:.75rem; color:var(--accent); width:6.2rem; flex:none; }
+  .item b { display:block; font-weight:600; }
+  .item small { color:var(--muted); }
+  article { background:var(--surface); border:1px solid var(--line); border-radius:1rem; padding:1rem 1.1rem 1.25rem; min-width:0; }
+  .meta { font-family:var(--mono); font-size:.75rem; color:var(--accent); margin:0; }
+  h2 { margin:.2rem 0 0; font-size:1.5rem; }
+  .lead { color:var(--muted); }
+  .grid { display:grid; gap:.75rem; margin-top:1rem; }
+  @media (min-width:640px) { .grid { grid-template-columns:1fr 1fr; } }
+  .card { background:var(--bg); border-radius:.75rem; padding:.75rem; }
+  .card dt { font-size:.75rem; color:var(--muted); }
+  .card dd { margin:.25rem 0 0; font-size:.9rem; }
+  .warn { display:flex; gap:.5rem; border:1px solid rgba(228,177,90,.45); color:var(--warn); background:var(--bg); border-radius:.75rem; padding:.75rem; font-size:.9rem; }
+  h3 { font-size:.95rem; margin:1.25rem 0 .4rem; }
+  ol { list-style:none; margin:0; padding:0; }
+  .step { width:100%; display:flex; gap:.7rem; text-align:left; background:var(--bg); border:0; border-radius:.75rem; min-height:2.75rem; padding:.5rem .7rem; margin-bottom:.4rem; }
+  .box { width:1.15rem; height:1.15rem; border:1px solid var(--line); border-radius:.35rem; flex:none; margin-top:.15rem; display:flex; align-items:center; justify-content:center; color:transparent; font-size:.75rem; }
+  .step.on .box { background:var(--accent); border-color:var(--accent); color:var(--ink); }
+  .step.on span { color:var(--muted); text-decoration:line-through; }
+  .row { display:flex; justify-content:space-between; align-items:center; gap:.5rem; flex-wrap:wrap; }
+  .copy { min-height:2.75rem; border-radius:.75rem; background:var(--raised); padding:0 .8rem; }
+  pre { background:var(--bg); border-radius:.75rem; padding:.8rem; overflow:auto; font-family:var(--mono); font-size:.75rem; line-height:1.55; }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; }
+  th { text-align:left; font-family:var(--mono); font-size:.75rem; color:var(--muted); font-weight:500; }
+  td { border-top:1px solid var(--line); padding:.45rem .4rem .45rem 0; }
+  td.mono { font-family:var(--mono); color:var(--accent); }
+  .empty { border:1px solid var(--line); border-radius:.75rem; padding:1rem; color:var(--muted); }
+  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap head">
+    <div class="brand">
+      <div class="mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V4h12v5"/><rect x="4" y="9" width="16" height="8" rx="1"/><path d="M8 17v3h8v-3"/></svg>
+      </div>
+      <div>
+        <p class="kicker">PHUOCIT · LAN & USB</p>
+        <h1>Sửa lỗi máy in</h1>
+        <p class="sub">Spooler không lên vì file mất. Bộ này mang sẵn 3 file và tự trả lại nếu bản mới không chạy.</p>
+      </div>
+    </div>
+    <a class="dl" href="SuaLoiMayIn-Full.zip" download>Tải bộ sửa</a>
+  </div>
+</header>
+<div class="wrap" style="padding-top:1rem;padding-bottom:2rem">
+  <main>
+    <section class="side">
+      <label class="seek"><span class="sr">Tìm mã lỗi</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#93a399" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/></svg>
+        <input id="q" type="search" placeholder="Tìm 0x11b, Error 2, Canon…">
+      </label>
+      <div class="chips" id="chips"></div>
+      <ul class="list" id="list"></ul>
+    </section>
+    <article id="detail"></article>
+  </main>
+</div>
+<script>
+const DATA = {"FIXES":[{"id":"chac-chan","code":"Bộ 1","title":"Sửa chắc chắn","side":"core","summary":"Đủ ba việc mà bản trước còn thiếu: dừng spooler, thay spoolsv.exe + localspl.dll + win32spl.dll bằng bản trong Spooler64, rồi ghi lại ImagePath và mô tả dịch vụ. Nếu bản mới không chạy được, tool tự trả lại file .old.","when":"Spooler không Start, Error 2, Failed to Read Description, hoặc vừa thay file tay mà service vẫn chết.","steps":["Tải bộ sửa, giải nén, chuột phải Sua-Loi-May-In.bat → Run as administrator.","Chọn mục 1. Tool dừng spooler, takeown 3 file, backup thành .old, copy từ thư mục Spooler64.","Ghi lại cấu hình chuẩn: ImagePath trỏ spoolsv.exe, Start = Automatic, phụ thuộc RPCSS và http.","Đặt RpcAuthnLevelPrivacyEnabled = 0, mở File and Printer Sharing, xóa hàng đợi (không đụng driver).","Start Print Spooler. Nếu không lên, tool copy trả file .old rồi start lại.","Khi đã RUNNING, đợi khoảng 2 phút rồi kết nối lại máy in."],"commands":["net stop spooler","taskkill /F /IM spoolsv.exe","takeown /A /F C:\\Windows\\System32\\spoolsv.exe","takeown /A /F C:\\Windows\\System32\\localspl.dll","takeown /A /F C:\\Windows\\System32\\win32spl.dll","copy /y Spooler64\\spoolsv.exe C:\\Windows\\System32\\spoolsv.exe","copy /y Spooler64\\localspl.dll C:\\Windows\\System32\\localspl.dll","copy /y Spooler64\\win32spl.dll C:\\Windows\\System32\\win32spl.dll","reg add HKLM\\SYSTEM\\CurrentControlSet\\Services\\Spooler /v ImagePath /t REG_EXPAND_SZ /d \"%SystemRoot%\\System32\\spoolsv.exe\" /f","reg add HKLM\\SYSTEM\\CurrentControlSet\\Services\\Spooler /v Description /t REG_SZ /d \"@%systemroot%\\system32\\spoolsv.exe,-2\" /f","reg add HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print /v RpcAuthnLevelPrivacyEnabled /t REG_DWORD /d 0 /f","sc config Spooler start= auto","sc start Spooler"],"caution":"Ba file trong bộ là Windows 10 64-bit, bản 19041. Trên Windows 11 hãy để tool chạy: nó tự rollback nếu spooler không lên. Không dùng bộ này trên máy 32-bit.","kit":"Menu 1"},{"id":"files","code":"Spooler64","title":"Chỉ thay 3 file","side":"core","summary":"Đúng hướng dẫn dán tay: dừng dịch vụ, nhường quyền, đổi file cũ thành .old, chép 3 file Spooler64 vào System32, rồi Start.","when":"File spoolsv.exe mất hoặc hỏng, services báo Error 2: The system cannot find the file specified.","steps":["Run as administrator → menu 2.","Kiểm tra log: mỗi file phải ghi «Đã thay» và đúng số byte.","Vào services.msc → Print Spooler → Start. Đợi khoảng 2 phút."],"commands":["net stop spooler","taskkill /F /IM spoolsv.exe","ren C:\\Windows\\System32\\spoolsv.exe spoolsv.exe.old","ren C:\\Windows\\System32\\localspl.dll localspl.dll.old","ren C:\\Windows\\System32\\win32spl.dll win32spl.dll.old","copy /y .\\Spooler64\\* C:\\Windows\\System32\\","sc start Spooler"],"caution":"Đổi tên mà không copy file mới sẽ làm spooler mất hẳn. Dùng menu 2, đừng chỉ chạy đoạn ren.","kit":"Menu 2"},{"id":"error2","code":"Error 2","title":"Description lỗi code 2","side":"core","summary":"Service vẫn trỏ sai đường dẫn hoặc mất Description nên services.msc báo Failed to Read Description, Error Code 2. Mục này chỉ sửa registry, không ghi đè file đang tốt.","when":"spoolsv.exe còn trên đĩa, header MZ đúng, nhưng bấm Start vẫn Error 2 hoặc mô tả dịch vụ không đọc được.","steps":["Menu 3. Tool xuất backup registry ra %TEMP% trước khi ghi.","Đặt ImagePath, DisplayName, Description, Type 272, Start Automatic, ObjectName LocalSystem.","DependOnService = RPCSS và http. Bật lại HTTP nếu đang Disabled.","Start spooler và đọc lại sc query."],"commands":["sc qc Spooler","reg add HKLM\\SYSTEM\\CurrentControlSet\\Services\\Spooler /v ImagePath /t REG_EXPAND_SZ /d \"%SystemRoot%\\System32\\spoolsv.exe\" /f","reg add HKLM\\SYSTEM\\CurrentControlSet\\Services\\Spooler /v Start /t REG_DWORD /d 2 /f","reg add HKLM\\SYSTEM\\CurrentControlSet\\Services\\Spooler /v Description /t REG_SZ /d \"@%systemroot%\\system32\\spoolsv.exe,-2\" /f","sc config Spooler depend= RPCSS/http","sc config Spooler start= auto","sc start Spooler"],"kit":"Menu 3"},{"id":"11b","code":"0x0000011b","title":"PrintNightmare","side":"server","summary":"Windows chặn RPC in mạng sau bản vá PrintNightmare. Máy trạm thêm máy in thì báo 0x0000011b.","when":"Thêm máy in mạng được một thời gian, sau update Windows thì cả hai máy đều 0x11b.","steps":["Chạy trên cả máy chủ lẫn máy trạm.","RpcAuthnLevelPrivacyEnabled = 0, bật RPC qua named pipe và TCP.","Restart Print Spooler."],"commands":["reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\" /v RpcAuthnLevelPrivacyEnabled /t REG_DWORD /d 0 /f","reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Printers\\RPC\" /v RpcOverNamedPipes /t REG_DWORD /d 1 /f","reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Printers\\RPC\" /v RpcOverTcp /t REG_DWORD /d 1 /f","net stop spooler & net start spooler"],"kit":"Menu 4"},{"id":"7c","code":"0x0000007c","title":"RPC server unavailable","side":"server","summary":"Cùng nhóm khóa RPC với 0x11b. Máy chủ không nhận kết nối in.","when":"Kết nối \\\\máy-chủ\\máy-in báo 0x0000007c.","steps":["Chạy menu 4 trên máy đang chia sẻ máy in.","Thử lại từ máy trạm sau khi spooler đã RUNNING."],"commands":["reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\" /v RpcAuthnLevelPrivacyEnabled /t REG_DWORD /d 0 /f","net stop spooler & net start spooler"],"kit":"Menu 4"},{"id":"6d9","code":"0x000006d9","title":"Firewall service tắt","side":"server","summary":"Chia sẻ máy in cần Windows Firewall đang chạy. Tắt hết firewall thì sharing chết với 0x6d9.","when":"Bật chia sẻ xong nhưng máy khác không thấy, hoặc lỗi 0x000006d9.","steps":["Đặt MpsSvc (Windows Firewall) thành Automatic và Start.","Bật nhóm File and Printer Sharing và Network Discovery theo mã ngôn ngữ, khỏi phụ thuộc tên tiếng Việt."],"commands":["sc config MpsSvc start= auto","sc start MpsSvc","netsh advfirewall firewall set rule group=\"@FirewallAPI.dll,-28502\" new enable=Yes","netsh advfirewall firewall set rule group=\"@FirewallAPI.dll,-32752\" new enable=Yes"],"kit":"Menu 5"},{"id":"share","code":"Share","title":"Chia sẻ mọi máy in","side":"server","summary":"Đặt Shared = true và tên share ngắn, không dấu cách, tối đa 12 ký tự.","when":"Máy in local in được nhưng máy khác không có đường dẫn \\\\IP\\TênShare.","steps":["Menu 6. Đọc log: mỗi máy in một dòng tên share.","Trên máy trạm kết nối \\\\IP-máy-chủ\\TênShare."],"commands":["rundll32 printui.dll,PrintUIEntry /Xs /n \"Ten May In\" Shared TRUE ShareName \"TenMayIn\""],"kit":"Menu 6"},{"id":"bc4","code":"0x00000bc4","title":"RPC endpoint","side":"client","summary":"Máy trạm không tới được endpoint spooler. Sửa khóa RPC rồi restart spooler.","when":"Thêm máy in mạng báo 0x00000bc4.","steps":["Menu 4 trên máy trạm.","Nếu vẫn lỗi, chạy mục Sửa chắc chắn trên máy chủ."],"commands":["reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\" /v RpcAuthnLevelPrivacyEnabled /t REG_DWORD /d 0 /f","net stop spooler & net start spooler"],"kit":"Menu 4"},{"id":"709","code":"0x00000709","title":"Không đặt được mặc định","side":"client","summary":"Xóa giá trị Device cũ, bật LegacyDefaultPrinterMode, cấp quyền cho khóa Windows của user hiện tại.","when":"Chọn máy in mặc định không được, lỗi 0x00000709.","steps":["Menu 7. Xong thì vào Settings đặt lại máy in mặc định bằng tay.","Không cần xóa driver."],"commands":["reg delete \"HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows\" /v Device /f","reg add \"HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows\" /v LegacyDefaultPrinterMode /t REG_DWORD /d 1 /f","net stop spooler & net start spooler"],"kit":"Menu 7"},{"id":"policy","code":"Policy","title":"Point and Print bị chặn","side":"client","summary":"Gỡ chính sách cấm cài driver máy in từ máy chủ (0x00004005 và hộp thoại policy).","when":"Kết nối được share nhưng Windows chặn cài driver, hoặc Access Denied kèm policy.","steps":["Menu 8 trên máy trạm.","Kết nối lại \\\\IP\\TênShare. Nếu hỏi mật khẩu, thêm credential trước."],"commands":["reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Printers\\PointAndPrint\" /v RestrictDriverInstallationToAdministrators /t REG_DWORD /d 0 /f","reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Printers\\PointAndPrint\" /v NoWarningNoElevationOnInstall /t REG_DWORD /d 1 /f","reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Printers\\PointAndPrint\" /v UpdatePromptSettings /t REG_DWORD /d 2 /f","reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Printers\\PointAndPrint\" /v InForest /t REG_DWORD /d 0 /f"],"kit":"Menu 8"},{"id":"4005","code":"0x00004005","title":"Access denied","side":"client","summary":"Sai user/mật khẩu máy chủ, hoặc policy Point and Print. Tool không lưu mật khẩu giúp — bạn gõ cmdkey.","when":"0x00004005 khi mở \\\\máy-chủ\\máy-in.","steps":["Chạy Policy (menu 8) trên máy trạm.","cmdkey /add:IP /user:TEN /pass:MATKHAU với tài khoản có quyền trên máy chủ.","Thử lại đường dẫn share."],"commands":["cmdkey /list","cmdkey /add:192.168.1.10 /user:MAYCHU\\ten /pass:matkhau","cmdkey /delete:192.168.1.10"],"caution":"Đừng gửi mật khẩu vào log hay chép vào file. Gõ trực tiếp trên máy trạm.","kit":"Menu 8 + cmdkey"},{"id":"3e3","code":"0x000003e3","title":"Impersonation","side":"client","summary":"Lỗi mạo danh khi in qua mạng. Tắt forceguest và cho phép guest auth không an toàn trên workgroup.","when":"0x000003e3, hoặc máy trạm thấy share nhưng không in được vì không cùng domain.","steps":["Menu 9.","Hai máy nên cùng tên workgroup.","Restart spooler."],"commands":["reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\" /v forceguest /t REG_DWORD /d 0 /f","reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters\" /v AllowInsecureGuestAuth /t REG_DWORD /d 1 /f","net stop spooler & net start spooler"],"kit":"Menu 9"},{"id":"bcb","code":"0x00000bcb","title":"Không thấy tài nguyên mạng","side":"client","summary":"Dịch vụ Workstation hoặc Server đang tắt nên không mở được đường dẫn UNC.","when":"0x00000bcb, hoặc \\\\IP không vào được trong khi ping vẫn thông.","steps":["Menu 10. Bật LanmanWorkstation và LanmanServer.","Mở firewall chia sẻ file."],"commands":["sc config LanmanWorkstation start= auto","sc start LanmanWorkstation","sc config LanmanServer start= auto","sc start LanmanServer"],"kit":"Menu 10"},{"id":"7e","code":"0x0000007e","title":"Không thấy driver","side":"client","summary":"Thiếu mscms.dll trong thư mục driver, hoặc hàng đợi kẹt. Không gỡ driver đang cài.","when":"0x0000007e sau khi thêm máy in hoặc cập nhật Windows.","steps":["Menu 11 copy mscms.dll sang drivers\\x64\\3 nếu thư mục đó tồn tại mà chưa có file.","Xóa file tạm trong spool\\PRINTERS.","Thêm lại máy in để Windows kéo driver."],"commands":["net stop spooler","del /q /f C:\\Windows\\System32\\spool\\PRINTERS\\*.*","copy /y C:\\Windows\\System32\\mscms.dll C:\\Windows\\System32\\spool\\drivers\\x64\\3\\mscms.dll","net start spooler"],"kit":"Menu 11"},{"id":"12","code":"0x00000012","title":"Hàng đợi kẹt","side":"both","summary":"No more files / spool error. Xóa job kẹt rồi bật lại spooler Automatic.","when":"Máy in đứng, 0x00000012, hoặc job không xóa được trong cửa sổ hàng đợi.","steps":["Menu 12.","In thử một trang chữ."],"commands":["net stop spooler","del /q /f C:\\Windows\\System32\\spool\\PRINTERS\\*.*","sc config Spooler start= auto","net start spooler"],"kit":"Menu 12"},{"id":"6ba","code":"0x000006ba","title":"RPCSS không chạy","side":"both","summary":"Print Spooler phụ thuộc RPC. RpcSs hoặc RpcEptMapper tắt thì mọi lệnh in đều 0x6ba.","when":"0x000006ba trên máy chủ hoặc máy trạm.","steps":["Menu 13.","Sau đó chạy thêm menu 4 nếu vẫn không thêm được máy in mạng."],"commands":["sc config RpcSs start= auto","sc start RpcSs","sc config RpcEptMapper start= auto","sc start RpcEptMapper","net stop spooler & net start spooler"],"kit":"Menu 13"},{"id":"40","code":"0x00000040","title":"Firewall chặn in","side":"both","summary":"Không tắt firewall. Chỉ bật đúng nhóm chia sẻ file và khám phá mạng.","when":"Ping được nhưng không in, lỗi 0x00000040.","steps":["Menu 5. Giữ dịch vụ Windows Firewall đang chạy."],"commands":["netsh advfirewall firewall set rule group=\"@FirewallAPI.dll,-28502\" new enable=Yes","netsh advfirewall firewall set rule group=\"@FirewallAPI.dll,-32752\" new enable=Yes"],"kit":"Menu 5"},{"id":"771","code":"0x00000771","title":"Máy in đang offline","side":"both","summary":"Đưa các máy in WMI đang WorkOffline về online, rồi xóa hàng đợi.","when":"Máy in mờ, trạng thái Offline, lỗi 0x00000771 dù cáp và nguồn vẫn có.","steps":["Menu 14.","Nếu là máy in USB Canon, rút cáp 10 giây rồi cắm lại."],"commands":["powershell -Command \"Get-WmiObject Win32_Printer | Where-Object WorkOffline | ForEach-Object { $_.WorkOffline = $false; $_.Put() }\"","net stop spooler","del /q /f C:\\Windows\\System32\\spool\\PRINTERS\\*.*","net start spooler"],"kit":"Menu 14"},{"id":"3eb","code":"0x000003eb","title":"Printing not supported","side":"client","summary":"Bật tính năng Internet Printing Client và LPR Port Monitor. LPD chỉ có trên bản Pro.","when":"0x000003eb khi thêm cổng LPR hoặc máy in IPP.","steps":["Menu 15. DISM có thể chạy vài phút. Không bắt buộc khởi động lại ngay."],"commands":["dism /Online /Enable-Feature /FeatureName:Printing-Foundation-InternetPrinting-Client /NoRestart","dism /Online /Enable-Feature /FeatureName:Printing-LPRPortMonitor /NoRestart"],"kit":"Menu 15"},{"id":"canon","code":"Canon","title":"Canon LBP 2900 / 3300","side":"shop","summary":"Xóa USB Monitor và các cổng CNBJNP cũ, dọn hàng đợi, giữ nguyên driver. Rút cáp USB rồi cắm lại.","when":"Communication Error, Canon LBP nhận cổng nhưng không in.","steps":["Menu 16.","Rút USB, đợi 10 giây, cắm vào đúng cổng sau máy.","Nếu Windows hỏi driver, chọn driver LBP đang có — đừng cài đè bản lạ."],"commands":["net stop spooler","taskkill /F /IM spoolsv.exe","reg delete \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Monitors\\USB Monitor\" /f","net start spooler"],"kit":"Menu 16"},{"id":"ports","code":"Ports","title":"Xóa cổng TCP/IP hỏng","side":"shop","summary":"Chỉ xóa cổng có địa chỉ IP hoặc đường UNC. Giữ USB, COM, LPT, FILE:, NUL:.","when":"Cổng Standard TCP/IP trùng, sai IP, máy in mạng thêm không được.","steps":["Menu 17. Đọc tên cổng bị xóa trong log.","Tạo lại cổng trong Print Server Properties nếu vẫn cần in mạng."],"commands":["reg query \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Ports\""],"caution":"Đừng xóa cả khóa Ports. Chỉ xóa từng giá trị cổng mạng hỏng.","kit":"Menu 17"},{"id":"unlock","code":"Unlock","title":"Mở khóa chia sẻ","side":"server","summary":"Gỡ DisableHTTPPrinting, DisablePrinterAdmin và hạn chế Point and Print phía máy chủ.","when":"Máy chủ không bật được Share this printer, nút mờ hoặc policy chặn.","steps":["Menu 18.","Vào Properties máy in → Sharing → Share this printer."],"commands":["reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Printers\" /v DisableHTTPPrinting /t REG_DWORD /d 0 /f","reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Printers\" /v DisablePrinterAdmin /t REG_DWORD /d 0 /f"],"kit":"Menu 18"},{"id":"diag","code":"Log","title":"Chẩn đoán trước khi sửa","side":"shop","summary":"In ra phiên bản Windows, spooler RUNNING hay STOPPED, ImagePath, kích thước 3 file, và khóa RPC. Chưa sửa gì.","when":"Chưa rõ máy đang lỗi file mất hay chỉ lỗi chính sách.","steps":["Menu 19. Chụp lại cửa sổ hoặc mở %TEMP%\\SuaLoiMayIn.log.","File thiếu hoặc không phải MZ → chạy Sửa chắc chắn. File còn, ImagePath sai → menu 3."],"commands":["sc query Spooler","sc qc Spooler","dir C:\\Windows\\System32\\spoolsv.exe"],"kit":"Menu 19"}],"FILES":[{"name":"spoolsv.exe","role":"Dịch vụ Print Spooler","version":"10.0.19041.1237"},{"name":"localspl.dll","role":"Local Spooler / winprint","version":"10.0.19041.1237"},{"name":"win32spl.dll","role":"In qua mạng (LanMan)","version":"10.0.19041.1266"}],"SIDES":[{"id":"all","label":"Tất cả"},{"id":"core","label":"Chắc chắn"},{"id":"server","label":"Máy chủ"},{"id":"client","label":"Máy trạm"},{"id":"both","label":"Cả hai"},{"id":"shop","label":"Xưởng"}],"SIDE_LABEL":{"core":"Việc làm trước","server":"Máy đang chia sẻ","client":"Máy đang kết nối","both":"Chạy trên cả hai máy","shop":"Hàng đợi, cổng, Canon"}};
+const KIT = "SuaLoiMayIn-Full.zip";
+const fold = (s) => s.toLowerCase().replace(/0x0+/g, "0x");
+let side = "all";
+let selected = DATA.FIXES[0].id;
+let copied = false;
+let done = {};
+try { done = JSON.parse(localStorage.getItem("mayin-done") || "{}"); } catch (e) {}
+
+function save() { localStorage.setItem("mayin-done", JSON.stringify(done)); }
+function visible() {
+  const q = fold(document.getElementById("q").value.trim());
+  return DATA.FIXES.filter((fix) => {
+    if (side !== "all" && fix.side !== side) return false;
+    if (!q) return true;
+    return fold(fix.code + " " + fix.title + " " + fix.summary + " " + fix.when).includes(q);
+  });
+}
+function esc(s) {
+  return String(s).replace(/[&<>]/g, (c) => ({ "&":"&", "<":"<", ">":">" }[c]));
+}
+function render() {
+  const chips = document.getElementById("chips");
+  chips.innerHTML = DATA.SIDES.map((item) =>
+    '<button type="button" class="chip' + (item.id === side ? " on" : "") + '" data-side="' + item.id + '">' + esc(item.label) + "</button>"
+  ).join("");
+  const items = visible();
+  const list = document.getElementById("list");
+  list.innerHTML = items.length ? items.map((fix) =>
+    '<li><button type="button" class="item' + (fix.id === selected ? " on" : "") + '" data-id="' + fix.id + '">' +
+    '<span class="code">' + esc(fix.code) + "</span><span><b>" + esc(fix.title) + "</b><small>" + esc(DATA.SIDE_LABEL[fix.side]) + "</small></span></button></li>"
+  ).join("") : '<li class="empty">Không có mục khớp. Thử Error 2 hoặc Canon.</li>';
+  const fix = DATA.FIXES.find((f) => f.id === selected) || items[0] || DATA.FIXES[0];
+  selected = fix.id;
+  const steps = fix.steps.map((step, i) => {
+    const key = fix.id + ":" + i;
+    const on = !!done[key];
+    return '<li><button type="button" class="step' + (on ? " on" : "") + '" data-step="' + key + '"><i class="box">✓</i><span><span class="code">' + (i + 1) + "</span> " + esc(step) + "</span></button></li>";
+  }).join("");
+  const files = fix.id === "chac-chan" ? (
+    "<h3>Ba file đi kèm trong Spooler64</h3><p class='lead'>Bản Microsoft gốc, kiến trúc x64. Tool kiểm tra chữ MZ và SHA-256 trước khi ghi đè.</p><table><thead><tr><th>File</th><th>Vai trò</th><th>Phiên bản</th></tr></thead><tbody>" +
+    DATA.FILES.map((f) => "<tr><td class='mono'>" + esc(f.name) + "</td><td>" + esc(f.role) + "</td><td class='mono'>" + esc(f.version) + "</td></tr>").join("") +
+    "</tbody></table>"
+  ) : "";
+  document.getElementById("detail").innerHTML =
+    '<p class="meta">' + esc(fix.code) + " · " + esc(fix.kit) + "</p>" +
+    "<h2>" + esc(fix.title) + "</h2>" +
+    '<p class="lead">' + esc(fix.summary) + "</p>" +
+    '<dl class="grid"><div class="card"><dt>Khi nào dùng</dt><dd>' + esc(fix.when) + "</dd></div>" +
+    '<div class="card"><dt>Trong bộ tải về</dt><dd>Giải nén, chạy <span class="mono">Sua-Loi-May-In.bat</span> bằng quyền Administrator, rồi ' + esc(fix.kit.toLowerCase()) + ".</dd></div></dl>" +
+    (fix.caution ? '<p class="warn">' + esc(fix.caution) + "</p>" : "") +
+    "<h3>Thứ tự trên máy Windows</h3><ol>" + steps + "</ol>" +
+    '<div class="row"><h3>Lệnh tương đương</h3><button type="button" class="copy" id="copy">' + (copied ? "Đã chép" : "Chép lệnh") + "</button></div>" +
+    "<pre id='cmds'>" + esc(fix.commands.join("\n")) + "</pre>" + files;
+}
+document.getElementById("q").addEventListener("input", render);
+document.body.addEventListener("click", async (event) => {
+  const sideBtn = event.target.closest("[data-side]");
+  if (sideBtn) { side = sideBtn.dataset.side; copied = false; render(); return; }
+  const item = event.target.closest("[data-id]");
+  if (item) { selected = item.dataset.id; copied = false; render(); return; }
+  const step = event.target.closest("[data-step]");
+  if (step) { done[step.dataset.step] = !done[step.dataset.step]; save(); render(); return; }
+  if (event.target.closest("#copy")) {
+    const text = document.getElementById("cmds").textContent;
+    try { await navigator.clipboard.writeText(text); } catch (e) {}
+    copied = true; render();
+  }
+});
+render();
+</script>
+</body>
+</html>
