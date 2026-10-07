@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Báo giá — Hoa Lụa Vân Vượng</title>
+  <meta name="theme-color" content="#241812" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f6efe4; --cream: #fbf6ee; --ink: #2c1810; --muted: #6b5344;
+      --burgundy: #7a2e24; --burgundy-deep: #5c221b; --gold: #b08d57; --gold-soft: #d4c0a0;
+      --studio-deep: #241812; --line: #d8c7a8;
+      --font-display: "Playfair Display", "Times New Roman", serif;
+      --font-sans: "Be Vietnam Pro", "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100dvh; background: var(--studio-deep); color: var(--cream); font-family: var(--font-sans); }
+    button { cursor: pointer; font: inherit; }
+    .studio-bg { min-height: 100dvh; background-image: radial-gradient(ellipse at top, rgb(122 46 36 / 0.18), transparent 55%); }
+    header.app-bar { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid rgb(255 255 255 / 0.1); background: rgb(36 24 18 / 0.92); backdrop-filter: blur(12px); }
+    .bar-inner { max-width: 1600px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 16px; }
+    .kicker-brand { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: 0.22em; color: var(--gold); }
+    .bar-inner h1 { margin: 0; font-family: var(--font-display); font-size: 22px; font-weight: 600; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+    .btn { display: inline-flex; min-height: 44px; align-items: center; border: 0; border-radius: 8px; padding: 0 16px; background: transparent; color: var(--gold-soft); }
+    .btn:hover { background: rgb(255 255 255 / 0.05); }
+    .btn-outline { border: 1px solid rgb(176 141 87 / 0.4); color: var(--cream); }
+    .btn-primary { background: var(--burgundy); color: #fff; font-weight: 600; }
+    .btn-primary:hover { background: var(--burgundy-deep); }
+    a.btn { text-decoration: none; }
+    .status { max-width: 1600px; margin: 0 auto; padding: 0 16px 12px; font-size: 14px; color: var(--gold-soft); }
+    .layout { max-width: 1600px; margin: 0 auto; display: grid; gap: 24px; padding: 24px 16px; align-items: start; }
+    @media (min-width: 1024px) { .layout.with-editor { grid-template-columns: minmax(0, 1fr) 400px; } }
+    @media (max-width: 1023px) { aside.editor { order: -1; } .layout { display: flex; flex-direction: column; } }
+    .print-stage { overflow-x: auto; padding-bottom: 32px; }
+    .quote-scale { margin: 0 auto; }
+    .hint { margin: 16px 0 0; text-align: center; font-size: 12px; color: var(--gold-soft); }
+    aside.editor { border-radius: 16px; border: 1px solid rgb(255 255 255 / 0.1); background: rgb(58 40 32 / 0.8); padding: 16px; }
+    @media (min-width: 1024px) { aside.editor { position: sticky; top: 88px; max-height: calc(100dvh - 6rem); overflow-y: auto; } }
+    aside.editor h3 { margin: 0 0 12px; font-family: var(--font-display); font-size: 18px; }
+    .stack { display: grid; gap: 12px; }
+    .section { margin-bottom: 20px; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .section-head h3 { margin: 0; }
+    .field-label { display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 6px; font-weight: 600; }
+    .field-input, .field-area { width: 100%; border: 1px solid rgb(212 192 160 / 0.35); background: rgb(255 255 255 / 0.06); color: var(--cream); border-radius: 8px; padding: 10px 12px; font-family: var(--font-sans); font-size: 14px; min-height: 44px; }
+    .field-area { min-height: 72px; resize: vertical; }
+    .field-input:focus, .field-area:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+    .item-card, .hit { border-radius: 12px; border: 1px solid rgb(212 192 160 / 0.2); background: rgb(255 255 255 / 0.05); padding: 12px; }
+    .hit { width: 100%; text-align: left; color: var(--cream); display: flex; gap: 10px; align-items: center; }
+    .hit img, .ph { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; background: rgb(255 255 255 / 0.08); flex: none; }
+    .hit b { display: block; }
+    .hit span { display: block; color: var(--gold-soft); font-size: 12px; }
+    .hits { display: grid; gap: 8px; max-height: 280px; overflow: auto; }
+    .item-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .icon-btn { width: 44px; height: 44px; border: 0; border-radius: 8px; background: transparent; color: var(--gold-soft); }
+    .quote-sheet { width: 210mm; min-height: 297mm; box-sizing: border-box; background: var(--paper); color: var(--ink); padding: 14mm 14mm 16mm; box-shadow: 0 0 0 1.5pt var(--gold), 0 24px 60px rgb(0 0 0 / 0.35); font-family: "Times New Roman", serif; }
+    .quote-kicker { font-family: var(--font-sans); letter-spacing: 0.32em; font-size: 10px; font-weight: 600; color: var(--gold); text-align: center; margin: 0; }
+    .quote-company { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--burgundy); text-align: center; line-height: 1.25; margin: 8px 0 0; }
+    .quote-info { margin: 8px 0 0; text-align: center; font-family: var(--font-sans); font-size: 12.5px; line-height: 1.55; color: var(--muted); }
+    .gold-line { margin: 16px auto 0; height: 1px; background: var(--gold); }
+    .quote-title { font-family: var(--font-display); font-size: 34px; font-weight: 700; color: var(--burgundy); letter-spacing: 0.28em; text-align: center; margin: 28px 0 0; }
+    .quote-greet { margin: 8px 0 0; text-align: center; font-size: 14px; font-style: italic; color: var(--muted); }
+    .quote-meta { margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; padding: 14px 20px; border: 1px solid var(--gold); background: #fff; font-family: var(--font-sans); font-size: 13px; }
+    .quote-meta .right { text-align: right; }
+    .quote-meta .mt { margin-top: 6px; }
+    .quote-table { width: 100%; border-collapse: collapse; margin-top: 24px; font-family: var(--font-sans); font-size: 13.5px; }
+    .quote-table th { background: var(--burgundy); color: #fff; padding: 9px 12px; border: 1px solid var(--burgundy-deep); }
+    .quote-table td { background: #fff; padding: 12px; border: 1px solid var(--line); }
+    .num { font-variant-numeric: tabular-nums; }
+    .foot { margin-top: 24px; display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; }
+    .notes { max-width: 52%; font-family: var(--font-sans); font-size: 12.5px; font-style: italic; line-height: 1.55; color: var(--muted); }
+    .notes p { margin: 0; }
+    .notes p + p { margin-top: 4px; }
+    .sum { width: 250px; flex-shrink: 0; border: 1px solid var(--gold); background: var(--paper); font-family: var(--font-sans); font-size: 13px; }
+    .sum-row, .sum-total { display: flex; justify-content: space-between; padding: 8px 16px; }
+    .sum-total { background: var(--burgundy); color: #fff; font-weight: 600; padding: 10px 16px; }
+    .thanks { margin: 28px 0 0; text-align: center; font-style: italic; color: var(--muted); }
+    .quote-date { text-align: right; font-style: italic; margin: 18px 0 0; font-family: "Times New Roman", serif; }
+    .quote-intro { margin: 14px 0 0; font-family: var(--font-sans); font-size: 13.5px; line-height: 1.55; }
+    .terms { margin: 16px 0 0; padding: 0; list-style: none; font-family: var(--font-sans); font-size: 12.5px; line-height: 1.55; color: var(--ink); }
+    .terms li { margin: 0 0 3px; }
+    .greet-row { margin: 12px 0 0; display: flex; justify-content: space-between; align-items: baseline; gap: 32px; font-size: 14px; font-style: italic; color: var(--ink); }
+    .greet-row p { margin: 0; }
+    .sign { margin: 28px 0 0 auto; width: 220px; text-align: center; font-family: var(--font-sans); }
+    .sign b, .sign span { display: block; }
+    .sign b { color: var(--burgundy); letter-spacing: 0.04em; }
+    .sign span { margin-top: 6px; min-height: 1.2em; }
+    .quote-sheet { position: relative; }
+    .quote-sheet:before, .quote-sheet:after {
+      content: "";
+      position: absolute;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 30% 40%, #7a2e24 0 7px, transparent 8px),
+        radial-gradient(circle at 62% 28%, #b08d57 0 6px, transparent 7px),
+        radial-gradient(circle at 48% 68%, #c46b73 0 8px, transparent 9px);
+      opacity: 0.55;
+    }
+    .quote-sheet:before { top: 10px; left: 10px; }
+    .quote-sheet:after { top: 10px; right: 10px; transform: scaleX(-1); }
+    @media print {
+      @page { size: A4; margin: 0; }
+      html, body { background: #fff !important; }
+      .no-print { display: none !important; }
+      .studio-bg, .layout, .print-stage { display: block; padding: 0; margin: 0; background: #fff; }
+      #scale-box, #paper-wrap, .quote-scale { transform: none !important; width: 210mm !important; height: auto !important; }
+      .quote-sheet { box-shadow: none; margin: 0; width: 210mm; min-height: 297mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="studio-bg">
+    <header class="app-bar no-print">
+      <div class="bar-inner">
+        <div>
+          <p class="kicker-brand">HOA LỤA VÂN VƯỢNG</p>
+          <h1>Báo giá bán lẻ</h1>
+        </div>
+        <div class="actions">
+          <a class="btn" href="./admin.html">Admin</a>
+          <a class="btn" href="./hoadon.html">Hóa đơn sỉ</a>
+          <button type="button" class="btn" id="btn-toggle">Ẩn sửa</button>
+          <button type="button" class="btn btn-outline" id="btn-print">In A4</button>
+          <button type="button" class="btn btn-outline" id="btn-jpg">JPG</button>
+          <button type="button" class="btn btn-outline" id="btn-xlsx">Excel</button>
+          <button type="button" class="btn btn-primary" id="btn-docx">Word</button>
+        </div>
+      </div>
+      <p class="status" id="status">Đang nối kho bán lẻ…</p>
+    </header>
+    <div class="layout with-editor" id="layout">
+      <div class="print-stage" id="stage">
+        <div class="quote-scale" id="scale-box">
+          <div id="paper-wrap"><article class="quote-sheet" id="sheet"></article></div>
+        </div>
+        <p class="hint no-print">Kế toán nhận file Word hoặc Excel, không nhận ảnh. Phiếu đứng tên Vân Vượng, không có số tài khoản cá nhân.</p>
+      </div>
+      <aside class="editor no-print" id="editor-pane">
+        <section class="section">
+          <h3>Chọn trong kho bán lẻ</h3>
+          <input class="field-input" id="q" placeholder="Tìm tên hàng hoặc biến thể" />
+          <div class="hits" id="hits" style="margin-top:10px"></div>
+        </section>
+        <form id="form" onsubmit="return false">
+          <section class="section">
+            <h3>Công ty</h3>
+            <div class="stack">
+              <label><span class="field-label">Dòng nhỏ trên tên</span><input class="field-input" data-field="kicker" /></label>
+              <label><span class="field-label">Tên công ty</span><input class="field-input" data-field="companyName" /></label>
+              <label><span class="field-label">Mã số thuế</span><input class="field-input" data-field="taxCode" /></label>
+              <label><span class="field-label">Địa chỉ</span><textarea class="field-area" rows="2" data-field="address"></textarea></label>
+              <label><span class="field-label">Điện thoại</span><input class="field-input" data-field="phone" /></label>
+            </div>
+          </section>
+          <section class="section">
+            <h3>Phiếu báo giá</h3>
+            <div class="stack">
+              <label><span class="field-label">Lời dẫn</span><textarea class="field-area" rows="2" data-field="intro"></textarea></label>
+              <label><span class="field-label">Giao hàng</span><input class="field-input" data-field="delivery" /></label>
+              <label><span class="field-label">Địa điểm giao</span><input class="field-input" data-field="place" /></label>
+              <label><span class="field-label">Thanh toán</span><input class="field-input" data-field="payment" /></label>
+              <label><span class="field-label">Chức danh ký, xóa được</span><input class="field-input" data-field="signRole" placeholder="GIÁM ĐỐC" /></label>
+              <label><span class="field-label">Kính gửi</span><input class="field-input" data-field="customer" /></label>
+              <div class="row-2">
+                <label><span class="field-label">Số</span><input class="field-input" data-field="quoteNo" /></label>
+                <label><span class="field-label">Ngày</span><input class="field-input" data-field="issuedAt" /></label>
+              </div>
+              <label><span class="field-label">Hiệu lực đến</span><input class="field-input" data-field="validUntil" /></label>
+            </div>
+          </section>
+          <section class="section">
+            <div class="section-head">
+              <h3>Hàng hóa</h3>
+              <button type="button" class="btn" id="btn-add">+ Dòng tay</button>
+            </div>
+            <div class="stack" id="items"></div>
+          </section>
+          <section class="section">
+            <h3>VAT và ghi chú</h3>
+            <div class="stack">
+              <label><span class="field-label">VAT %</span><input class="field-input" data-field="vatRate" inputmode="decimal" /></label>
+              <label><span class="field-label">Ghi chú hàng</span><textarea class="field-area" rows="2" data-field="notes"></textarea></label>
+              <label><span class="field-label">Ghi chú VAT</span><textarea class="field-area" rows="2" data-field="vatNote"></textarea></label>
+            </div>
+          </section>
+        </form>
+      </aside>
+    </div>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <script src="./vv-doc.js"></script>
+  <script>
+    const STORAGE_KEY = "mimi-baogia-le-v1";
+    function vnParts(d) {
+      const bag = {};
+      new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(d).forEach((p) => { bag[p.type] = p.value; });
+      if (bag.hour === "24") bag.hour = "00";
+      return bag;
+    }
+    function stamp(d) { const b = vnParts(d); return b.day + "/" + b.month + "/" + b.year + " " + b.hour + ":" + b.minute; }
+    function plusDays(n) { const b = vnParts(new Date(Date.now() + n * 86400000)); return b.day + "/" + b.month + "/" + b.year; }
+    const now = new Date();
+    const b0 = vnParts(now);
+    const DEFAULT_QUOTE = {
+      kicker: "HOA LỤA TRANG TRÍ",
+      companyName: "CÔNG TY TNHH HOA LỤA VÂN VƯỢNG",
+      taxCode: "0110660048",
+      address: "Số 472 Thụy Khuê, Phường Tây Hồ, Thành phố Hà Nội, Việt Nam",
+      phone: "0376570953",
+      greeting: "Kính gửi Quý khách.",
+      intro: "Trên cơ sở yêu cầu báo giá của Quý khách, chúng tôi báo giá cung cấp sản phẩm như sau:",
+      delivery: "Theo thỏa thuận của hai bên.",
+      place: "Theo thỏa thuận của hai bên.",
+      payment: "Chuyển khoản hoặc Tiền mặt.",
+      signRole: "GIÁM ĐỐC",
+      customer: "",
+      quoteNo: "BG" + b0.year + b0.month + b0.day + b0.hour + b0.minute,
+      issuedAt: stamp(now),
+      validUntil: plusDays(7),
+      items: [],
+      notes: "",
+      vatNote: "Đơn giá chưa gồm VAT. VAT 8% cộng riêng.",
+      vatRate: 8
+    };
+    const el = {
+      sheet: document.getElementById("sheet"),
+      items: document.getElementById("items"),
+      form: document.getElementById("form"),
+      stage: document.getElementById("stage"),
+      wrap: document.getElementById("paper-wrap"),
+      scaleBox: document.getElementById("scale-box"),
+      layout: document.getElementById("layout"),
+      editor: document.getElementById("editor-pane"),
+      status: document.getElementById("status"),
+      toggle: document.getElementById("btn-toggle"),
+      docx: document.getElementById("btn-docx"),
+      xlsx: document.getElementById("btn-xlsx"),
+      jpg: document.getElementById("btn-jpg"),
+      hits: document.getElementById("hits"),
+      q: document.getElementById("q")
+    };
+    let quote = structuredClone(DEFAULT_QUOTE);
+    let editorOpen = true;
+    let catalog = [];
+    let query = "";
+    const fold = (s) => String(s || "").normalize("NFD").replace(/\p{M}/gu, "").replace(/đ/g, "d").toLowerCase();
+    function formatVnd(n) { return Math.round(Number(n) || 0).toLocaleString("vi-VN"); }
+    function parseVnd(raw) { const digits = String(raw).replace(/[^\d]/g, ""); return digits ? Number(digits) : 0; }
+    function formatPhone(phone) {
+      const digits = String(phone).replace(/\D/g, "");
+      if (digits.length === 10 || digits.length === 11) return digits.slice(0, 4) + " " + digits.slice(4, 7) + " " + digits.slice(7);
+      return String(phone).trim();
+    }
+    function itemAmount(item) { return Math.round((item.qty || 0) * (item.unitPrice || 0)); }
+    function totals() {
+      const subtotal = quote.items.reduce((s, it) => s + itemAmount(it), 0);
+      const vat = Math.round(subtotal * (Number(quote.vatRate) || 0) / 100);
+      return { subtotal, vat, total: subtotal + vat };
+    }
+    function escapeHtml(s) {
+      return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+    function setStatus(text) { el.status.hidden = !text; el.status.textContent = text || ""; }
+    function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(quote)); }
+    function renderPaper() {
+      const { subtotal, vat, total } = totals();
+      const items = quote.items.length ? quote.items : [{ name: "", qty: "", unitPrice: 0 }];
+      const rows = items.map((item, index) => `
+        <tr>
+          <td class="num" style="text-align:center">${item.name ? index + 1 : ""}</td>
+          <td>${escapeHtml(item.name || "—")}</td>
+          <td style="text-align:center">${escapeHtml(item.unit || "")}</td>
+          <td class="num" style="text-align:center">${item.qty || ""}</td>
+          <td class="num" style="text-align:right">${item.unitPrice ? formatVnd(item.unitPrice) : ""}</td>
+          <td class="num" style="text-align:right;font-weight:600">${item.unitPrice ? formatVnd(itemAmount(item)) : ""}</td>
+        </tr>`).join("");
+      el.sheet.innerHTML = `
+        <p class="quote-kicker">${escapeHtml(quote.kicker || "HOA LỤA TRANG TRÍ")}</p>
+        <h1 class="quote-company">${escapeHtml(quote.companyName)}</h1>
+        <p class="quote-info">MST: ${escapeHtml(quote.taxCode)} · Điện thoại: ${escapeHtml(formatPhone(quote.phone))}</p>
+        <p class="quote-info">Địa chỉ: ${escapeHtml(quote.address)}</p>
+        <p class="quote-date">${escapeHtml(longDate(quote.issuedAt))}</p>
+        <div class="gold-line"></div>
+        <h2 class="quote-title" style="letter-spacing:.12em;font-size:28px">BẢNG BÁO GIÁ</h2>
+        <div class="greet-row">
+          <p>Kính gửi: ${escapeHtml(quote.customer || "Quý khách")}</p>
+          <p>Số báo giá: ${escapeHtml(quote.quoteNo || "")}</p>
+        </div>
+        <p class="quote-intro">${escapeHtml(quote.intro || "")}</p>
+        <table class="quote-table">
+          <thead><tr>
+            <th style="width:42px">STT</th>
+            <th>Tên hàng hóa, dịch vụ</th>
+            <th style="width:64px">ĐVT</th>
+            <th style="width:64px">SL</th>
+            <th style="width:110px">Đơn giá</th>
+            <th style="width:120px">Thành tiền</th>
+          </tr></thead>
+          <tbody>
+            ${rows}
+            <tr><td colspan="5" style="text-align:right;font-weight:700">Cộng tiền hàng</td><td class="num" style="text-align:right;font-weight:700">${formatVnd(subtotal)}</td></tr>
+            <tr><td colspan="5" style="text-align:right">Thuế GTGT ${Number(quote.vatRate) || 0}%</td><td class="num" style="text-align:right">${formatVnd(vat)}</td></tr>
+            <tr><td colspan="5" style="text-align:right;font-weight:700;background:#7a2e24;color:#fff">Tổng thanh toán</td><td class="num" style="text-align:right;font-weight:700;background:#7a2e24;color:#fff">${formatVnd(total)}</td></tr>
+          </tbody>
+        </table>
+        <ul class="terms">
+          <li>Giá trên chưa bao gồm thuế GTGT (VAT) ${Number(quote.vatRate) || 0}%.</li>
+          ${quote.notes ? `<li>${escapeHtml(quote.notes)}</li>` : ""}
+          <li>Thời gian giao hàng: ${escapeHtml(quote.delivery || "")}</li>
+          <li>Địa điểm giao hàng: ${escapeHtml(quote.place || "")}</li>
+          <li>Hình thức thanh toán: ${escapeHtml(quote.payment || "")}</li>
+          <li>Hiệu lực báo giá: Đến hết ngày ${escapeHtml(quote.validUntil || "")}.</li>
+        </ul>
+        <p class="thanks">Rất mong được hợp tác với Quý khách hàng. Trân trọng kính chào!</p>
+        <div class="sign"><b>ĐẠI DIỆN CÔNG TY</b>${quote.signRole ? `<span>${escapeHtml(quote.signRole)}</span>` : ""}</div>`;
+      fitScale();
+    }
+    function renderItems() {
+      if (!quote.items.length) {
+        el.items.innerHTML = `<p class="quote-info" style="text-align:left">Chưa có dòng. Chọn hàng ở trên, hoặc bấm Dòng tay.</p>`;
+        return;
+      }
+      el.items.innerHTML = quote.items.map((item, index) => `
+        <div class="item-card">
+          <div class="item-top"><span>Dòng ${index + 1}</span><button type="button" class="icon-btn" data-remove="${escapeHtml(item.id)}" aria-label="Xóa dòng">✕</button></div>
+          <label><span class="field-label">Tên hàng</span><textarea class="field-area" rows="2" data-item="${escapeHtml(item.id)}" data-key="name">${escapeHtml(item.name)}</textarea></label>
+          <div class="row-2" style="margin-top:12px">
+            <label><span class="field-label">ĐVT</span><input class="field-input" data-item="${escapeHtml(item.id)}" data-key="unit" value="${escapeHtml(item.unit || "Cây")}" /></label>
+            <label><span class="field-label">Số lượng</span><input class="field-input" inputmode="numeric" data-item="${escapeHtml(item.id)}" data-key="qty" value="${item.qty || ""}" /></label>
+          </div>
+          <label style="margin-top:12px"><span class="field-label">Đơn giá chưa VAT</span><input class="field-input" inputmode="numeric" data-item="${escapeHtml(item.id)}" data-key="unitPrice" value="${item.unitPrice ? formatVnd(item.unitPrice) : ""}" /></label>
+        </div>`).join("");
+    }
+    function fillForm() {
+      el.form.querySelectorAll("[data-field]").forEach((input) => { input.value = quote[input.dataset.field] ?? ""; });
+      renderItems();
+    }
+    function longDate(raw) {
+      const m = String(raw || "").match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+      if (!m) {
+        const b = vnParts(new Date());
+        return "Hà Nội, ngày " + b.day + " tháng " + b.month + " năm " + b.year;
+      }
+      return "Hà Nội, ngày " + String(m[1]).padStart(2, "0") + " tháng " + String(m[2]).padStart(2, "0") + " năm " + m[3];
+    }
+    function fitScale() {
+      const naturalW = 794;
+      const naturalH = el.wrap.scrollHeight || 1123;
+      const next = Math.min(1, Math.max(0.36, (el.stage.clientWidth - 8) / naturalW));
+      el.wrap.style.transform = "scale(" + next + ")";
+      el.wrap.style.transformOrigin = "top left";
+      el.scaleBox.style.width = (naturalW * next) + "px";
+      el.scaleBox.style.height = (naturalH * next) + "px";
+    }
+    function persistAndPaint() { save(); renderPaper(); }
+    function loadQuote() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        quote = { ...DEFAULT_QUOTE, ...parsed, items: (Array.isArray(parsed.items) ? parsed.items : []).map((it) => ({ unit: "Cây", ...it })) };
+      } catch (_) {}
+      try {
+        const imported = localStorage.getItem("mimi-baogia-import");
+        if (imported) {
+          const extra = JSON.parse(imported);
+          localStorage.removeItem("mimi-baogia-import");
+          if (extra.customer) quote.customer = extra.customer;
+          if (Array.isArray(extra.items) && extra.items.length) quote.items = extra.items.map((it) => ({ unit: "Cây", ...it }));
+          setStatus("Đã lấy hàng từ đơn trên admin. Sửa giá rồi xuất Word hoặc Excel.");
+        }
+      } catch (_) {}
+    }
+    function newId() { return (crypto.randomUUID && crypto.randomUUID()) || ("item-" + Date.now()); }
+    function addPicked(name, price) {
+      const found = quote.items.find((it) => it.name === name);
+      if (found) found.qty = (Number(found.qty) || 0) + 1;
+      else quote.items.push({ id: newId(), name, unit: "Cây", qty: 1, unitPrice: price || 0 });
+      renderItems();
+      persistAndPaint();
+    }
+    function imgOf(p) { return (p.images && p.images[0]) || p.image || ""; }
+    function priceOf(p, v) { return Number((v && v.price) || p.basePrice || p.price || 0); }
+    function renderHits() {
+      const q = fold(query).trim();
+      const words = q ? q.split(/\s+/) : [];
+      const rows = [];
+      catalog.forEach((p) => {
+        const variants = Array.isArray(p.variants) && p.variants.length ? p.variants : [null];
+        variants.forEach((v) => {
+          const label = v && v.name ? (p.name + " — " + v.name) : (p.name || "");
+          const blob = fold(label + " " + (p.category || ""));
+          if (words.length && !words.every((w) => blob.includes(w))) return;
+          rows.push({ p, v, label, price: priceOf(p, v), stock: v ? v.stock : "" });
+        });
+      });
+      const show = rows.slice(0, 40);
+      if (!show.length) {
+        el.hits.innerHTML = `<p class="quote-info" style="text-align:left">${catalog.length ? "Không thấy trong kho bán lẻ. Bấm Dòng tay." : "Đang tải kho…"}</p>`;
+        return;
+      }
+      el.hits.innerHTML = show.map((row, i) => `
+        <button type="button" class="hit" data-pick="${i}">
+          ${imgOf(row.p) ? `<img alt="" src="${escapeHtml(imgOf(row.p))}">` : `<span class="ph"></span>`}
+          <span style="flex:1;min-width:0"><b>${escapeHtml(row.label)}</b><span>${row.price ? formatVnd(row.price) + " đ" : "chưa có giá"}${row.stock !== "" && row.stock != null ? " · kho " + escapeHtml(row.stock) : ""}</span></span>
+        </button>`).join("");
+      el.hits.querySelectorAll("[data-pick]").forEach((btn) => btn.onclick = () => {
+        const row = show[Number(btn.dataset.pick)];
+        if (!row) return;
+        addPicked(row.label, row.price);
+      });
+    }
+    el.form.addEventListener("input", (e) => {
+      const t = e.target;
+      if (t.dataset.field) {
+        if (t.dataset.field === "vatRate") quote.vatRate = Number(String(t.value).replace(",", ".")) || 0;
+        else quote[t.dataset.field] = t.value;
+        persistAndPaint();
+        return;
+      }
+      if (t.dataset.item) {
+        const item = quote.items.find((it) => it.id === t.dataset.item);
+        if (!item) return;
+        if (t.dataset.key === "qty") item.qty = Number(String(t.value).replace(/[^\d]/g, "")) || 0;
+        else if (t.dataset.key === "unitPrice") item.unitPrice = parseVnd(t.value);
+        else if (t.dataset.key === "unit") item.unit = t.value;
+        else item.name = t.value;
+        persistAndPaint();
+      }
+    });
+    el.form.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-remove]");
+      if (!btn) return;
+      quote.items = quote.items.filter((it) => it.id !== btn.dataset.remove);
+      renderItems();
+      persistAndPaint();
+    });
+    document.getElementById("btn-add").addEventListener("click", () => {
+      quote.items.push({ id: newId(), name: "", unit: "Cây", qty: 1, unitPrice: 0 });
+      renderItems();
+      persistAndPaint();
+      const last = el.items.querySelector("textarea");
+      if (last) last.focus();
+    });
+    el.toggle.addEventListener("click", () => {
+      editorOpen = !editorOpen;
+      el.editor.hidden = !editorOpen;
+      el.layout.classList.toggle("with-editor", editorOpen);
+      el.toggle.textContent = editorOpen ? "Ẩn sửa" : "Sửa nội dung";
+      requestAnimationFrame(fitScale);
+    });
+    document.getElementById("btn-print").addEventListener("click", () => window.print());
+    el.q.addEventListener("input", () => { query = el.q.value; renderHits(); });
+    function xml(s) {
+      return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+    function para(text, opt) {
+      const o = opt || {};
+      const size = o.size || 22;
+      const font = o.font || "Times New Roman";
+      const align = o.align ? `<w:jc w:val="${o.align}"/>` : "";
+      const space = `<w:spacing w:before="${o.before || 0}" w:after="${o.after || 60}"/>`;
+      return `<w:p><w:pPr>${align}${space}</w:pPr><w:r><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}" w:cs="${font}" w:eastAsia="${font}"/>${o.bold ? "<w:b/>" : ""}${o.italic ? "<w:i/>" : ""}${o.color ? `<w:color w:val="${o.color}"/>` : ""}<w:sz w:val="${size}"/><w:szCs w:val="${size}"/></w:rPr><w:t xml:space="preserve">${xml(text)}</w:t></w:r></w:p>`;
+    }
+    function cell(text, opt) {
+      const o = opt || {};
+      const width = o.w || 1400;
+      const fill = o.fill ? `<w:shd w:val="clear" w:color="auto" w:fill="${o.fill}"/>` : "";
+      const span = o.span ? `<w:gridSpan w:val="${o.span}"/>` : "";
+      return `<w:tc><w:tcPr><w:tcW w:w="${width}" w:type="dxa"/>${span}${fill}<w:vAlign w:val="center"/></w:tcPr>${para(text, { size: o.size || 20, bold: o.bold, color: o.color, align: o.align || "left", before: 40, after: 40 })}</w:tc>`;
+    }
+    function downloadBlob(blob, name) {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+    }
+    function fileStem() {
+      return "Bang_Bao_Gia_Van_Vuong_" + String(quote.quoteNo || "bao-gia").replace(/[^\w-]+/g, "_");
+    }
+    function docModel() {
+      const { subtotal, vat, total } = totals();
+      const rate = Number(quote.vatRate) || 0;
+      const notes = ["Giá trên chưa bao gồm thuế GTGT (VAT) " + rate + "%."];
+      if (quote.notes) notes.push(quote.notes);
+      notes.push("Thời gian giao hàng: " + (quote.delivery || ""));
+      notes.push("Địa điểm giao hàng: " + (quote.place || ""));
+      notes.push("Hình thức thanh toán: " + (quote.payment || ""));
+      notes.push("Hiệu lực báo giá: Đến hết ngày " + (quote.validUntil || "") + ".");
+      return {
+        kicker: quote.kicker || "HOA LỤA TRANG TRÍ",
+        companyName: quote.companyName,
+        meta: "MST: " + quote.taxCode + "  ·  Điện thoại: " + formatPhone(quote.phone),
+        addressLine: "Địa chỉ: " + quote.address,
+        dateLine: longDate(quote.issuedAt),
+        title: "BẢNG BÁO GIÁ",
+        greet: "Kính gửi: " + (quote.customer || "Quý khách"),
+        docNoLine: "Số báo giá: " + (quote.quoteNo || ""),
+        intro: quote.intro || "",
+        items: quote.items.map((item) => ({
+          name: item.name || "",
+          unit: item.unit || "Cây",
+          qty: item.qty || 0,
+          price: item.unitPrice || 0,
+          amount: itemAmount(item),
+          priceText: formatVnd(item.unitPrice),
+          amountText: formatVnd(itemAmount(item))
+        })),
+        sub: subtotal,
+        vat: vat,
+        total: total,
+        subText: formatVnd(subtotal),
+        vatText: formatVnd(vat),
+        totalText: formatVnd(total),
+        vatLabel: "Thuế GTGT " + rate + "%:",
+        notes: notes,
+        thanks: "Rất mong được hợp tác với Quý khách hàng. Trân trọng kính chào!",
+        signRole: (quote.signRole || "").trim(),
+        fileName: fileStem()
+      };
+    }
+    async function exportDocx() {
+      if (!quote.items.length) { setStatus("Chưa có hàng. Chọn trong kho hoặc thêm dòng tay."); return; }
+      if (!window.VVDoc) { setStatus("Chưa tải được file Word. Tải lại trang khi có mạng."); return; }
+      await window.VVDoc.docx(docModel());
+      setStatus("Đã tải Word. Mở bằng Word hoặc Excel được, khổ A4.");
+    }
+    function exportXlsx() {
+      if (!quote.items.length) { setStatus("Chưa có hàng. Chọn trong kho hoặc thêm dòng tay."); return; }
+      if (!window.VVDoc) { setStatus("Chưa tải được Excel. Tải lại trang khi có mạng."); return; }
+      window.VVDoc.xlsx(docModel());
+      setStatus("Đã tải Excel. Cột tiền là số, khổ giấy A4.");
+    }
+    async function exportJpg() {
+      if (!window.htmlToImage) { setStatus("Chưa tải được ảnh. Tải lại trang khi có mạng."); return; }
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+      const mount = document.createElement("div");
+      mount.style.cssText = "position:fixed;left:-12000px;top:0;background:#fff;";
+      const clone = el.sheet.cloneNode(true);
+      clone.style.width = "210mm";
+      clone.style.minHeight = "297mm";
+      clone.style.boxSizing = "border-box";
+      clone.style.transform = "none";
+      clone.style.margin = "0";
+      mount.appendChild(clone);
+      document.body.appendChild(mount);
+      try {
+        const dataUrl = await window.htmlToImage.toJpeg(clone, {
+          quality: 0.92,
+          pixelRatio: 2,
+          backgroundColor: "#fbf6ee",
+          width: clone.offsetWidth,
+          height: Math.max(clone.offsetHeight, clone.scrollHeight)
+        });
+        const res = await fetch(dataUrl);
+        downloadBlob(await res.blob(), fileStem() + ".jpg");
+        setStatus("Đã tải JPG khổ A4. Kế toán thì gửi Word hoặc Excel.");
+      } finally {
+        mount.remove();
+      }
+    }
+    el.docx.addEventListener("click", () => exportDocx().catch(() => setStatus("Không tạo được file Word.")));
+    el.xlsx.addEventListener("click", exportXlsx);
+    el.jpg.addEventListener("click", () => {
+      el.jpg.disabled = true;
+      exportJpg().catch(() => setStatus("Không xuất được ảnh. Dùng Word hoặc In A4.")).finally(() => { el.jpg.disabled = false; });
+    });
+    new ResizeObserver(fitScale).observe(el.stage);
+    window.addEventListener("resize", fitScale);
+    firebase.initializeApp({
+      apiKey: "AIzaSyDT0IEKhjAJZ_ZiMVwVCvO-fuj0ByReoE8",
+      authDomain: "esomar-vnn.firebaseapp.com",
+      projectId: "esomar-vnn",
+      storageBucket: "esomar-vnn.firebasestorage.app",
+      messagingSenderId: "1023271897973",
+      appId: "1:1023271897973:web:c7207b0e8321fc271fe13c"
+    });
+    firebase.firestore().collection("products").onSnapshot((snap) => {
+      catalog = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      catalog.sort((a, b) => String(a.name || "").localeCompare(String(b.name || ""), "vi"));
+      setStatus("Kho bán lẻ: " + catalog.length + " món. Chọn hàng, rồi sửa tên, số lượng, giá.");
+      renderHits();
+    }, (err) => setStatus("Không đọc được kho bán lẻ: " + err.message));
+    loadQuote();
+    fillForm();
+    renderPaper();
+    renderHits();
+  </script>
+</body>
+</html>
