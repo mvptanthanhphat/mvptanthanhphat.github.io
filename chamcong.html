@@ -198,6 +198,37 @@
     .toggle.half { background: #f59e0b; }
     .toggle.half i { left: 2px; }
     .quick { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .pay-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+    .mode-switch {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px 6px 12px;
+    }
+    .mode-lab { font-size: 13px; font-weight: 800; color: #94a3b8; }
+    .mode-lab.on { color: var(--navy); }
+    .mode-toggle {
+      width: 52px; height: 28px; border-radius: 99px; border: 0; position: relative;
+      background: #162b75; cursor: pointer; flex: 0 0 auto;
+    }
+    .mode-toggle i {
+      position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 99px;
+      background: #fff; transition: left .15s;
+    }
+    .mode-toggle.fixed { background: #c2410c; }
+    .mode-toggle.fixed i { left: 27px; }
+    .pay-field { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; color: #64748b; }
+    .pay-field.on { color: var(--navy); }
+    .pay-field input { width: 132px; }
+    .factor-input { width: 72px !important; text-align: center; }
+    .sun-pay {
+      display: flex; align-items: center; gap: 4px; margin-top: 6px;
+      font-size: 11px; font-weight: 800; color: #9f1239; cursor: pointer;
+    }
+    .sun-pay input { width: 15px; height: 15px; accent-color: #9f1239; }
+    .chot-line {
+      margin-top: 10px; background: #ecfdf3; color: #166534;
+      border-radius: 12px; padding: 8px 12px; font-size: 13px; font-weight: 700;
+    }
+    .chot-line.stale { background: #fff7ed; color: #9a3412; }
     
     /* Vùng tổng hợp mới */
     .summary {
@@ -320,7 +351,7 @@
         </div>
       </div>
       <div class="banner" id="ruleBanner">
-        Cloud từ chối ghi (permission-denied). Dữ liệu vẫn nằm trên máy này. Vào Firebase Console → Firestore Database → Rules, dán file <b>firestore.rules</b> trong thư mục output rồi Publish. Collection cần mở: <b>nhan_vien</b>, <b>bang_cong</b>, <b>bang_cong_meta</b>.
+        Cloud từ chối ghi (permission-denied). Dữ liệu vẫn nằm trên máy này. Vào Firebase Console → Firestore Database → Rules, dán file <b>firestore.rules</b> rồi Publish. Collection cần mở: <b>nhan_vien</b>, <b>bang_cong</b>, <b>bang_cong_meta</b>, <b>bang_cong_chot</b>.
       </div>
       <section id="viewCong"></section>
       <section id="viewSum" style="display:none"></section>
@@ -335,6 +366,7 @@
         <input class="field" name="role" placeholder="Vị trí (tuỳ chọn)" />
         <input class="field" name="phone" placeholder="Số điện thoại (tuỳ chọn)" />
         <input class="field" name="salary" inputmode="numeric" placeholder="Lương cứng tháng, ví dụ 5000000" required />
+        <div class="hint">Số này dùng khi gạt sang Lương cứng. Lương theo ngày khai trên bảng công.</div>
       </div>
       <div class="row-end">
         <button class="btn btn-ghost" type="button" id="closeEmp">Huỷ</button>
@@ -348,7 +380,7 @@
       <h3>Đơn vị & Firebase</h3>
       <div class="stack">
         <input class="field" name="shop" placeholder="Tên cửa hàng / công ty" />
-        <div class="hint" id="cloudHint">Project: mvp-tanthanhphat. Lương và ngày công lưu collection nhan_vien + bang_cong.</div>
+        <div class="hint" id="cloudHint">Project: mvp-tanthanhphat. Ngày công lưu bang_cong. Nút Lưu chốt ghi thêm văn bản bang_cong_chot.</div>
       </div>
       <div class="row-end">
         <button class="btn btn-ghost" type="button" id="closeShop">Đóng</button>
@@ -446,15 +478,51 @@
       const x = Math.round(n * 10) / 10;
       return String(x).replace(".", ",");
     }
+    function normalizeFactor(v) {
+      const n = typeof v === "number" ? v : Number(String(v ?? "").replace(",", ".").trim());
+      if (!Number.isFinite(n) || n < 1) return 1.5;
+      return Math.round(Math.min(5, n) * 100) / 100;
+    }
+    function factorText(n) {
+      return String(normalizeFactor(n)).replace(".", ",");
+    }
+    function ensurePay(row) {
+      if (row.payMode !== "fixed" && row.payMode !== "day") row.payMode = "day";
+      if (row.dayRate == null || row.dayRate === "") row.dayRate = 500000;
+      if (row.sundayFactor == null || row.sundayFactor === "") row.sundayFactor = 1.5;
+      if (!row.sunOn || typeof row.sunOn !== "object" || Array.isArray(row.sunOn)) row.sunOn = {};
+      return row;
+    }
     function payOf(emp) {
       const d = dim(year, month);
-      const work = workOf(emp.id);
-      const row = rec(emp.id);
-      const rate = d ? Math.round(emp.salary / d) : 0;
-      const gross = d ? Math.round(work * emp.salary / d) : 0;
+      const row = ensurePay(rec(emp.id));
+      const days = row.days || {};
+      const factor = normalizeFactor(row.sundayFactor);
+      const mode = row.payMode === "fixed" ? "fixed" : "day";
+      const rate = mode === "day"
+        ? Math.round(Number(row.dayRate) || 0)
+        : (d ? Math.round(Number(emp.salary) / d) : 0);
+      let work = 0;
+      let gross = 0;
+      let sunUnits = 0;
+      const sunLines = [];
+      Object.keys(days).forEach((day) => {
+        const units = Number(days[day] || 0);
+        if (!units) return;
+        work += units;
+        const wd = weekdayOf(year, month, Number(day));
+        const premium = wd === 6 && !!row.sunOn[String(day)];
+        const mul = premium ? factor : 1;
+        const pay = Math.round(units * rate * mul);
+        gross += pay;
+        if (premium) {
+          sunUnits += units;
+          sunLines.push({ day: Number(day), units, pay });
+        }
+      });
+      sunLines.sort((a, b) => a.day - b.day);
       const advance = (row.advances || []).reduce((sum, a) => sum + Number(a.amount || 0), 0);
-      const net = gross - advance;
-      return { d, work, rate, gross, advance, total: net };
+      return { d, work, rate, gross, advance, total: gross - advance, mode, factor, sunUnits, sunLines };
     }
     function statusBadge(work, d) {
       if (!work) return '<span class="badge mute">Chưa chấm công</span>';
@@ -501,8 +569,20 @@
       const row = rec(emp.id);
       const advs = row.advances || [];
       let html = '<tr><td style="color:var(--ink);font-weight:700">Tổng số ngày công</td><td style="text-align:right;font-weight:800;font-size:16px;color:var(--blue)">' + dayText(p.work) + " ngày</td></tr>";
-      html += '<tr><td>Đơn giá 1 ngày</td><td style="text-align:right;font-weight:700">' + money(p.rate) + "</td></tr>";
-      html += '<tr><td style="border-top:1px dashed #cbd5e1;padding-top:8px">Lương theo công <span class="hint">(' + dayText(p.work) + " × " + money(p.rate) + ')</span></td><td style="text-align:right;font-weight:800;border-top:1px dashed #cbd5e1;padding-top:8px">' + money(p.gross) + "</td></tr>";
+      if (p.mode === "day") {
+        html += '<tr><td>Đơn giá 1 ngày</td><td style="text-align:right;font-weight:700">' + money(p.rate) + "</td></tr>";
+      } else {
+        html += '<tr><td>Lương cứng / ' + p.d + ' ngày</td><td style="text-align:right;font-weight:700">' + money(p.rate) + "</td></tr>";
+      }
+      if (p.sunLines.length) {
+        p.sunLines.forEach((line) => {
+          html += '<tr><td style="color:#9f1239;padding-left:8px">CN ' + line.day + " · " + dayText(line.units) + " ngày × " + factorText(p.factor) + '</td><td style="text-align:right;font-weight:700;color:#9f1239">' + money(line.pay) + "</td></tr>";
+        });
+      }
+      const eq = p.sunLines.length
+        ? (dayText(p.work - p.sunUnits) + " ngày thường + CN × " + factorText(p.factor))
+        : (dayText(p.work) + " × " + money(p.rate));
+      html += '<tr><td style="border-top:1px dashed #cbd5e1;padding-top:8px">Lương theo công <span class="hint">(' + eq + ')</span></td><td style="text-align:right;font-weight:800;border-top:1px dashed #cbd5e1;padding-top:8px">' + money(p.gross) + "</td></tr>";
       if (!advs.length) {
         html += '<tr><td style="color:var(--muted)">Trừ tạm ứng</td><td style="text-align:right;color:var(--muted)">− 0 đ</td></tr>';
       } else {
@@ -546,7 +626,12 @@
           mark = '<div class="mark"><span>' + (val === 1 ? "1 Ngày" : "0.5 Ngày") + '</span>' +
             '<button type="button" class="toggle ' + (val === 1 ? "full" : "half") + '" data-toggle="' + day + '" title="Gạt sang để tính nửa ngày"><i></i></button></div>';
         }
-        cells += '<div class="' + cls + '" data-day="' + day + '" role="button" tabindex="0"><div class="wd">' + WD[w] + '</div><div class="num">' + day + '</div>' + mark + '</div>';
+        let sunBox = "";
+        if (w === 6 && val) {
+          const on = !!r.sunOn[String(day)];
+          sunBox = '<label class="sun-pay"><input type="checkbox" data-sun="' + day + '"' + (on ? " checked" : "") + "> ×" + factorText(r.sundayFactor) + "</label>";
+        }
+        cells += '<div class="' + cls + '" data-day="' + day + '" role="button" tabindex="0"><div class="wd">' + WD[w] + '</div><div class="num">' + day + '</div>' + mark + sunBox + '</div>';
       }
       const noteLine = r.note ? '<p class="sub" style="margin-top:12px; font-size:13.5px"><b>Ghi chú:</b> ' + esc(r.note) + '</p>' : '';
       
@@ -573,9 +658,33 @@
       const block = summaryBlock(emp);
       const breakdownHtml = block.html;
 
+      const modeDay = r.payMode !== "fixed";
+      const chot = r.chot && Number(r.chot.year) === year && Number(r.chot.month) === month ? r.chot : null;
+      const chotWhen = chot ? new Date(chot.lockedAt).toLocaleString("vi-VN") : "";
+      const chotStale = chot && (chot.total !== p.total || chot.work !== p.work);
+      const chotHtml = chot
+        ? '<div class="chot-line' + (chotStale ? " stale" : "") + '">' +
+          (chotStale ? "Đã sửa sau lần chốt. " : "Đã chốt. ") + chotWhen +
+          " · thực nhận " + money(chot.total) +
+          (chotStale ? " · đang tính " + money(p.total) : "") + "</div>"
+        : "";
+      const rateLabel = modeDay ? (money(p.rate) + " / ngày") : (money(emp.salary) + " / tháng");
+      const rateHint = modeDay
+        ? "Mỗi ngày công × đơn giá. Chủ nhật tích ×" + factorText(r.sundayFactor) + "."
+        : "Chia đều cho " + p.d + " ngày. Chủ nhật tích ×" + factorText(r.sundayFactor) + ".";
+
       host.innerHTML =
+        '<div class="pay-tools">' +
+          '<div class="mode-switch">' +
+            '<span class="mode-lab' + (modeDay ? " on" : "") + '">Lương ngày</span>' +
+            '<button type="button" class="mode-toggle' + (modeDay ? "" : " fixed") + '" id="payModeBtn" title="Gạt sang ' + (modeDay ? "lương cứng" : "lương ngày") + '"><i></i></button>' +
+            '<span class="mode-lab' + (modeDay ? "" : " on") + '">Lương cứng</span>' +
+          '</div>' +
+          '<label class="pay-field' + (modeDay ? " on" : "") + '">Đơn giá ngày <input class="salary-input" id="dayRateInput" inputmode="numeric" value="' + Number(r.dayRate || 0).toLocaleString("vi-VN") + '" /></label>' +
+          '<label class="pay-field' + (modeDay ? "" : " on") + '">Lương cứng <input class="salary-input" id="salaryInput" inputmode="numeric" value="' + Number(emp.salary || 0).toLocaleString("vi-VN") + '" /></label>' +
+          '<label class="pay-field on">Hệ số CN <input class="salary-input factor-input" id="factorInput" inputmode="decimal" value="' + factorText(r.sundayFactor) + '" /></label>' +
+        '</div>' +
         '<div class="actions" style="margin-bottom:12px">' +
-          '<label class="hint" style="display:flex;align-items:center;gap:8px">Lương cứng <input class="salary-input" id="salaryInput" value="' + Number(emp.salary).toLocaleString("vi-VN") + '" /></label>' +
           '<button class="btn btn-ghost" type="button" id="fillWeek">Chấm T2–T6</button>' +
           '<button class="btn btn-ghost" type="button" id="fillAll">Chấm cả tháng</button>' +
           '<button class="btn btn-danger" type="button" id="clearMonth">Xoá chấm tháng này</button>' +
@@ -587,12 +696,12 @@
             '<div><div class="crumb">' + esc(state.meta.shop || "Bảng lương nhân viên") + '</div>' +
             '<div class="mini" style="margin-top:8px;">NHÂN VIÊN — bấm vào tên để sửa</div>' +
             '<input class="name-input" id="nameInput" value="' + esc(emp.name) + '" />' +
-            '<p class="sub">Tháng ' + month + ' / Năm ' + year + (emp.role ? " · " + esc(emp.role) : "") + '</p></div>' +
-            '<div class="paybox"><div class="lbl">Mức lương chuẩn</div>' +
-            '<div class="unit" style="font-size:22px;font-weight:800;margin-top:4px">' + money(emp.salary) + ' / tháng</div>' +
-            '<div class="hint">Chia đều cho ' + p.d + ' ngày</div></div>' +
+            '<p class="sub">Tháng ' + month + ' / Năm ' + year + (emp.role ? " · " + esc(emp.role) : "") + " · " + (modeDay ? "Lương ngày" : "Lương cứng") + '</p></div>' +
+            '<div class="paybox"><div class="lbl">' + (modeDay ? "Đơn giá đang tính" : "Mức lương chuẩn") + '</div>' +
+            '<div class="unit" id="liveRate" style="font-size:22px;font-weight:800;margin-top:4px">' + rateLabel + '</div>' +
+            '<div class="hint" id="liveRateHint">' + rateHint + '</div></div>' +
           '</div>' +
-          '<div class="legend"><span><i class="sw"></i>Nghỉ</span><span><i class="sw full"></i>1 Ngày (Full)</span><span><i class="sw half"></i>0.5 Ngày (Nửa buổi)</span>' + statusBadge(p.work, p.d) + '</div>' +
+          '<div class="legend"><span><i class="sw"></i>Nghỉ</span><span><i class="sw full"></i>1 Ngày (Full)</span><span><i class="sw half"></i>0.5 Ngày (Nửa buổi)</span><span><i class="sw" style="background:#ffe4e6;border-color:#fda4af"></i>CN tích ×' + factorText(r.sundayFactor) + '</span>' + statusBadge(p.work, p.d) + '</div>' +
           '<div class="week">' + WD.map(x => "<span>" + x + "</span>").join("") + '</div>' +
           '<div class="grid">' + cells + '</div>' +
           
@@ -608,10 +717,12 @@
                 '<div class="hint" id="liveEq">= lương theo công − tạm ứng</div>' +
              '</div>' +
           '</div>' +
+          chotHtml +
           noteLine +
         '</article>' +
         '<textarea class="note" id="note" placeholder="Ghi chú khác (phép, đi trễ...) — tạm ứng ghi ở ô riêng phía trên">' + esc(r.note || "") + '</textarea>' +
         '<div class="actions" style="margin-top:12px">' +
+          '<button class="btn btn-navy" type="button" id="lockBtn">Lưu chốt</button>' +
           '<button class="btn btn-green" type="button" id="jpgBtn">Xuất JPG gửi Zalo</button>' +
           '<button class="btn btn-navy" type="button" id="xlsxOne">Excel bản lưu (đúng form)</button>' +
           '<button class="btn btn-ghost" type="button" id="xlsxAll">Excel cả tháng</button>' +
@@ -624,11 +735,14 @@
           const day = cell.dataset.day;
           const cur = Number(r.days[day] || 0);
           if (!cur) r.days[day] = 1;
-          else delete r.days[day];
+          else {
+            delete r.days[day];
+            delete r.sunOn[String(day)];
+          }
           commitAttendance(emp.id);
         };
         cell.onclick = (ev) => {
-          if (ev.target.closest("[data-toggle]")) return;
+          if (ev.target.closest("[data-toggle], [data-sun], .sun-pay")) return;
           flip();
         };
         cell.onkeydown = (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); flip(); } };
@@ -639,6 +753,36 @@
         r.days[day] = Number(r.days[day]) === 1 ? 0.5 : 1;
         commitAttendance(emp.id);
       });
+      host.querySelectorAll("[data-sun]").forEach(box => box.onclick = (ev) => {
+        ev.stopPropagation();
+        const day = String(box.dataset.sun);
+        if (box.checked) r.sunOn[day] = true;
+        else delete r.sunOn[day];
+        commitAttendance(emp.id);
+      });
+      document.getElementById("payModeBtn").onclick = () => {
+        r.payMode = r.payMode === "fixed" ? "day" : "fixed";
+        commitAttendance(emp.id);
+      };
+      document.getElementById("dayRateInput").oninput = (ev) => {
+        r.dayRate = parseMoney(ev.target.value);
+        paintLive(emp);
+      };
+      document.getElementById("dayRateInput").onchange = (ev) => {
+        r.dayRate = parseMoney(ev.target.value) || 500000;
+        commitAttendance(emp.id);
+      };
+      document.getElementById("factorInput").oninput = (ev) => {
+        const n = Number(String(ev.target.value).replace(",", ".").trim());
+        if (Number.isFinite(n) && n > 0) {
+          r.sundayFactor = n;
+          paintLive(emp);
+        }
+      };
+      document.getElementById("factorInput").onchange = (ev) => {
+        r.sundayFactor = normalizeFactor(ev.target.value);
+        commitAttendance(emp.id);
+      };
       
       // Events cơ bản
       document.getElementById("salaryInput").oninput = (ev) => {
@@ -727,11 +871,13 @@
       document.getElementById("clearMonth").onclick = () => {
         if (!confirm("Xoá toàn bộ ngày công tháng này của " + emp.name + "?")) return;
         r.days = {};
+        r.sunOn = {};
         commitAttendance(emp.id);
       };
       document.getElementById("editEmp").onclick = () => openEmp(emp);
       document.getElementById("delEmp").onclick = () => removeEmp(emp);
       document.getElementById("jpgBtn").onclick = exportJpg;
+      document.getElementById("lockBtn").onclick = () => lockSheet(emp.id);
       document.getElementById("xlsxOne").onclick = () => exportXlsx(false);
       document.getElementById("xlsxAll").onclick = () => exportXlsx(true);
       document.getElementById("htmlBtn").onclick = exportHtml;
@@ -745,9 +891,9 @@
         '<article class="sheet"><div class="sheet-head"><div><h3 class="who">Tổng hợp tháng ' + month + '/' + year + '</h3>' +
         '<p class="sub">' + rows.length + ' nhân viên · ' + dayText(totalWork) + ' ngày công · quỹ lương ' + money(totalPay) + '</p></div>' +
         '<button class="btn btn-navy" type="button" id="xlsxAll2">Xuất Excel kế toán</button></div>' +
-        '<table><thead><tr><th>Nhân viên</th><th class="num">Ngày công</th><th class="num">Lương chuẩn</th><th class="num">Theo công</th><th class="num">Tạm ứng</th><th class="num">Thực nhận</th></tr></thead><tbody>' +
+        '<table><thead><tr><th>Nhân viên</th><th class="num">Ngày công</th><th class="num">Cách tính</th><th class="num">Theo công</th><th class="num">Tạm ứng</th><th class="num">Thực nhận</th></tr></thead><tbody>' +
         rows.map(r => '<tr><td><b>' + esc(r.e.name) + '</b><div class="hint">' + esc(r.e.role || "") + '</div></td>' +
-          '<td class="num">' + dayText(r.p.work) + '</td><td class="num">' + money(r.e.salary) + '</td><td class="num">' + money(r.p.gross) + '</td><td class="num">' + money(r.p.advance) + '</td><td class="num"><b>' + money(r.p.total) + '</b></td></tr>').join("") +
+          '<td class="num">' + dayText(r.p.work) + '</td><td class="num">' + (r.p.mode === "day" ? money(r.p.rate) + "/ngày" : "Cứng " + money(r.e.salary)) + '</td><td class="num">' + money(r.p.gross) + '</td><td class="num">' + money(r.p.advance) + '</td><td class="num"><b>' + money(r.p.total) + '</b></td></tr>').join("") +
         '<tr><td><b>Cộng</b></td><td class="num"><b>' + dayText(totalWork) + '</b></td><td></td><td class="num"><b>' + money(rows.reduce((s, r) => s + r.p.gross, 0)) + '</b></td><td class="num"><b>' + money(rows.reduce((s, r) => s + r.p.advance, 0)) + '</b></td><td class="num"><b>' + money(totalPay) + '</b></td></tr>' +
         '</tbody></table></article>';
       document.getElementById("xlsxAll2").onclick = () => exportXlsx(true);
@@ -788,16 +934,83 @@
         document.getElementById("ruleBanner").classList.remove("show");
       } catch (e) { onCloudErr(e); }
     }
+    function attendancePayload(id, r, y, m) {
+      const row = ensurePay(r);
+      const body = {
+        employeeId: id,
+        year: y,
+        month: m,
+        days: row.days || {},
+        note: row.note || "",
+        advances: row.advances || [],
+        payMode: row.payMode,
+        dayRate: Number(row.dayRate) || 0,
+        sundayFactor: normalizeFactor(row.sundayFactor),
+        sunOn: row.sunOn || {},
+        updatedAt: row.updatedAt || Date.now()
+      };
+      if (row.chot) body.chot = row.chot;
+      if (row.chotHistory && row.chotHistory.length) body.chotHistory = row.chotHistory;
+      return body;
+    }
     async function pushAttendance(id, r) {
       if (!db) return;
       try {
-        await db.collection("bang_cong").doc(keyOf(id, year, month)).set({
-          employeeId: id, year, month, days: r.days, note: r.note || "",
-          advances: r.advances || [], updatedAt: r.updatedAt
-        });
+        await db.collection("bang_cong").doc(keyOf(id, year, month)).set(attendancePayload(id, r, year, month));
         cloudOk = true;
         setSync("ok", "Đã lưu cloud", "Ngày công tháng " + month + "/" + year + " đã lên Firestore.");
       } catch (e) { onCloudErr(e); }
+    }
+    async function lockSheet(id) {
+      const emp = empById(id);
+      if (!emp) return;
+      const r = ensurePay(rec(id));
+      const p = payOf(emp);
+      const chot = {
+        id: keyOf(id, year, month),
+        employeeId: id,
+        name: emp.name,
+        role: emp.role || "",
+        phone: emp.phone || "",
+        shop: (state.meta && state.meta.shop) || "",
+        year, month,
+        payMode: r.payMode,
+        dayRate: Number(r.dayRate) || 0,
+        salary: Number(emp.salary) || 0,
+        sundayFactor: normalizeFactor(r.sundayFactor),
+        days: Object.assign({}, r.days || {}),
+        sunOn: Object.assign({}, r.sunOn || {}),
+        advances: (r.advances || []).map(a => ({ amount: Number(a.amount) || 0, reason: a.reason || "" })),
+        note: r.note || "",
+        work: p.work,
+        rate: p.rate,
+        gross: p.gross,
+        advance: p.advance,
+        total: p.total,
+        lockedAt: Date.now()
+      };
+      r.chot = chot;
+      r.chotHistory = Array.isArray(r.chotHistory) ? r.chotHistory : [];
+      r.chotHistory.push({ lockedAt: chot.lockedAt, total: chot.total, payMode: chot.payMode, work: chot.work });
+      if (r.chotHistory.length > 24) r.chotHistory = r.chotHistory.slice(-24);
+      r.updatedAt = Date.now();
+      saveLocal();
+      await pushAttendance(id, r);
+      let cloudDoc = !db;
+      if (db) {
+        try {
+          await db.collection("bang_cong_chot").doc(chot.id).set(chot);
+          await db.collection("bang_cong_chot").doc(chot.id + "_" + chot.lockedAt).set(chot);
+          cloudDoc = true;
+        } catch (e) {
+          cloudDoc = false;
+          if (String(e.code || e.message || "").includes("permission")) {
+            toast("Đã chốt trên máy và bảng công. Publish rule có bang_cong_chot để lưu văn bản riêng.");
+          } else onCloudErr(e);
+        }
+      }
+      if (cloudDoc) toast("Đã chốt " + money(p.total) + ". Văn bản nằm trên máy và Firebase.");
+      render();
     }
     function onCloudErr(e) {
       cloudOk = false;
@@ -915,7 +1128,7 @@
       summary.getCell("A1").value = (state.meta.shop || "BẢNG LƯƠNG NHÂN VIÊN") + "  ·  Tổng hợp tháng " + month + "/" + year;
       summary.getCell("A1").font = { bold: true, size: 16, color: { argb: navy } };
       summary.getRow(1).height = 28;
-      ["Nhân viên", "Ngày công", "Lương chuẩn", "Lương theo công", "Tổng tạm ứng", "Thực nhận", "Sheet"].forEach((h, i) => {
+      ["Nhân viên", "Ngày công", "Đơn giá/ngày", "Lương theo công", "Tổng tạm ứng", "Thực nhận", "Sheet"].forEach((h, i) => {
         const c = summary.getCell(3, i + 1);
         c.value = h;
         c.font = { bold: true, color: { argb: "FFFFFFFF" }, size: 11 };
@@ -970,18 +1183,22 @@
         paint("D4", year, { align: "center", font: { bold: true } });
         paint("E4", "Số ngày tháng", { font: { bold: true, color: { argb: muted } }, fill: "FFF1F5F9" });
         paint("F4", { formula: "DAY(EOMONTH(DATE(D4,B4,1),0))" }, { align: "center", font: { bold: true } });
-        paint("G4", "Đơn giá / ngày", { font: { bold: true, color: { argb: muted } }, fill: "FFF1F5F9" });
-        paint("H4", { formula: "IF(F4=0,0,ROUND(B5/F4,0))" }, { fmt: numFmt, align: "right", font: { bold: true }, fill: "FFEFF6FF" });
+        const payRow = ensurePay(rec(emp.id));
+        const modeName = payRow.payMode === "fixed" ? "Lương cứng" : "Lương ngày";
+        paint("G4", "Đơn giá đang tính", { font: { bold: true, color: { argb: muted } }, fill: "FFF1F5F9" });
+        paint("H4", { formula: 'IF(G5="Lương cứng",IF(F4=0,0,ROUND(B5/F4,0)),E5)' }, { fmt: numFmt, align: "right", font: { bold: true }, fill: "FFEFF6FF" });
 
-        paint("A5", "Lương chuẩn", { font: { bold: true, color: { argb: muted } }, fill: "FFF1F5F9" });
+        paint("A5", "Lương cứng", { font: { bold: true, color: { argb: muted } }, fill: "FFF1F5F9" });
         ws.mergeCells("B5:C5");
         paint("B5", Number(emp.salary || 0), { fmt: numFmt, font: { bold: true, size: 14, color: { argb: navy } }, fill: "FFEFF6FF" });
-        paint("D5", "Cách chấm", { font: { bold: true, color: { argb: muted } }, fill: "FFF1F5F9" });
-        ws.mergeCells("E5:H5");
-        paint("E5", "Hàng trên là số ngày. Hàng dưới chọn: Nghỉ | 1 Ngày | 0.5 Ngày. Sửa thì lương tự tính.", { wrap: true });
+        paint("D5", "Đơn giá ngày", { font: { bold: true, color: { argb: muted } }, fill: "FFF1F5F9" });
+        paint("E5", Number(payRow.dayRate || 0), { fmt: numFmt, align: "right", font: { bold: true, color: { argb: navy } }, fill: "FFEFF6FF" });
+        paint("F5", "Cách tính", { font: { bold: true, color: { argb: muted } }, fill: "FFF1F5F9", align: "center" });
+        paint("G5", modeName, { align: "center", font: { bold: true } });
+        paint("H5", normalizeFactor(payRow.sundayFactor), { align: "center", font: { bold: true }, fill: "FFFFF1F2" });
         shade(5, 2, 5, 3);
         shade(5, 5, 5, 8);
-        ws.getRow(5).height = 28;
+        ws.getRow(5).height = 24;
 
         ws.mergeCells("A6:H6");
         paint("A6", "TẠM ỨNG  —  mỗi lần một dòng, trừ thẳng vào lương", {
@@ -1064,19 +1281,24 @@
             }
             const val = Number((r.days || {})[day] || 0);
             const wd = weekdayOf(year, month, day);
+            const prem = wd === 6 && r.sunOn && r.sunOn[String(day)];
             nCell.value = day;
             nCell.font = { bold: true, size: 14, color: { argb: wd === 6 ? "FFDC2626" : ink } };
-            const label = markLabel(val);
+            const label = !val ? "Nghỉ" : ((val === 1 ? "1 Ngày" : "0.5 Ngày") + (prem ? " CN" : ""));
             sCell.value = label;
             sCell.dataValidation = {
               type: "list",
               allowBlank: false,
-              formulae: ['"Nghỉ,1 Ngày,0.5 Ngày"'],
+              formulae: ['"Nghỉ,1 Ngày,0.5 Ngày,1 Ngày CN,0.5 Ngày CN"'],
               showErrorMessage: true,
               errorTitle: "Chấm công",
-              error: "Chọn Nghỉ, 1 Ngày hoặc 0.5 Ngày"
+              error: "Chọn Nghỉ, 1 Ngày, 0.5 Ngày hoặc bản CN"
             };
-            if (val === 1) {
+            if (prem) {
+              nCell.fill = fill("FFFFE4E6");
+              sCell.fill = fill("FFFFE4E6");
+              sCell.font = { bold: true, color: { argb: "FF9F1239" } };
+            } else if (val === 1) {
               nCell.fill = fill(greenBg);
               sCell.fill = fill(greenBg);
               sCell.font = { bold: true, color: { argb: green } };
@@ -1102,6 +1324,8 @@
 
         const oneExpr = statusRows.map(rr => '(B' + rr + ':H' + rr + '="1 Ngày")').join("+");
         const halfExpr = statusRows.map(rr => '(B' + rr + ':H' + rr + '="0.5 Ngày")').join("+");
+        const oneSun = statusRows.map(rr => '(B' + rr + ':H' + rr + '="1 Ngày CN")').join("+");
+        const halfSun = statusRows.map(rr => '(B' + rr + ':H' + rr + '="0.5 Ngày CN")').join("+");
         row = headRow + 1 + weeks * 2 + 1;
         ws.mergeCells("A" + row + ":D" + row);
         paint("A" + row, "TỔNG KẾT  —  đọc từ trên xuống là ra số tiền nhận", {
@@ -1112,22 +1336,22 @@
         row++;
         const workRow = row;
         paint("A" + row, "Tổng số ngày công", { font: { bold: true }, fill: "FFF8FAFC" });
-        paint("B" + row, { formula: "SUMPRODUCT(" + oneExpr + ")+SUMPRODUCT(" + halfExpr + ")*0.5" }, { align: "right", font: { bold: true, size: 14, color: { argb: navy } }, fill: "FFEFF6FF" });
+        paint("B" + row, { formula: "SUMPRODUCT(" + oneExpr + ")+SUMPRODUCT(" + halfExpr + ")*0.5+SUMPRODUCT(" + oneSun + ")+SUMPRODUCT(" + halfSun + ")*0.5" }, { align: "right", font: { bold: true, size: 14, color: { argb: navy } }, fill: "FFEFF6FF" });
         ws.mergeCells("C" + row + ":D" + row);
-        paint("C" + row, "ngày   (1 Ngày = 1,   0.5 Ngày = 0,5)");
+        paint("C" + row, "ngày   (CN vẫn tính 1 hoặc 0,5 ngày công)");
         shade(row, 3, row, 4);
         row++;
         paint("A" + row, "Đơn giá 1 ngày", { fill: "FFF8FAFC" });
         paint("B" + row, { formula: "H4" }, { fmt: numFmt, align: "right", font: { bold: true } });
         ws.mergeCells("C" + row + ":D" + row);
-        paint("C" + row, { formula: '"= lương chuẩn / "&F4&" ngày"' });
+        paint("C" + row, { formula: 'IF(G5="Lương cứng","= lương cứng / "&F4&" ngày","= đơn giá ngày")' });
         shade(row, 3, row, 4);
         row++;
         const grossRow = row;
         paint("A" + row, "Lương theo công", { font: { bold: true }, fill: greenBg });
-        paint("B" + row, { formula: "ROUND(B" + workRow + "*H4,0)" }, { fmt: numFmt, align: "right", font: { bold: true, color: { argb: green } }, fill: greenBg });
+        paint("B" + row, { formula: "ROUND((SUMPRODUCT(" + oneExpr + ")+SUMPRODUCT(" + halfExpr + ")*0.5+(SUMPRODUCT(" + oneSun + ")+SUMPRODUCT(" + halfSun + ")*0.5)*H5)*H4,0)" }, { fmt: numFmt, align: "right", font: { bold: true, color: { argb: green } }, fill: greenBg });
         ws.mergeCells("C" + row + ":D" + row);
-        paint("C" + row, { formula: '"= "&TEXT(B' + workRow + ',"0.0")&" ngày × "&TEXT(H4,"#,##0")&" đ"' }, { fill: greenBg });
+        paint("C" + row, "Ngày thường × đơn giá. CN đã tích × hệ số H5.", { fill: greenBg });
         shade(row, 3, row, 4);
         row++;
         for (let ar = advStart; ar <= advEnd; ar++) {
@@ -1175,7 +1399,7 @@
         };
         put(1, { formula: q + "B3" });
         put(2, { formula: q + "B" + link.workRow });
-        put(3, { formula: q + "B5" }, numFmt);
+        put(3, { formula: q + "H4" }, numFmt);
         put(4, { formula: q + "B" + link.grossRow }, numFmt);
         put(5, { formula: q + "-B" + link.advTotalRow }, numFmt);
         const net = summary.getCell(r, 6);
@@ -1239,7 +1463,14 @@
              }
              state.attendance[k] = {
                 days: data.days || {}, note: data.note || "",
-                advances: adv, updatedAt: data.updatedAt || 0
+                advances: adv,
+                payMode: data.payMode === "fixed" ? "fixed" : "day",
+                dayRate: data.dayRate == null ? 500000 : data.dayRate,
+                sundayFactor: data.sundayFactor == null ? 1.5 : data.sundayFactor,
+                sunOn: data.sunOn || {},
+                chot: data.chot || null,
+                chotHistory: data.chotHistory || [],
+                updatedAt: data.updatedAt || 0
              };
           }
         });
@@ -1253,11 +1484,7 @@
           const monthPart = Number(parts.pop());
           const yearPart = Number(parts.pop());
           const employeeId = parts.join("_");
-          await db.collection("bang_cong").doc(k).set({
-            employeeId, year: yearPart, month: monthPart,
-            days: r.days || {}, note: r.note || "",
-            advances: r.advances || [], updatedAt: r.updatedAt || Date.now()
-          });
+          await db.collection("bang_cong").doc(k).set(attendancePayload(employeeId, r, yearPart, monthPart));
         }
         if (state.meta) await db.collection("bang_cong_meta").doc("shop").set(state.meta);
         cloudOk = true;
