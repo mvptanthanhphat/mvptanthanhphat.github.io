@@ -687,22 +687,54 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   function shoot(el) {
     var ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
     return ready.then(function () {
-      return html2canvas(el, {
-        scale: 3,
-        backgroundColor: "#f3eee6",
-        useCORS: true,
-        logging: false,
-        imageTimeout: 0
+      var host = document.createElement("div");
+      host.setAttribute("aria-hidden", "true");
+      host.style.cssText = "position:fixed;left:0;top:0;width:148mm;height:210mm;margin:0;padding:0;z-index:2147483646;background:#f3eee6;overflow:hidden;transform:none;";
+      var clone = el.cloneNode(true);
+      clone.style.boxShadow = "none";
+      clone.style.margin = "0";
+      clone.style.transform = "none";
+      host.appendChild(clone);
+      document.body.appendChild(host);
+      var scrollX = window.scrollX || 0;
+      var scrollY = window.scrollY || 0;
+      window.scrollTo(0, 0);
+      return new Promise(function (resolve) {
+        requestAnimationFrame(function () { requestAnimationFrame(resolve); });
+      }).then(function () {
+        var w = clone.offsetWidth;
+        var h = clone.offsetHeight;
+        return html2canvas(clone, {
+          scale: 3,
+          backgroundColor: "#f3eee6",
+          useCORS: true,
+          logging: false,
+          imageTimeout: 0,
+          scrollX: 0,
+          scrollY: 0,
+          x: 0,
+          y: 0,
+          width: w,
+          height: h,
+          windowWidth: w,
+          windowHeight: h
+        });
+      }).then(function (canvas) {
+        host.remove();
+        window.scrollTo(scrollX, scrollY);
+        var out = document.createElement("canvas");
+        out.width = A5W;
+        out.height = A5H;
+        var ctx = out.getContext("2d");
+        ctx.fillStyle = "#f3eee6";
+        ctx.fillRect(0, 0, A5W, A5H);
+        ctx.drawImage(canvas, 0, 0, A5W, A5H);
+        return out;
+      }, function (err) {
+        if (host.parentNode) host.remove();
+        window.scrollTo(scrollX, scrollY);
+        throw err;
       });
-    }).then(function (canvas) {
-      var out = document.createElement("canvas");
-      out.width = A5W;
-      out.height = A5H;
-      var ctx = out.getContext("2d");
-      ctx.fillStyle = "#f3eee6";
-      ctx.fillRect(0, 0, A5W, A5H);
-      ctx.drawImage(canvas, 0, 0, A5W, A5H);
-      return out;
     });
   }
 
